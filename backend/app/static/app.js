@@ -1,5 +1,10 @@
 /**
  * Videogen-Lucy Web Application Logic + Dual-Mode Authentication
+ * Features:
+ * - Robust Safe JSON Response Parser (Guarantees no "Unexpected token 'I'" syntax errors)
+ * - Dual-Mode Authentication (Email/Password & Mobile/OTP)
+ * - Real-Time Subtitle Synchronization during video playback
+ * - Storyboard preview, Full Video Pipeline, Scene Regeneration
  */
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize Lucide Icons
@@ -87,6 +92,50 @@ document.addEventListener("DOMContentLoaded", () => {
   const otpDeliveryNotice = document.getElementById("otpDeliveryNotice");
   const mobileAuthError = document.getElementById("mobileAuthError");
 
+  /**
+   * Safe JSON Parser Helper
+   * Safely parses JSON or extracts plain-text error messages from failed responses
+   * without ever throwing "Unexpected token 'I', Internal Server Error..."
+   */
+  async function safeJson(res) {
+    const contentType = res.headers.get("content-type") || "";
+    let data;
+
+    if (contentType.includes("application/json")) {
+      try {
+        data = await res.json();
+      } catch (err) {
+        const text = await res.text().catch(() => "");
+        throw new Error(text || `Server Error (${res.status})`);
+      }
+    } else {
+      const text = await res.text().catch(() => "");
+      try {
+        data = JSON.parse(text);
+      } catch {
+        if (!res.ok) {
+          throw new Error(text || `Server Error (${res.status}: ${res.statusText})`);
+        }
+        data = { message: text };
+      }
+    }
+
+    if (!res.ok) {
+      let errMsg = "An error occurred";
+      if (typeof data?.detail === "string") {
+        errMsg = data.detail;
+      } else if (Array.isArray(data?.detail)) {
+        errMsg = data.detail.map(d => (d.msg ? `${d.loc?.join(".") || ""}: ${d.msg}` : JSON.stringify(d))).join(", ");
+      } else if (data?.message) {
+        errMsg = data.message;
+      } else {
+        errMsg = `Server error (${res.status}): ${res.statusText}`;
+      }
+      throw new Error(errMsg);
+    }
+    return data;
+  }
+
   // Auth Helper: Authenticated Fetch
   async function authFetch(url, options = {}) {
     const headers = options.headers ? { ...options.headers } : {};
@@ -118,10 +167,9 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await authFetch("/api/v1/auth/me");
       if (res.ok) {
-        currentUser = await res.json();
+        currentUser = await safeJson(res);
         localStorage.setItem("videogen_user", JSON.stringify(currentUser));
       } else {
-        // Token invalid
         authToken = null;
         currentUser = null;
         localStorage.removeItem("videogen_token");
@@ -220,11 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.detail || "Authentication failed");
-      }
+      const data = await safeJson(res);
 
       // Save token & user
       authToken = data.access_token;
@@ -262,22 +306,22 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone_or_email: phone })
       });
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.detail || "Failed to send OTP");
-      }
+      const data = await safeJson(res);
 
       activeOtpTarget = phone;
       otpStepPhone.classList.add("hidden");
       otpStepVerify.classList.remove("hidden");
       
-      let notice = `OTP sent to ${phone}. Valid for 10 minutes.`;
+      let notice = `OTP code sent to ${phone}. Valid for 10 minutes.`;
       if (data.dev_otp_code) {
-        notice += ` (Dev OTP Code: ${data.dev_otp_code})`;
-        authOtpInput.value = data.dev_otp_code; // autofill in dev mode for ease
+        notice += ` (Demo OTP Code: ${data.dev_otp_code})`;
+        authOtpInput.value = data.dev_otp_code;
       }
-      otpDeliveryNotice.textContent = notice;
+      if (data.mobile_url) {
+        otpDeliveryNotice.innerHTML = `${notice} <br><a href="${data.mobile_url}" target="_blank" class="link-btn text-xs mt-1 block">📲 Open Live Mobile Notification Channel (${data.provider})</a>`;
+      } else {
+        otpDeliveryNotice.textContent = notice;
+      }
 
     } catch (err) {
       mobileAuthError.textContent = err.message;
@@ -313,11 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
           name: name || undefined
         })
       });
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.detail || "Invalid OTP code");
-      }
+      const data = await safeJson(res);
 
       authToken = data.access_token;
       currentUser = data.user;
@@ -396,7 +436,7 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({ target_duration: duration, resolution: resolution })
       });
       if (res.ok) {
-        const data = await res.json();
+        const data = await safeJson(res);
         estScenes.textContent = data.total_scenes_estimated;
         estShots.textContent = data.total_shots_estimated;
         estGpuTime.textContent = `${data.estimated_generation_time_minutes} min`;
@@ -421,7 +461,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: prompt })
       });
-      const data = await res.json();
+      const data = await safeJson(res);
 
       safetyAlertBox.classList.remove("hidden", "warn", "safe");
       if (!data.is_safe) {
@@ -470,7 +510,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(projectPayload)
       });
-      const proj = await projRes.json();
+      const proj = await safeJson(projRes);
       currentProjectId = proj.id;
 
       setActiveProjectUI(proj.title || "New Project", "PLANNING", 10);
@@ -478,7 +518,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const sbRes = await authFetch(`/api/v1/projects/${currentProjectId}/storyboard`, {
         method: "POST"
       });
-      const storyboard = await sbRes.json();
+      const storyboard = await safeJson(sbRes);
 
       renderStoryboard(storyboard);
       switchTab("storyboard");
@@ -520,10 +560,12 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(projectPayload)
       });
-      const proj = await projRes.json();
+      const proj = await safeJson(projRes);
       currentProjectId = proj.id;
 
-      await authFetch(`/api/v1/projects/${currentProjectId}/generate`, { method: "POST" });
+      const genRes = await authFetch(`/api/v1/projects/${currentProjectId}/generate`, { method: "POST" });
+      await safeJson(genRes);
+
       setActiveProjectUI(proj.title || "Full Generation", "QUEUED", 5);
       startPollingStatus(currentProjectId);
     } catch (e) {
@@ -538,7 +580,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!currentProjectId) return;
     btnApproveStoryboard.disabled = true;
     try {
-      await authFetch(`/api/v1/projects/${currentProjectId}/generate`, { method: "POST" });
+      const res = await authFetch(`/api/v1/projects/${currentProjectId}/generate`, { method: "POST" });
+      await safeJson(res);
       startPollingStatus(currentProjectId);
       switchTab("create");
     } catch (e) {
@@ -560,12 +603,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Characters
     const charContainer = document.getElementById("characterCardsContainer");
     charContainer.innerHTML = "";
-    sb.characters.forEach(c => {
+    (sb.characters || []).forEach(c => {
       const card = document.createElement("div");
       card.className = "bible-card";
       card.innerHTML = `
         <div class="bible-card-header">
-          <div class="bible-name">${c.name} (${c.gender}, ${c.age || 'Adult'})</div>
+          <div class="bible-name">${c.name} (${c.gender || 'Unknown'}, ${c.age || 'Adult'})</div>
           <span class="badge">${c.personality ? c.personality.split(',')[0] : 'Character'}</span>
         </div>
         <div class="text-xs text-muted mb-2"><strong>Face & Appearance:</strong> ${c.face_description || '-'}</div>
@@ -578,7 +621,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Locations
     const locContainer = document.getElementById("locationCardsContainer");
     locContainer.innerHTML = "";
-    sb.locations.forEach(loc => {
+    (sb.locations || []).forEach(loc => {
       const card = document.createElement("div");
       card.className = "bible-card";
       card.innerHTML = `
@@ -586,8 +629,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="bible-name">${loc.name}</div>
           <span class="badge">${loc.time_of_day || 'Day'}</span>
         </div>
-        <div class="text-xs text-muted mb-2">${loc.description}</div>
-        <div class="text-xs text-muted"><strong>Weather / Lighting:</strong> ${loc.weather} • ${loc.lighting}</div>
+        <div class="text-xs text-muted mb-2">${loc.description || '-'}</div>
+        <div class="text-xs text-muted"><strong>Weather / Lighting:</strong> ${loc.weather || 'Clear'} • ${loc.lighting || 'Daylight'}</div>
       `;
       locContainer.appendChild(card);
     });
@@ -595,7 +638,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Planned Scenes
     const sceneContainer = document.getElementById("plannedScenesContainer");
     sceneContainer.innerHTML = "";
-    sb.scenes.forEach(sc => {
+    (sb.scenes || []).forEach(sc => {
       const card = document.createElement("div");
       card.className = "scene-item-card";
       
@@ -635,7 +678,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const res = await authFetch(`/api/v1/projects/${projectId}/status`);
         if (!res.ok) return;
-        const data = await res.json();
+        const data = await safeJson(res);
 
         currentStageBadge.textContent = data.current_stage;
         progressBar.style.width = `${data.progress_percentage}%`;
@@ -730,7 +773,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("sceneStudioList");
     try {
       const res = await authFetch(`/api/v1/projects/${projectId}/scenes`);
-      const scenes = await res.json();
+      const scenes = await safeJson(res);
       container.innerHTML = "";
 
       scenes.forEach(sc => {
@@ -764,7 +807,8 @@ document.addEventListener("DOMContentLoaded", () => {
           b.disabled = true;
           b.innerHTML = `<i data-lucide="loader" class="animate-spin"></i> Regenerating...`;
           try {
-            await authFetch(`/api/v1/projects/${projectId}/scenes/${scId}/regenerate`, { method: "POST" });
+            const res = await authFetch(`/api/v1/projects/${projectId}/scenes/${scId}/regenerate`, { method: "POST" });
+            await safeJson(res);
             await loadSceneStudio(projectId);
           } catch (err) {
             alert("Regeneration failed: " + err.message);
@@ -813,7 +857,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("projectsListContainer");
     try {
       const res = await authFetch("/api/v1/projects");
-      const list = await res.json();
+      const list = await safeJson(res);
       if (!list || list.length === 0) {
         container.innerHTML = "<p class='text-muted'>No past generations found.</p>";
         return;

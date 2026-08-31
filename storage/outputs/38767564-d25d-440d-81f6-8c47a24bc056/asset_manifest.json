@@ -1,0 +1,74 @@
+{
+  "project_id": "38767564-d25d-440d-81f6-8c47a24bc056",
+  "title": "Untitled Project",
+  "generation_date": "2026-08-31T14:41:29.385503+00:00",
+  "target_duration_seconds": 600,
+  "language": "en",
+  "video_provider": "simulation",
+  "voice_provider": "edge_tts",
+  "music_provider": "RoyaltyFreeMusicProvider",
+  "models_used": {
+    "video_model": "Wan2.1-T2V/I2V (Apache 2.0)",
+    "image_model": "SDXL / Flux Reference Adapter",
+    "voice_model": "Microsoft Edge Neural TTS / XTTS-v2",
+    "audio_mastering": "FFmpeg EBU R128 Normalizer"
+  },
+  "video_assets": [],
+  "audio_assets": [],
+  "music_licenses": [],
+  "voice_profiles": [],
+  "prompts_hash": "1ef3c261938525444db5a2e52937aa7ac88f829f626ae7d619330c62f73e61c1",
+  "compliance_summary": {
+    "original_story": true,
+    "original_characters": true,
+    "no_copyrighted_music": true,
+    "no_unauthorized_likeness": true,
+    "no_unauthorized_voice_cloning": true,
+    "asset_licenses_available": true,
+    "subtitles_available": true,
+    "ai_disclosure_recommendation": "Recommended based on human-like animated characters",
+    "checklist": [
+      {
+        "title": "Original Story",
+        "status": true,
+        "description": "Story generated dynamically from original prompt without infringing narrative scripts."
+      },
+      {
+        "title": "Original / Generated Characters",
+        "status": true,
+        "description": "Original character bibles used; no protected superhero or trademarked fictional characters."
+      },
+      {
+        "title": "No Unauthorized Copyrighted Music",
+        "status": true,
+        "description": "Soundtracks sourced from CC0/CC-BY royalty-free audio libraries with commercial rights."
+      },
+      {
+        "title": "No Unauthorized Real-Person Likeness",
+        "status": true,
+        "description": "Synthetic characters generated without unconsented celebrity likeness."
+      },
+      {
+        "title": "No Unauthorized Voice Cloning",
+        "status": true,
+        "description": "Standard licensed neural TTS models used without cloning private individuals."
+      },
+      {
+        "title": "Asset License Records Available",
+        "status": true,
+        "description": "Complete asset_manifest.json provided detailing all model versions and licenses."
+      },
+      {
+        "title": "AI-Generated Content Disclosure Recommendation",
+        "status": true,
+        "description": "Recommended: Creator should check YouTube 'Altered or synthetic content' disclosure box."
+      },
+      {
+        "title": "Synchronized Subtitles Available",
+        "status": true,
+        "description": "English and Hindi SRT and VTT subtitles generated."
+      }
+    ],
+    "disclaimer": "This platform does not guarantee YouTube monetization or absolute legal clearance. Creators remain responsible for complying with YouTube platform policies."
+  }
+}

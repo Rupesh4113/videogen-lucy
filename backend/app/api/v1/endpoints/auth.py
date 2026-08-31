@@ -2,7 +2,7 @@
 Authentication REST API Endpoints for Videogen-Lucy.
 Supports Dual-Mode Login:
 1. Email & Password Registration and Login
-2. Mobile Number & 6-Digit OTP Login / Auto-Provisioning
+2. Mobile Number & 6-Digit OTP Login / Auto-Provisioning (via Open-Source Mobile Notification or SMS Gateway)
 """
 import os
 from datetime import datetime, timedelta, timezone
@@ -123,6 +123,7 @@ async def send_otp_code(
 ):
     """
     Generate and deliver a 6-digit OTP code to a mobile phone number or email.
+    Uses Open-Source Mobile Notification Gateway (ntfy.sh / Android Gateway / Cellular).
     """
     identifier = payload.phone_or_email.strip()
     if not identifier:
@@ -145,15 +146,17 @@ async def send_otp_code(
     db.add(otp_record)
     await db.commit()
 
-    # Deliver via SMS provider
+    # Deliver via SMS provider (defaults to open-source mobile push / Android gateway)
     sms_provider = SMSProviderFactory.get_sms_provider()
     delivery_res = await sms_provider.send_otp(identifier, otp_code)
 
     return SendOTPResponse(
         success=True,
-        message=f"OTP code successfully sent to {identifier}.",
+        message=delivery_res.get("message", f"OTP code successfully sent to {identifier}."),
         phone_or_email=identifier,
-        dev_otp_code=otp_code  # returned for testing / quick dev access
+        provider=delivery_res.get("provider", "opensource"),
+        mobile_url=delivery_res.get("mobile_url"),
+        dev_otp_code=otp_code
     )
 
 
@@ -195,7 +198,6 @@ async def verify_otp_code(
     user = (await db.execute(user_stmt)).scalar_one_or_none()
 
     if not user:
-        # Determine if identifier is email or phone
         is_email = "@" in identifier
         user = User(
             email=identifier if is_email else None,

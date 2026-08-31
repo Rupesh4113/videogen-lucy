@@ -26,7 +26,9 @@ class SendOTPResponse(BaseModel):
     success: bool
     message: str
     phone_or_email: str
-    dev_otp_code: Optional[str] = None  # Returned in dev / test mode for automated ease
+    provider: Optional[str] = None
+    mobile_url: Optional[str] = None
+    dev_otp_code: Optional[str] = None  # Returned for ease of testing / immediate demo
 
 
 class VerifyOTPRequest(BaseModel):

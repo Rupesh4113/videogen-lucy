@@ -1,16 +1,20 @@
 """
 Videogen-Lucy AI Long-Form Video Generation Platform - FastAPI Application Entry Point.
 """
+import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, HTTPException, status
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 
 from backend.app.config import settings
 from backend.app.models.database import init_db
 from backend.app.api.v1.router import api_v1_router
+
+logger = logging.getLogger("videogen")
 
 
 @asynccontextmanager
@@ -36,6 +40,37 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# Global Exception Handlers to Guarantee Pure JSON Responses (Prevent "Unexpected token 'I', Internal Server Error...")
+@app.exception_handler(HTTPException)
+async def custom_http_exception_handler(request: Request, exc: HTTPException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.detail, "status_code": exc.status_code}
+    )
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={"detail": exc.errors(), "message": "Validation Error", "status_code": 422}
+    )
+
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: Request, exc: Exception):
+    logger.error(f"Unhandled error on {request.method} {request.url.path}: {exc}", exc_info=True)
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={
+            "detail": str(exc) if str(exc) else "An unexpected internal server error occurred.",
+            "message": "Internal Server Error",
+            "status_code": 500
+        }
+    )
+
 
 # Include API v1 Router
 app.include_router(api_v1_router, prefix=settings.API_V1_STR)
