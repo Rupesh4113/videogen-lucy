@@ -342,23 +342,28 @@
           <!-- Video Player Column -->
           <div class="card p-6">
             <h2 class="card-title mb-3"><i data-lucide="tv"></i> Master Video Player</h2>
-            <div class="video-container">
-              <video id="mainVideoPlayer" controls poster="/static/placeholder_poster.jpg">
+            <div class="video-container" id="videoContainerWrapper">
+              <video id="mainVideoPlayer" controls playsinline preload="auto">
                 <source id="mainVideoSource" src="" type="video/mp4">
-                <track id="mainSubtitlesTrackEn" kind="subtitles" srclang="en" label="English" default>
-                <track id="mainSubtitlesTrackHi" kind="subtitles" srclang="hi" label="Hindi (हिंदी)">
                 Your browser does not support HTML5 video.
               </video>
+            </div>
+
+            <!-- Active Subtitles Banner -->
+            <div class="subtitles-banner mt-3" id="subtitlesBanner">
+              <span id="activeSubtitleText">Subtitles will appear here during video playback...</span>
             </div>
 
             <div class="flex-between mt-4">
               <div>
                 <h3 id="playerVideoTitle" class="font-bold text-lg">Project Video</h3>
-                <span class="text-muted text-xs" id="playerVideoMeta">1080p • 24fps • H.264</span>
+                <span class="text-muted text-xs" id="playerVideoMeta">1080p • 24fps • H.264 • AAC Audio</span>
               </div>
-              <button class="btn btn-secondary btn-sm" id="btnToggleSubtitles">
-                <i data-lucide="subtitles"></i> Toggle Subtitles
-              </button>
+              <div class="flex gap-2">
+                <button class="btn btn-secondary btn-sm" id="btnPlayMasterVideo">
+                  <i data-lucide="play"></i> Play Video
+                </button>
+              </div>
             </div>
           </div>
 
@@ -367,7 +372,7 @@
             <h2 class="card-title"><i data-lucide="download-cloud"></i> Export & Distribution Center</h2>
             
             <div class="download-list">
-              <a class="download-item" id="linkDownloadMp4" href="#" download>
+              <a class="download-item" id="linkDownloadMp4" href="#" download="final_video.mp4">
                 <div class="flex items-center gap-3">
                   <i data-lucide="file-video" class="text-accent"></i>
                   <div>
@@ -378,7 +383,7 @@
                 <i data-lucide="download"></i>
               </a>
 
-              <a class="download-item" id="linkDownloadSubEn" href="#" download>
+              <a class="download-item" id="linkDownloadSubEn" href="#" download="subtitles_en.srt">
                 <div class="flex items-center gap-3">
                   <i data-lucide="file-text" class="text-primary"></i>
                   <div>
@@ -389,7 +394,7 @@
                 <i data-lucide="download"></i>
               </a>
 
-              <a class="download-item" id="linkDownloadSubHi" href="#" download>
+              <a class="download-item" id="linkDownloadSubHi" href="#" download="subtitles_hi.vtt">
                 <div class="flex items-center gap-3">
                   <i data-lucide="file-text" class="text-primary"></i>
                   <div>
@@ -400,7 +405,7 @@
                 <i data-lucide="download"></i>
               </a>
 
-              <a class="download-item" id="linkDownloadManifest" href="#" download>
+              <a class="download-item" id="linkDownloadManifest" href="#" download="asset_manifest.json">
                 <div class="flex items-center gap-3">
                   <i data-lucide="file-json" class="text-success"></i>
                   <div>

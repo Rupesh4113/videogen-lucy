@@ -1,0 +1,161 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: videogen-system
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: videogen-storage-pvc
+  namespace: videogen-system
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: videogen-config
+  namespace: videogen-system
+data:
+  APP_NAME: "Videogen-Lucy"
+  DEBUG: "false"
+  VIDEO_PROVIDER: "wan_local"
+  VOICE_PROVIDER: "edge_tts"
+  STORAGE_PROVIDER: "local"
+  DEFAULT_RESOLUTION: "1080p"
+  DEFAULT_FPS: "24"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: videogen-backend
+  namespace: videogen-system
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: videogen-backend
+  template:
+    metadata:
+      labels:
+        app: videogen-backend
+    spec:
+      containers:
+        - name: backend
+          image: videogen-lucy:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: videogen-config
+          env:
+            - name: DATABASE_URL
+              value: "sqlite+aiosqlite:///storage/videogen.db"
+          volumeMounts:
+            - name: storage-volume
+              mountPath: /app/storage
+          resources:
+            requests:
+              cpu: "1000m"
+              memory: "2Gi"
+            limits:
+              cpu: "4000m"
+              memory: "8Gi"
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+      volumes:
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: videogen-storage-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: videogen-gpu-worker
+  namespace: videogen-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: videogen-gpu-worker
+  template:
+    metadata:
+      labels:
+        app: videogen-gpu-worker
+    spec:
+      containers:
+        - name: gpu-worker
+          image: videogen-lucy-gpu:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: videogen-config
+          env:
+            - name: USE_CUDA
+              value: "true"
+          volumeMounts:
+            - name: storage-volume
+              mountPath: /app/storage
+          resources:
+            limits:
+              nvidia.com/gpu: 1
+              memory: "32Gi"
+              cpu: "8000m"
+      volumes:
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: videogen-storage-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: videogen-service
+  namespace: videogen-system
+spec:
+  type: ClusterIP
+  selector:
+    app: videogen-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: videogen-ingress
+  namespace: videogen-system
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+    - host: videogen.yourdomain.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: videogen-service
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - videogen.yourdomain.com
+      secretName: videogen-tls

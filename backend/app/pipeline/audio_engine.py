@@ -14,6 +14,7 @@ from backend.app.models.entities import Scene as SceneEntity
 from backend.app.schemas.bible import CharacterSchema
 from backend.app.models.entities import Character as CharacterEntity
 from backend.app.providers.factory import ProviderFactory
+from backend.app.utils.ffmpeg_helper import FFmpegHelper
 
 
 class AudioEngine:
@@ -100,10 +101,12 @@ class AudioEngine:
         """
         Mixes voice and ducked background music using FFmpeg or wave synthesis.
         """
-        if voice_tracks and Path(voice_tracks[0]["audio_path"]).exists():
+        ffmpeg_bin = FFmpegHelper.get_ffmpeg_path()
+
+        if voice_tracks and Path(voice_tracks[0]["audio_path"]).exists() and Path(voice_tracks[0]["audio_path"]).stat().st_size > 0:
             first_voice = voice_tracks[0]["audio_path"]
             ffmpeg_cmd = [
-                settings.FFMPEG_PATH, "-y",
+                ffmpeg_bin, "-y",
                 "-i", first_voice,
                 "-i", bgm_path,
                 "-filter_complex",
@@ -113,7 +116,7 @@ class AudioEngine:
                 str(output_path)
             ]
             try:
-                subprocess.run(ffmpeg_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, timeout=15)
+                subprocess.run(ffmpeg_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, timeout=20)
                 return output_path
             except Exception:
                 pass

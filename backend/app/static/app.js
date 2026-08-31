@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentProjectId = null;
   let pollInterval = null;
   let activeTab = "create";
+  let loadedSubtitles = [];
 
   // DOM Elements
   const navButtons = document.querySelectorAll(".nav-item");
@@ -167,7 +168,6 @@ document.addEventListener("DOMContentLoaded", () => {
     btnGenerateStoryboard.innerHTML = `<i data-lucide="loader" class="animate-spin"></i> Generating Storyboard...`;
 
     try {
-      // 1. Create Project
       const projectPayload = {
         prompt: prompt,
         language: languageSelect.value,
@@ -190,7 +190,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       setActiveProjectUI(proj.title || "New Project", "PLANNING", 10);
 
-      // 2. Generate Storyboard
       const sbRes = await fetch(`/api/v1/projects/${currentProjectId}/storyboard`, {
         method: "POST"
       });
@@ -239,7 +238,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const proj = await projRes.json();
       currentProjectId = proj.id;
 
-      // Start full background pipeline
       await fetch(`/api/v1/projects/${currentProjectId}/generate`, { method: "POST" });
       setActiveProjectUI(proj.title || "Full Generation", "QUEUED", 5);
       startPollingStatus(currentProjectId);
@@ -358,7 +356,6 @@ document.addEventListener("DOMContentLoaded", () => {
         progressBar.style.width = `${data.progress_percentage}%`;
         progressPercentText.textContent = `${data.progress_percentage}%`;
 
-        // Highlight pipeline step
         document.querySelectorAll(".step-item").forEach(el => el.classList.remove("active", "completed"));
         const activeStep = document.getElementById(`step-${data.current_stage}`);
         if (activeStep) activeStep.classList.add("active");
@@ -384,16 +381,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function setupVideoPlayer(data) {
     const player = document.getElementById("mainVideoPlayer");
     const source = document.getElementById("mainVideoSource");
-    const trackEn = document.getElementById("mainSubtitlesTrackEn");
-    const trackHi = document.getElementById("mainSubtitlesTrackHi");
 
     if (data.final_video_url) {
       source.src = data.final_video_url;
       player.load();
     }
-
-    if (data.subtitle_en_url) trackEn.src = data.subtitle_en_url;
-    if (data.subtitle_hi_url) trackHi.src = data.subtitle_hi_url;
 
     // Download Links
     document.getElementById("linkDownloadMp4").href = data.final_video_url || "#";
@@ -401,6 +393,51 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("linkDownloadSubHi").href = data.subtitle_hi_url || "#";
     document.getElementById("linkDownloadManifest").href = data.manifest_url || "#";
     document.getElementById("linkDownloadZip").href = `/api/v1/projects/${data.project_id}/download`;
+
+    // Load subtitles for banner display
+    if (data.subtitle_en_url) {
+      fetch(data.subtitle_en_url)
+        .then(r => r.text())
+        .then(txt => parseSRT(txt))
+        .catch(() => {});
+    }
+
+    // Play Button trigger
+    const btnPlay = document.getElementById("btnPlayMasterVideo");
+    if (btnPlay) {
+      btnPlay.onclick = () => {
+        player.play().catch(e => console.log("Autoplay prevented:", e));
+      };
+    }
+
+    // Time update for subtitle banner
+    player.ontimeupdate = () => {
+      const cur = player.currentTime;
+      const match = loadedSubtitles.find(s => cur >= s.start && cur <= s.end);
+      const subBanner = document.getElementById("activeSubtitleText");
+      if (match && subBanner) {
+        subBanner.textContent = match.text;
+      } else if (subBanner && cur === 0) {
+        subBanner.textContent = "Ready for playback...";
+      }
+    };
+  }
+
+  function parseSRT(srtText) {
+    loadedSubtitles = [];
+    const blocks = srtText.trim().split(/\n\s*\n/);
+    blocks.forEach(block => {
+      const lines = block.trim().split("\n");
+      if (lines.length >= 3) {
+        const timeMatch = lines[1].match(/(\d{2}):(\d{2}):(\d{2}),(\d{3})\s*-->\s*(\d{2}):(\d{2}):(\d{2}),(\d{3})/);
+        if (timeMatch) {
+          const start = parseInt(timeMatch[1]) * 3600 + parseInt(timeMatch[2]) * 60 + parseInt(timeMatch[3]) + parseInt(timeMatch[4]) / 1000;
+          const end = parseInt(timeMatch[5]) * 3600 + parseInt(timeMatch[6]) * 60 + parseInt(timeMatch[7]) + parseInt(timeMatch[8]) / 1000;
+          const text = lines.slice(2).join(" ");
+          loadedSubtitles.push({ start, end, text });
+        }
+      }
+    });
   }
 
   // Load Scene Studio
@@ -418,7 +455,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const videoSrc = sc.video_url || "";
         card.innerHTML = `
           <div class="scene-preview-box">
-            ${videoSrc ? `<video src="${videoSrc}" controls></video>` : `<div class="p-6 text-center text-xs text-muted">Preview Rendering...</div>`}
+            ${videoSrc ? `<video src="${videoSrc}" controls preload="metadata"></video>` : `<div class="p-6 text-center text-xs text-muted">Preview Rendering...</div>`}
           </div>
           <div class="scene-studio-body">
             <div>
@@ -436,9 +473,8 @@ document.addEventListener("DOMContentLoaded", () => {
         container.appendChild(card);
       });
 
-      // Hook up regenerate buttons
       document.querySelectorAll(".btn-regen-scene").forEach(b => {
-        b.addEventListener("click", async (e) => {
+        b.addEventListener("click", async () => {
           const scId = b.getAttribute("data-scene-id");
           b.disabled = true;
           b.innerHTML = `<i data-lucide="loader" class="animate-spin"></i> Regenerating...`;

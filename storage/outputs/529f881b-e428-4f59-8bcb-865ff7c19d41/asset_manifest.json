@@ -1,0 +1,662 @@
+{
+  "project_id": "529f881b-e428-4f59-8bcb-865ff7c19d41",
+  "title": "Whispers of the Monsoon: A Mother's Vigour",
+  "generation_date": "2026-08-31T13:31:55.829545+00:00",
+  "target_duration_seconds": 300,
+  "language": "en",
+  "video_provider": "simulation",
+  "voice_provider": "edge_tts",
+  "music_provider": "RoyaltyFreeMusicProvider",
+  "models_used": {
+    "video_model": "Wan2.1-T2V/I2V (Apache 2.0)",
+    "image_model": "SDXL / Flux Reference Adapter",
+    "voice_model": "Microsoft Edge Neural TTS / XTTS-v2",
+    "audio_mastering": "FFmpeg EBU R128 Normalizer"
+  },
+  "video_assets": [
+    {
+      "shot_id": "9742cd48-44da-4d41-87fb-256609471846",
+      "scene_number": 1,
+      "shot_number": 1,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Establishing Shot: Wide atmospheric establishing view of Village Courtyard & Pathway under Diffused soft blue twilight mixed with golden window light.. Camera: Slow cinematic wide crane downward.. Continuity Context: Initial scene state at Village Courtyard & Pathway, weather is Diffused soft blue twilight mixed with golden window light.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc1_sh1.mp4"
+    },
+    {
+      "shot_id": "575392fc-3b08-44f1-9e70-1facd6143db9",
+      "scene_number": 1,
+      "shot_number": 2,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Medium Shot: Medium cinematic shot of character performing Rain begins to gently fall over lush green village huts. Gauri steps into her courtyard, looking up at the darkening monsoon clouds with a calm smile, carrying a basket of dried tulsi leaves... Camera: Medium tracking shot following character movement.. Continuity Context: Preserve previous action context: 'Wide atmospheric establishing view of Village Courtyard & Pathway under Diffused soft blue twilight mixed with golden window light.'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Evening Twilight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc1_sh2.mp4"
+    },
+    {
+      "shot_id": "2b773c1d-ffa7-4e65-baad-d8de70ced81d",
+      "scene_number": 1,
+      "shot_number": 3,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Close-Up Shot: Close-up emotional focus on the expressive facial emotion of the character showing Serene and Hopeful.. Camera: Tight focus close-up with shallow depth of field.. Continuity Context: Preserve previous action context: 'Medium cinematic shot of character performing Rain begins to gently fall over lush green village huts. Gauri steps into her courtyard, looking up at the darkening monsoon clouds with a calm smile, carrying a basket of dried tulsi leaves..'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Evening Twilight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc1_sh3.mp4"
+    },
+    {
+      "shot_id": "b207e187-72b1-4f5d-a690-3aa11f5b8338",
+      "scene_number": 1,
+      "shot_number": 4,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Reaction / Detail Shot: Intimate reaction and prop detail showing Rain begins to gently fall over lush green village huts. Gauri steps into her courtyard, looking up at the darkening monsoon clouds with a calm smile, carrying a basket of dried tulsi leaves... Camera: Macro detail shot with subtle pan.. Continuity Context: Preserve previous action context: 'Close-up emotional focus on the expressive facial emotion of the character showing Serene and Hopeful.'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Evening Twilight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc1_sh4.mp4"
+    },
+    {
+      "shot_id": "f7805ec4-f01e-406b-94e2-8ab330961b01",
+      "scene_number": 1,
+      "shot_number": 5,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Dynamic Motion Shot: Dynamic perspective moving alongside character performing Rain begins to gently fall over lush green village huts. Gauri steps into her courtyard, looking up at the darkening monsoon clouds with a calm smile, carrying a basket of dried tulsi leaves... Camera: Smooth gimbal forward tracking.. Continuity Context: Preserve previous action context: 'Intimate reaction and prop detail showing Rain begins to gently fall over lush green village huts. Gauri steps into her courtyard, looking up at the darkening monsoon clouds with a calm smile, carrying a basket of dried tulsi leaves..'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Evening Twilight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc1_sh5.mp4"
+    },
+    {
+      "shot_id": "4f9c6421-6c6d-4abe-b607-be2c406d3fe3",
+      "scene_number": 1,
+      "shot_number": 6,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Establishing Shot: Wide atmospheric establishing view of Village Courtyard & Pathway under Diffused soft blue twilight mixed with golden window light.. Camera: Slow cinematic wide crane downward.. Continuity Context: Preserve previous action context: 'Dynamic perspective moving alongside character performing Rain begins to gently fall over lush green village huts. Gauri steps into her courtyard, looking up at the darkening monsoon clouds with a calm smile, carrying a basket of dried tulsi leaves..'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Evening Twilight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc1_sh6.mp4"
+    },
+    {
+      "shot_id": "c0c14ee0-902c-42a2-9cef-e31ed46b8ccc",
+      "scene_number": 1,
+      "shot_number": 7,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Medium Shot: Medium cinematic shot of character performing Rain begins to gently fall over lush green village huts. Gauri steps into her courtyard, looking up at the darkening monsoon clouds with a calm smile, carrying a basket of dried tulsi leaves... Camera: Medium tracking shot following character movement.. Continuity Context: Preserve previous action context: 'Wide atmospheric establishing view of Village Courtyard & Pathway under Diffused soft blue twilight mixed with golden window light.'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Evening Twilight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc1_sh7.mp4"
+    },
+    {
+      "shot_id": "1772f77d-d2dd-4109-9406-906045518bc7",
+      "scene_number": 1,
+      "shot_number": 8,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Close-Up Shot: Close-up emotional focus on the expressive facial emotion of the character showing Serene and Hopeful.. Camera: Tight focus close-up with shallow depth of field.. Continuity Context: Preserve previous action context: 'Medium cinematic shot of character performing Rain begins to gently fall over lush green village huts. Gauri steps into her courtyard, looking up at the darkening monsoon clouds with a calm smile, carrying a basket of dried tulsi leaves..'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Evening Twilight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc1_sh8.mp4"
+    },
+    {
+      "shot_id": "e8b3823e-a89c-4b51-8ad3-3dc221092a6b",
+      "scene_number": 1,
+      "shot_number": 9,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Reaction / Detail Shot: Intimate reaction and prop detail showing Rain begins to gently fall over lush green village huts. Gauri steps into her courtyard, looking up at the darkening monsoon clouds with a calm smile, carrying a basket of dried tulsi leaves... Camera: Macro detail shot with subtle pan.. Continuity Context: Preserve previous action context: 'Close-up emotional focus on the expressive facial emotion of the character showing Serene and Hopeful.'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Evening Twilight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc1_sh9.mp4"
+    },
+    {
+      "shot_id": "90b049e4-013d-47a5-ad69-7a3551932ae8",
+      "scene_number": 1,
+      "shot_number": 10,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Dynamic Motion Shot: Dynamic perspective moving alongside character performing Rain begins to gently fall over lush green village huts. Gauri steps into her courtyard, looking up at the darkening monsoon clouds with a calm smile, carrying a basket of dried tulsi leaves... Camera: Smooth gimbal forward tracking.. Continuity Context: Preserve previous action context: 'Intimate reaction and prop detail showing Rain begins to gently fall over lush green village huts. Gauri steps into her courtyard, looking up at the darkening monsoon clouds with a calm smile, carrying a basket of dried tulsi leaves..'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Evening Twilight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc1_sh10.mp4"
+    },
+    {
+      "shot_id": "10561d08-7a3e-4f41-8c2f-4bec389a9896",
+      "scene_number": 2,
+      "shot_number": 1,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Establishing Shot: Wide atmospheric establishing view of Village House Bedroom under Warm flickering amber light from a brass diya against dark shadows.. Camera: Slow cinematic wide crane downward.. Continuity Context: Initial scene state at Village House Bedroom, weather is Warm flickering amber light from a brass diya against dark shadows.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc2_sh1.mp4"
+    },
+    {
+      "shot_id": "1b53849f-88b0-4979-a204-852356f16418",
+      "scene_number": 2,
+      "shot_number": 2,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Medium Shot: Medium cinematic shot of character performing Heavy rain pours outside. Gauri wakes to the sound of soft whimpering. She touches baby Aarav's forehead and gasps with worry as she feels a severe burning fever... Camera: Medium tracking shot following character movement.. Continuity Context: Preserve previous action context: 'Wide atmospheric establishing view of Village House Bedroom under Warm flickering amber light from a brass diya against dark shadows.'. Maintain location: 'Village House Bedroom' with time of day: 'Midnight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc2_sh2.mp4"
+    },
+    {
+      "shot_id": "b4ca1530-f670-499a-92d6-c7e56cc79bc8",
+      "scene_number": 2,
+      "shot_number": 3,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Close-Up Shot: Close-up emotional focus on the expressive facial emotion of the character showing Suspenseful and Anxious.. Camera: Tight focus close-up with shallow depth of field.. Continuity Context: Preserve previous action context: 'Medium cinematic shot of character performing Heavy rain pours outside. Gauri wakes to the sound of soft whimpering. She touches baby Aarav's forehead and gasps with worry as she feels a severe burning fever..'. Maintain location: 'Village House Bedroom' with time of day: 'Midnight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc2_sh3.mp4"
+    },
+    {
+      "shot_id": "8e32e5fd-72a4-4eeb-b956-60df57a595c6",
+      "scene_number": 2,
+      "shot_number": 4,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Reaction / Detail Shot: Intimate reaction and prop detail showing Heavy rain pours outside. Gauri wakes to the sound of soft whimpering. She touches baby Aarav's forehead and gasps with worry as she feels a severe burning fever... Camera: Macro detail shot with subtle pan.. Continuity Context: Preserve previous action context: 'Close-up emotional focus on the expressive facial emotion of the character showing Suspenseful and Anxious.'. Maintain location: 'Village House Bedroom' with time of day: 'Midnight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc2_sh4.mp4"
+    },
+    {
+      "shot_id": "0ce8900d-1786-4682-a5c2-92ddbb15987b",
+      "scene_number": 2,
+      "shot_number": 5,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Dynamic Motion Shot: Dynamic perspective moving alongside character performing Heavy rain pours outside. Gauri wakes to the sound of soft whimpering. She touches baby Aarav's forehead and gasps with worry as she feels a severe burning fever... Camera: Smooth gimbal forward tracking.. Continuity Context: Preserve previous action context: 'Intimate reaction and prop detail showing Heavy rain pours outside. Gauri wakes to the sound of soft whimpering. She touches baby Aarav's forehead and gasps with worry as she feels a severe burning fever..'. Maintain location: 'Village House Bedroom' with time of day: 'Midnight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc2_sh5.mp4"
+    },
+    {
+      "shot_id": "e3077eae-b1df-4556-aefe-141286ae7984",
+      "scene_number": 2,
+      "shot_number": 6,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Establishing Shot: Wide atmospheric establishing view of Village House Bedroom under Warm flickering amber light from a brass diya against dark shadows.. Camera: Slow cinematic wide crane downward.. Continuity Context: Preserve previous action context: 'Dynamic perspective moving alongside character performing Heavy rain pours outside. Gauri wakes to the sound of soft whimpering. She touches baby Aarav's forehead and gasps with worry as she feels a severe burning fever..'. Maintain location: 'Village House Bedroom' with time of day: 'Midnight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc2_sh6.mp4"
+    },
+    {
+      "shot_id": "a3dec1a1-c646-487b-9271-158c390f8506",
+      "scene_number": 2,
+      "shot_number": 7,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Medium Shot: Medium cinematic shot of character performing Heavy rain pours outside. Gauri wakes to the sound of soft whimpering. She touches baby Aarav's forehead and gasps with worry as she feels a severe burning fever... Camera: Medium tracking shot following character movement.. Continuity Context: Preserve previous action context: 'Wide atmospheric establishing view of Village House Bedroom under Warm flickering amber light from a brass diya against dark shadows.'. Maintain location: 'Village House Bedroom' with time of day: 'Midnight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc2_sh7.mp4"
+    },
+    {
+      "shot_id": "59380b21-d975-472e-bfc8-a43ba9d1dc39",
+      "scene_number": 2,
+      "shot_number": 8,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Close-Up Shot: Close-up emotional focus on the expressive facial emotion of the character showing Suspenseful and Anxious.. Camera: Tight focus close-up with shallow depth of field.. Continuity Context: Preserve previous action context: 'Medium cinematic shot of character performing Heavy rain pours outside. Gauri wakes to the sound of soft whimpering. She touches baby Aarav's forehead and gasps with worry as she feels a severe burning fever..'. Maintain location: 'Village House Bedroom' with time of day: 'Midnight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc2_sh8.mp4"
+    },
+    {
+      "shot_id": "5f757c73-edc1-44c2-8e86-385188222573",
+      "scene_number": 2,
+      "shot_number": 9,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Reaction / Detail Shot: Intimate reaction and prop detail showing Heavy rain pours outside. Gauri wakes to the sound of soft whimpering. She touches baby Aarav's forehead and gasps with worry as she feels a severe burning fever... Camera: Macro detail shot with subtle pan.. Continuity Context: Preserve previous action context: 'Close-up emotional focus on the expressive facial emotion of the character showing Suspenseful and Anxious.'. Maintain location: 'Village House Bedroom' with time of day: 'Midnight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc2_sh9.mp4"
+    },
+    {
+      "shot_id": "ed848705-e75d-48a2-a75d-68fa9943ff31",
+      "scene_number": 2,
+      "shot_number": 10,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Dynamic Motion Shot: Dynamic perspective moving alongside character performing Heavy rain pours outside. Gauri wakes to the sound of soft whimpering. She touches baby Aarav's forehead and gasps with worry as she feels a severe burning fever... Camera: Smooth gimbal forward tracking.. Continuity Context: Preserve previous action context: 'Intimate reaction and prop detail showing Heavy rain pours outside. Gauri wakes to the sound of soft whimpering. She touches baby Aarav's forehead and gasps with worry as she feels a severe burning fever..'. Maintain location: 'Village House Bedroom' with time of day: 'Midnight'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc2_sh10.mp4"
+    },
+    {
+      "shot_id": "b0df146b-049b-4628-b798-9fd13ae6b0b2",
+      "scene_number": 3,
+      "shot_number": 1,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Establishing Shot: Wide atmospheric establishing view of Village House Bedroom under Warm hearth glow casting dancing shadows on mud walls.. Camera: Slow cinematic wide crane downward.. Continuity Context: Initial scene state at Village House Bedroom, weather is Warm hearth glow casting dancing shadows on mud walls.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc3_sh1.mp4"
+    },
+    {
+      "shot_id": "dd1ec564-9e2d-4ca3-84cf-8f40146504ca",
+      "scene_number": 3,
+      "shot_number": 2,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Medium Shot: Medium cinematic shot of character performing With steady hands despite her racing heart, Gauri crushes fresh ginger, tulsi, and neem leaves in a stone mortar, boiling water over an earthen stove to prepare a medicinal cooling remedy... Camera: Medium tracking shot following character movement.. Continuity Context: Preserve previous action context: 'Wide atmospheric establishing view of Village House Bedroom under Warm hearth glow casting dancing shadows on mud walls.'. Maintain location: 'Village House Bedroom' with time of day: 'Late Night (2:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc3_sh2.mp4"
+    },
+    {
+      "shot_id": "061ba9f4-f6e8-450c-8616-a0a583aa3536",
+      "scene_number": 3,
+      "shot_number": 3,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Close-Up Shot: Close-up emotional focus on the expressive facial emotion of the character showing Determined and Focused.. Camera: Tight focus close-up with shallow depth of field.. Continuity Context: Preserve previous action context: 'Medium cinematic shot of character performing With steady hands despite her racing heart, Gauri crushes fresh ginger, tulsi, and neem leaves in a stone mortar, boiling water over an earthen stove to prepare a medicinal cooling remedy..'. Maintain location: 'Village House Bedroom' with time of day: 'Late Night (2:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc3_sh3.mp4"
+    },
+    {
+      "shot_id": "18a15e48-6f70-43eb-b089-e6dc045672e3",
+      "scene_number": 3,
+      "shot_number": 4,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Reaction / Detail Shot: Intimate reaction and prop detail showing With steady hands despite her racing heart, Gauri crushes fresh ginger, tulsi, and neem leaves in a stone mortar, boiling water over an earthen stove to prepare a medicinal cooling remedy... Camera: Macro detail shot with subtle pan.. Continuity Context: Preserve previous action context: 'Close-up emotional focus on the expressive facial emotion of the character showing Determined and Focused.'. Maintain location: 'Village House Bedroom' with time of day: 'Late Night (2:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc3_sh4.mp4"
+    },
+    {
+      "shot_id": "f51e0041-6707-4565-bfb5-db31f37279e9",
+      "scene_number": 3,
+      "shot_number": 5,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Dynamic Motion Shot: Dynamic perspective moving alongside character performing With steady hands despite her racing heart, Gauri crushes fresh ginger, tulsi, and neem leaves in a stone mortar, boiling water over an earthen stove to prepare a medicinal cooling remedy... Camera: Smooth gimbal forward tracking.. Continuity Context: Preserve previous action context: 'Intimate reaction and prop detail showing With steady hands despite her racing heart, Gauri crushes fresh ginger, tulsi, and neem leaves in a stone mortar, boiling water over an earthen stove to prepare a medicinal cooling remedy..'. Maintain location: 'Village House Bedroom' with time of day: 'Late Night (2:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc3_sh5.mp4"
+    },
+    {
+      "shot_id": "dedf7fca-3329-4125-9f11-4b3f3469da56",
+      "scene_number": 3,
+      "shot_number": 6,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Establishing Shot: Wide atmospheric establishing view of Village House Bedroom under Warm hearth glow casting dancing shadows on mud walls.. Camera: Slow cinematic wide crane downward.. Continuity Context: Preserve previous action context: 'Dynamic perspective moving alongside character performing With steady hands despite her racing heart, Gauri crushes fresh ginger, tulsi, and neem leaves in a stone mortar, boiling water over an earthen stove to prepare a medicinal cooling remedy..'. Maintain location: 'Village House Bedroom' with time of day: 'Late Night (2:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc3_sh6.mp4"
+    },
+    {
+      "shot_id": "3669b23e-56fd-40ad-9232-18b7d5c07a9b",
+      "scene_number": 3,
+      "shot_number": 7,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Medium Shot: Medium cinematic shot of character performing With steady hands despite her racing heart, Gauri crushes fresh ginger, tulsi, and neem leaves in a stone mortar, boiling water over an earthen stove to prepare a medicinal cooling remedy... Camera: Medium tracking shot following character movement.. Continuity Context: Preserve previous action context: 'Wide atmospheric establishing view of Village House Bedroom under Warm hearth glow casting dancing shadows on mud walls.'. Maintain location: 'Village House Bedroom' with time of day: 'Late Night (2:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc3_sh7.mp4"
+    },
+    {
+      "shot_id": "f9d47192-51eb-437c-9a03-ba1c8063e55e",
+      "scene_number": 3,
+      "shot_number": 8,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Close-Up Shot: Close-up emotional focus on the expressive facial emotion of the character showing Determined and Focused.. Camera: Tight focus close-up with shallow depth of field.. Continuity Context: Preserve previous action context: 'Medium cinematic shot of character performing With steady hands despite her racing heart, Gauri crushes fresh ginger, tulsi, and neem leaves in a stone mortar, boiling water over an earthen stove to prepare a medicinal cooling remedy..'. Maintain location: 'Village House Bedroom' with time of day: 'Late Night (2:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc3_sh8.mp4"
+    },
+    {
+      "shot_id": "737cf252-dc53-4824-b635-8187dedf824f",
+      "scene_number": 3,
+      "shot_number": 9,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Reaction / Detail Shot: Intimate reaction and prop detail showing With steady hands despite her racing heart, Gauri crushes fresh ginger, tulsi, and neem leaves in a stone mortar, boiling water over an earthen stove to prepare a medicinal cooling remedy... Camera: Macro detail shot with subtle pan.. Continuity Context: Preserve previous action context: 'Close-up emotional focus on the expressive facial emotion of the character showing Determined and Focused.'. Maintain location: 'Village House Bedroom' with time of day: 'Late Night (2:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc3_sh9.mp4"
+    },
+    {
+      "shot_id": "f14ece51-5ae5-4822-bc2a-fbe7e81dc21a",
+      "scene_number": 3,
+      "shot_number": 10,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Dynamic Motion Shot: Dynamic perspective moving alongside character performing With steady hands despite her racing heart, Gauri crushes fresh ginger, tulsi, and neem leaves in a stone mortar, boiling water over an earthen stove to prepare a medicinal cooling remedy... Camera: Smooth gimbal forward tracking.. Continuity Context: Preserve previous action context: 'Intimate reaction and prop detail showing With steady hands despite her racing heart, Gauri crushes fresh ginger, tulsi, and neem leaves in a stone mortar, boiling water over an earthen stove to prepare a medicinal cooling remedy..'. Maintain location: 'Village House Bedroom' with time of day: 'Late Night (2:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc3_sh10.mp4"
+    },
+    {
+      "shot_id": "97dd70ae-ffa5-4451-bc57-c85e76a6fcfa",
+      "scene_number": 4,
+      "shot_number": 1,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Establishing Shot: Wide atmospheric establishing view of Village House Bedroom under Soft low-key amber lighting accentuating tear glistening on cheek.. Camera: Slow cinematic wide crane downward.. Continuity Context: Initial scene state at Village House Bedroom, weather is Soft low-key amber lighting accentuating tear glistening on cheek.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc4_sh1.mp4"
+    },
+    {
+      "shot_id": "62a50989-9125-466f-91ad-e452a726f826",
+      "scene_number": 4,
+      "shot_number": 2,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Medium Shot: Medium cinematic shot of character performing Gauri gently applies cool wet cotton cloths to Aarav's forehead every few minutes. Strong gusts of wind rattle the wooden shutter; she shields the flickering lamp with her own hand... Camera: Medium tracking shot following character movement.. Continuity Context: Preserve previous action context: 'Wide atmospheric establishing view of Village House Bedroom under Soft low-key amber lighting accentuating tear glistening on cheek.'. Maintain location: 'Village House Bedroom' with time of day: 'Deep Night (4:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc4_sh2.mp4"
+    },
+    {
+      "shot_id": "ea90eb0d-3334-49b1-910c-f6a9de98d8c6",
+      "scene_number": 4,
+      "shot_number": 3,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Close-Up Shot: Close-up emotional focus on the expressive facial emotion of the character showing Deep Emotional Bond.. Camera: Tight focus close-up with shallow depth of field.. Continuity Context: Preserve previous action context: 'Medium cinematic shot of character performing Gauri gently applies cool wet cotton cloths to Aarav's forehead every few minutes. Strong gusts of wind rattle the wooden shutter; she shields the flickering lamp with her own hand..'. Maintain location: 'Village House Bedroom' with time of day: 'Deep Night (4:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc4_sh3.mp4"
+    },
+    {
+      "shot_id": "c10ca998-47be-465b-add6-582579f3368a",
+      "scene_number": 4,
+      "shot_number": 4,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Reaction / Detail Shot: Intimate reaction and prop detail showing Gauri gently applies cool wet cotton cloths to Aarav's forehead every few minutes. Strong gusts of wind rattle the wooden shutter; she shields the flickering lamp with her own hand... Camera: Macro detail shot with subtle pan.. Continuity Context: Preserve previous action context: 'Close-up emotional focus on the expressive facial emotion of the character showing Deep Emotional Bond.'. Maintain location: 'Village House Bedroom' with time of day: 'Deep Night (4:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc4_sh4.mp4"
+    },
+    {
+      "shot_id": "99dd045e-457f-4dcc-aee8-d2fc32c6478f",
+      "scene_number": 4,
+      "shot_number": 5,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Dynamic Motion Shot: Dynamic perspective moving alongside character performing Gauri gently applies cool wet cotton cloths to Aarav's forehead every few minutes. Strong gusts of wind rattle the wooden shutter; she shields the flickering lamp with her own hand... Camera: Smooth gimbal forward tracking.. Continuity Context: Preserve previous action context: 'Intimate reaction and prop detail showing Gauri gently applies cool wet cotton cloths to Aarav's forehead every few minutes. Strong gusts of wind rattle the wooden shutter; she shields the flickering lamp with her own hand..'. Maintain location: 'Village House Bedroom' with time of day: 'Deep Night (4:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc4_sh5.mp4"
+    },
+    {
+      "shot_id": "754754be-59bf-4fa2-a6bf-7c17831bfca4",
+      "scene_number": 4,
+      "shot_number": 6,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Establishing Shot: Wide atmospheric establishing view of Village House Bedroom under Soft low-key amber lighting accentuating tear glistening on cheek.. Camera: Slow cinematic wide crane downward.. Continuity Context: Preserve previous action context: 'Dynamic perspective moving alongside character performing Gauri gently applies cool wet cotton cloths to Aarav's forehead every few minutes. Strong gusts of wind rattle the wooden shutter; she shields the flickering lamp with her own hand..'. Maintain location: 'Village House Bedroom' with time of day: 'Deep Night (4:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc4_sh6.mp4"
+    },
+    {
+      "shot_id": "d5d99bc7-73c7-4406-af2a-2253c7ae2b2f",
+      "scene_number": 4,
+      "shot_number": 7,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Medium Shot: Medium cinematic shot of character performing Gauri gently applies cool wet cotton cloths to Aarav's forehead every few minutes. Strong gusts of wind rattle the wooden shutter; she shields the flickering lamp with her own hand... Camera: Medium tracking shot following character movement.. Continuity Context: Preserve previous action context: 'Wide atmospheric establishing view of Village House Bedroom under Soft low-key amber lighting accentuating tear glistening on cheek.'. Maintain location: 'Village House Bedroom' with time of day: 'Deep Night (4:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc4_sh7.mp4"
+    },
+    {
+      "shot_id": "ce564591-4b15-4c63-824c-6d4cd9288b3a",
+      "scene_number": 4,
+      "shot_number": 8,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Close-Up Shot: Close-up emotional focus on the expressive facial emotion of the character showing Deep Emotional Bond.. Camera: Tight focus close-up with shallow depth of field.. Continuity Context: Preserve previous action context: 'Medium cinematic shot of character performing Gauri gently applies cool wet cotton cloths to Aarav's forehead every few minutes. Strong gusts of wind rattle the wooden shutter; she shields the flickering lamp with her own hand..'. Maintain location: 'Village House Bedroom' with time of day: 'Deep Night (4:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc4_sh8.mp4"
+    },
+    {
+      "shot_id": "850d4437-cc7e-4e72-817b-0b05e6809c8a",
+      "scene_number": 4,
+      "shot_number": 9,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Reaction / Detail Shot: Intimate reaction and prop detail showing Gauri gently applies cool wet cotton cloths to Aarav's forehead every few minutes. Strong gusts of wind rattle the wooden shutter; she shields the flickering lamp with her own hand... Camera: Macro detail shot with subtle pan.. Continuity Context: Preserve previous action context: 'Close-up emotional focus on the expressive facial emotion of the character showing Deep Emotional Bond.'. Maintain location: 'Village House Bedroom' with time of day: 'Deep Night (4:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc4_sh9.mp4"
+    },
+    {
+      "shot_id": "7b6f567f-be82-45e9-8bab-c86f8a744fbe",
+      "scene_number": 4,
+      "shot_number": 10,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Dynamic Motion Shot: Dynamic perspective moving alongside character performing Gauri gently applies cool wet cotton cloths to Aarav's forehead every few minutes. Strong gusts of wind rattle the wooden shutter; she shields the flickering lamp with her own hand... Camera: Smooth gimbal forward tracking.. Continuity Context: Preserve previous action context: 'Intimate reaction and prop detail showing Gauri gently applies cool wet cotton cloths to Aarav's forehead every few minutes. Strong gusts of wind rattle the wooden shutter; she shields the flickering lamp with her own hand..'. Maintain location: 'Village House Bedroom' with time of day: 'Deep Night (4:00 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc4_sh10.mp4"
+    },
+    {
+      "shot_id": "9db343ac-3f53-4710-91df-852b199cafe3",
+      "scene_number": 5,
+      "shot_number": 1,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Establishing Shot: Wide atmospheric establishing view of Village House Bedroom under Cool blue dawn light beginning to seep through the window curtains.. Camera: Slow cinematic wide crane downward.. Continuity Context: Initial scene state at Village House Bedroom, weather is Cool blue dawn light beginning to seep through the window curtains.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc5_sh1.mp4"
+    },
+    {
+      "shot_id": "715b916e-cf3b-44bd-84fe-69d959eb6799",
+      "scene_number": 5,
+      "shot_number": 2,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Medium Shot: Medium cinematic shot of character performing The storm begins to quieten. Gauri places her palm on Aarav's forehead—it is cool and calm. The baby stirs, opens his bright eyes, and reaches out tiny hands toward his mother... Camera: Medium tracking shot following character movement.. Continuity Context: Preserve previous action context: 'Wide atmospheric establishing view of Village House Bedroom under Cool blue dawn light beginning to seep through the window curtains.'. Maintain location: 'Village House Bedroom' with time of day: 'Pre-Dawn (5:30 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc5_sh2.mp4"
+    },
+    {
+      "shot_id": "15cac8a6-38cb-43a7-908c-fd61c68fa300",
+      "scene_number": 5,
+      "shot_number": 3,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Close-Up Shot: Close-up emotional focus on the expressive facial emotion of the character showing Relief and Gratitude.. Camera: Tight focus close-up with shallow depth of field.. Continuity Context: Preserve previous action context: 'Medium cinematic shot of character performing The storm begins to quieten. Gauri places her palm on Aarav's forehead—it is cool and calm. The baby stirs, opens his bright eyes, and reaches out tiny hands toward his mother..'. Maintain location: 'Village House Bedroom' with time of day: 'Pre-Dawn (5:30 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc5_sh3.mp4"
+    },
+    {
+      "shot_id": "476509cf-fc2d-4f7f-bdbc-c0a49c51db75",
+      "scene_number": 5,
+      "shot_number": 4,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Reaction / Detail Shot: Intimate reaction and prop detail showing The storm begins to quieten. Gauri places her palm on Aarav's forehead—it is cool and calm. The baby stirs, opens his bright eyes, and reaches out tiny hands toward his mother... Camera: Macro detail shot with subtle pan.. Continuity Context: Preserve previous action context: 'Close-up emotional focus on the expressive facial emotion of the character showing Relief and Gratitude.'. Maintain location: 'Village House Bedroom' with time of day: 'Pre-Dawn (5:30 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc5_sh4.mp4"
+    },
+    {
+      "shot_id": "c22a3087-2b96-4f4d-b13f-db9c1bdcfd5e",
+      "scene_number": 5,
+      "shot_number": 5,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Dynamic Motion Shot: Dynamic perspective moving alongside character performing The storm begins to quieten. Gauri places her palm on Aarav's forehead—it is cool and calm. The baby stirs, opens his bright eyes, and reaches out tiny hands toward his mother... Camera: Smooth gimbal forward tracking.. Continuity Context: Preserve previous action context: 'Intimate reaction and prop detail showing The storm begins to quieten. Gauri places her palm on Aarav's forehead—it is cool and calm. The baby stirs, opens his bright eyes, and reaches out tiny hands toward his mother..'. Maintain location: 'Village House Bedroom' with time of day: 'Pre-Dawn (5:30 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc5_sh5.mp4"
+    },
+    {
+      "shot_id": "7cf9b0f9-410c-44d2-9bf5-6e88022cbed5",
+      "scene_number": 5,
+      "shot_number": 6,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Establishing Shot: Wide atmospheric establishing view of Village House Bedroom under Cool blue dawn light beginning to seep through the window curtains.. Camera: Slow cinematic wide crane downward.. Continuity Context: Preserve previous action context: 'Dynamic perspective moving alongside character performing The storm begins to quieten. Gauri places her palm on Aarav's forehead—it is cool and calm. The baby stirs, opens his bright eyes, and reaches out tiny hands toward his mother..'. Maintain location: 'Village House Bedroom' with time of day: 'Pre-Dawn (5:30 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc5_sh6.mp4"
+    },
+    {
+      "shot_id": "68cfc554-8877-415c-a8b4-61f9d21d961e",
+      "scene_number": 5,
+      "shot_number": 7,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Medium Shot: Medium cinematic shot of character performing The storm begins to quieten. Gauri places her palm on Aarav's forehead—it is cool and calm. The baby stirs, opens his bright eyes, and reaches out tiny hands toward his mother... Camera: Medium tracking shot following character movement.. Continuity Context: Preserve previous action context: 'Wide atmospheric establishing view of Village House Bedroom under Cool blue dawn light beginning to seep through the window curtains.'. Maintain location: 'Village House Bedroom' with time of day: 'Pre-Dawn (5:30 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc5_sh7.mp4"
+    },
+    {
+      "shot_id": "2143efbc-a1ad-43a4-a54b-9f305a7355a3",
+      "scene_number": 5,
+      "shot_number": 8,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Close-Up Shot: Close-up emotional focus on the expressive facial emotion of the character showing Relief and Gratitude.. Camera: Tight focus close-up with shallow depth of field.. Continuity Context: Preserve previous action context: 'Medium cinematic shot of character performing The storm begins to quieten. Gauri places her palm on Aarav's forehead—it is cool and calm. The baby stirs, opens his bright eyes, and reaches out tiny hands toward his mother..'. Maintain location: 'Village House Bedroom' with time of day: 'Pre-Dawn (5:30 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc5_sh8.mp4"
+    },
+    {
+      "shot_id": "447be892-25b6-419d-a2c9-eccb9c6abc36",
+      "scene_number": 5,
+      "shot_number": 9,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Reaction / Detail Shot: Intimate reaction and prop detail showing The storm begins to quieten. Gauri places her palm on Aarav's forehead—it is cool and calm. The baby stirs, opens his bright eyes, and reaches out tiny hands toward his mother... Camera: Macro detail shot with subtle pan.. Continuity Context: Preserve previous action context: 'Close-up emotional focus on the expressive facial emotion of the character showing Relief and Gratitude.'. Maintain location: 'Village House Bedroom' with time of day: 'Pre-Dawn (5:30 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc5_sh9.mp4"
+    },
+    {
+      "shot_id": "da326c79-b1b8-4457-a498-a6454c6628a4",
+      "scene_number": 5,
+      "shot_number": 10,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village House Bedroom: Cozy rural Indian home interior with smooth clay-plastered walls, wooden ceiling beams, a small wooden cot (charpai) with clean handmade cotton quilt, and a vintage brass oil lamp (diya) glowing warmly. Architecture: Traditional rural Indian mud-brick and timber structure with terracotta tile roof.. Colors: Warm terracotta, ochre, clay brown, brass gold, soft shadowed greens... ACTION: Dynamic Motion Shot: Dynamic perspective moving alongside character performing The storm begins to quieten. Gauri places her palm on Aarav's forehead—it is cool and calm. The baby stirs, opens his bright eyes, and reaches out tiny hands toward his mother... Camera: Smooth gimbal forward tracking.. Continuity Context: Preserve previous action context: 'Intimate reaction and prop detail showing The storm begins to quieten. Gauri places her palm on Aarav's forehead—it is cool and calm. The baby stirs, opens his bright eyes, and reaches out tiny hands toward his mother..'. Maintain location: 'Village House Bedroom' with time of day: 'Pre-Dawn (5:30 AM)'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc5_sh10.mp4"
+    },
+    {
+      "shot_id": "713a6913-780f-4fab-b4a6-a818c8304116",
+      "scene_number": 6,
+      "shot_number": 1,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Establishing Shot: Wide atmospheric establishing view of Village Courtyard & Pathway under Brilliant golden hour morning sunbeams through green palm fronds.. Camera: Slow cinematic wide crane downward.. Continuity Context: Initial scene state at Village Courtyard & Pathway, weather is Brilliant golden hour morning sunbeams through green palm fronds.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc6_sh1.mp4"
+    },
+    {
+      "shot_id": "a9f5169e-5872-4591-a00f-79986026773d",
+      "scene_number": 6,
+      "shot_number": 2,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Medium Shot: Medium cinematic shot of character performing Gauri walks out into the courtyard bathed in radiant golden sunlight. Crystal rain droplets sparkle on green leaves. Aarav giggles joyfully in her arms as fresh morning air surrounds them... Camera: Medium tracking shot following character movement.. Continuity Context: Preserve previous action context: 'Wide atmospheric establishing view of Village Courtyard & Pathway under Brilliant golden hour morning sunbeams through green palm fronds.'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Sunrise / Morning'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc6_sh2.mp4"
+    },
+    {
+      "shot_id": "2aa453aa-055d-462c-ae8a-49e8f18af6e1",
+      "scene_number": 6,
+      "shot_number": 3,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Close-Up Shot: Close-up emotional focus on the expressive facial emotion of the character showing Triumphant and Uplifting.. Camera: Tight focus close-up with shallow depth of field.. Continuity Context: Preserve previous action context: 'Medium cinematic shot of character performing Gauri walks out into the courtyard bathed in radiant golden sunlight. Crystal rain droplets sparkle on green leaves. Aarav giggles joyfully in her arms as fresh morning air surrounds them..'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Sunrise / Morning'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc6_sh3.mp4"
+    },
+    {
+      "shot_id": "23beef62-55ba-44b9-b0f7-724d82da96fd",
+      "scene_number": 6,
+      "shot_number": 4,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Reaction / Detail Shot: Intimate reaction and prop detail showing Gauri walks out into the courtyard bathed in radiant golden sunlight. Crystal rain droplets sparkle on green leaves. Aarav giggles joyfully in her arms as fresh morning air surrounds them... Camera: Macro detail shot with subtle pan.. Continuity Context: Preserve previous action context: 'Close-up emotional focus on the expressive facial emotion of the character showing Triumphant and Uplifting.'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Sunrise / Morning'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc6_sh4.mp4"
+    },
+    {
+      "shot_id": "59a486f3-9a8d-4cb1-acd4-88448e901aba",
+      "scene_number": 6,
+      "shot_number": 5,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Dynamic Motion Shot: Dynamic perspective moving alongside character performing Gauri walks out into the courtyard bathed in radiant golden sunlight. Crystal rain droplets sparkle on green leaves. Aarav giggles joyfully in her arms as fresh morning air surrounds them... Camera: Smooth gimbal forward tracking.. Continuity Context: Preserve previous action context: 'Intimate reaction and prop detail showing Gauri walks out into the courtyard bathed in radiant golden sunlight. Crystal rain droplets sparkle on green leaves. Aarav giggles joyfully in her arms as fresh morning air surrounds them..'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Sunrise / Morning'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc6_sh5.mp4"
+    },
+    {
+      "shot_id": "429e1536-71dc-4daf-88e5-e965963d005d",
+      "scene_number": 6,
+      "shot_number": 6,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Establishing Shot: Wide atmospheric establishing view of Village Courtyard & Pathway under Brilliant golden hour morning sunbeams through green palm fronds.. Camera: Slow cinematic wide crane downward.. Continuity Context: Preserve previous action context: 'Dynamic perspective moving alongside character performing Gauri walks out into the courtyard bathed in radiant golden sunlight. Crystal rain droplets sparkle on green leaves. Aarav giggles joyfully in her arms as fresh morning air surrounds them..'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Sunrise / Morning'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc6_sh6.mp4"
+    },
+    {
+      "shot_id": "f7f6ea5a-3fcd-4de0-895d-a4557bdf2e8c",
+      "scene_number": 6,
+      "shot_number": 7,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Medium Shot: Medium cinematic shot of character performing Gauri walks out into the courtyard bathed in radiant golden sunlight. Crystal rain droplets sparkle on green leaves. Aarav giggles joyfully in her arms as fresh morning air surrounds them... Camera: Medium tracking shot following character movement.. Continuity Context: Preserve previous action context: 'Wide atmospheric establishing view of Village Courtyard & Pathway under Brilliant golden hour morning sunbeams through green palm fronds.'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Sunrise / Morning'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc6_sh7.mp4"
+    },
+    {
+      "shot_id": "25db038a-318a-4b2b-9009-1b1785b36b92",
+      "scene_number": 6,
+      "shot_number": 8,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Close-Up Shot: Close-up emotional focus on the expressive facial emotion of the character showing Triumphant and Uplifting.. Camera: Tight focus close-up with shallow depth of field.. Continuity Context: Preserve previous action context: 'Medium cinematic shot of character performing Gauri walks out into the courtyard bathed in radiant golden sunlight. Crystal rain droplets sparkle on green leaves. Aarav giggles joyfully in her arms as fresh morning air surrounds them..'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Sunrise / Morning'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc6_sh8.mp4"
+    },
+    {
+      "shot_id": "6443c430-4e78-4fce-ba97-faec04141d75",
+      "scene_number": 6,
+      "shot_number": 9,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Reaction / Detail Shot: Intimate reaction and prop detail showing Gauri walks out into the courtyard bathed in radiant golden sunlight. Crystal rain droplets sparkle on green leaves. Aarav giggles joyfully in her arms as fresh morning air surrounds them... Camera: Macro detail shot with subtle pan.. Continuity Context: Preserve previous action context: 'Close-up emotional focus on the expressive facial emotion of the character showing Triumphant and Uplifting.'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Sunrise / Morning'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc6_sh9.mp4"
+    },
+    {
+      "shot_id": "c9d91432-52b3-473a-be3d-f023857ac71f",
+      "scene_number": 6,
+      "shot_number": 10,
+      "duration": 5.0,
+      "prompt": "masterpiece cinematic render, Cinematic animation, highly detailed, realistic human movement, rich cinematic lighting, 8k resolution. CHARACTERS: Gauri: 28-year-old, Warm expressive brown eyes, gentle jawline, natural beauty, courageous caring expression, small red bindi on forehead. Wearing Traditional emerald green cotton saree with simple turmeric-yellow border, simple matching blouse, pallu draped practically over shoulder.. | Baby Aarav: 1-year-old, Adorable 1-year-old Indian infant with chubby cheeks, soft innocent eyes, tiny black kajal dot on cheek. Wearing Soft white and pastel yellow cotton swaddling cloth... ENVIRONMENT: Village Courtyard & Pathway: Rustic Indian village courtyard with lush rain-washed green banana trees, wet mud path, tiled sloping roofs with cascading rainwater, and coconut palms swaying in the monsoon wind. Architecture: Traditional rural Konkan/North Indian village cottages with tiled overhangs and mud walls.. Colors: Deep monsoon emerald green, wet earthy brown, storm grey sky, terracotta red... ACTION: Dynamic Motion Shot: Dynamic perspective moving alongside character performing Gauri walks out into the courtyard bathed in radiant golden sunlight. Crystal rain droplets sparkle on green leaves. Aarav giggles joyfully in her arms as fresh morning air surrounds them... Camera: Smooth gimbal forward tracking.. Continuity Context: Preserve previous action context: 'Intimate reaction and prop detail showing Gauri walks out into the courtyard bathed in radiant golden sunlight. Crystal rain droplets sparkle on green leaves. Aarav giggles joyfully in her arms as fresh morning air surrounds them..'. Maintain location: 'Village Courtyard & Pathway' with time of day: 'Sunrise / Morning'. Maintain exact same clothing, hairstyles, and facial features without modification. Characters present: Gauri, Baby Aarav.",
+      "url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/shots/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_sc6_sh10.mp4"
+    }
+  ],
+  "audio_assets": [
+    {
+      "scene_number": 1,
+      "duration": 50,
+      "audio_url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/audio/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_audio_sc1.wav"
+    },
+    {
+      "scene_number": 2,
+      "duration": 50,
+      "audio_url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/audio/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_audio_sc2.wav"
+    },
+    {
+      "scene_number": 3,
+      "duration": 50,
+      "audio_url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/audio/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_audio_sc3.wav"
+    },
+    {
+      "scene_number": 4,
+      "duration": 50,
+      "audio_url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/audio/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_audio_sc4.wav"
+    },
+    {
+      "scene_number": 5,
+      "duration": 50,
+      "audio_url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/audio/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_audio_sc5.wav"
+    },
+    {
+      "scene_number": 6,
+      "duration": 50,
+      "audio_url": "/api/v1/storage/529f881b-e428-4f59-8bcb-865ff7c19d41/audio/proj_529f881b-e428-4f59-8bcb-865ff7c19d41_audio_sc6.wav"
+    }
+  ],
+  "music_licenses": [
+    {
+      "audio_path": "F:\\github\\videogen-lucy\\storage\\temp\\bgm_indian_e9c8bac9.wav",
+      "mood": "Indian",
+      "duration": 50.0,
+      "title": "Raga Megh - Monsoon Monsoon Sitar & Bansuri",
+      "artist": "Videogen Heritage Audio Archive",
+      "license": "CC0 1.0 Universal (Public Domain)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "commercial_use_allowed": true,
+      "attribution_required": false
+    },
+    {
+      "audio_path": "F:\\github\\videogen-lucy\\storage\\temp\\bgm_emotional_c6874bde.wav",
+      "mood": "Emotional",
+      "duration": 50.0,
+      "title": "Tears of the Monsoon (Emotional Piano & Cello)",
+      "artist": "Videogen Open Audio Lab",
+      "license": "CC-BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "commercial_use_allowed": true,
+      "attribution_required": true
+    },
+    {
+      "audio_path": "F:\\github\\videogen-lucy\\storage\\temp\\bgm_suspense_46d80247.wav",
+      "mood": "Suspense",
+      "duration": 50.0,
+      "title": "Midnight Shadows (Suspense & Tension Drone)",
+      "artist": "Videogen Open Audio Lab",
+      "license": "CC0 1.0 Universal (Public Domain)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "commercial_use_allowed": true,
+      "attribution_required": false
+    },
+    {
+      "audio_path": "F:\\github\\videogen-lucy\\storage\\temp\\bgm_emotional_a87933de.wav",
+      "mood": "Emotional",
+      "duration": 50.0,
+      "title": "Tears of the Monsoon (Emotional Piano & Cello)",
+      "artist": "Videogen Open Audio Lab",
+      "license": "CC-BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "commercial_use_allowed": true,
+      "attribution_required": true
+    },
+    {
+      "audio_path": "F:\\github\\videogen-lucy\\storage\\temp\\bgm_cinematic_0e06c098.wav",
+      "mood": "Cinematic",
+      "duration": 50.0,
+      "title": "Dawn of Hope (Cinematic Strings & Brass)",
+      "artist": "Videogen Open Audio Lab",
+      "license": "CC0 1.0 Universal (Public Domain)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "commercial_use_allowed": true,
+      "attribution_required": false
+    },
+    {
+      "audio_path": "F:\\github\\videogen-lucy\\storage\\temp\\bgm_happy_4d6e07f0.wav",
+      "mood": "Happy",
+      "duration": 50.0,
+      "title": "Morning Village Sunlight (Acoustic Joy)",
+      "artist": "Videogen Open Audio Lab",
+      "license": "CC0 1.0 Universal (Public Domain)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "commercial_use_allowed": true,
+      "attribution_required": false
+    }
+  ],
+  "voice_profiles": [
+    {
+      "name": "Gauri",
+      "preset": "en-IN-NeerjaNeural"
+    },
+    {
+      "name": "Baby Aarav",
+      "preset": "baby_sound"
+    }
+  ],
+  "prompts_hash": "4d757ac7392ac1c196e1701b7324ae5b7d44e420cad8d74cde8628f4000a1da5",
+  "compliance_summary": {
+    "original_story": true,
+    "original_characters": true,
+    "no_copyrighted_music": true,
+    "no_unauthorized_likeness": true,
+    "no_unauthorized_voice_cloning": true,
+    "asset_licenses_available": true,
+    "subtitles_available": true,
+    "ai_disclosure_recommendation": "Recommended based on human-like animated characters",
+    "checklist": [
+      {
+        "title": "Original Story",
+        "status": true,
+        "description": "Story generated dynamically from original prompt without infringing narrative scripts."
+      },
+      {
+        "title": "Original / Generated Characters",
+        "status": true,
+        "description": "Original character bibles used; no protected superhero or trademarked fictional characters."
+      },
+      {
+        "title": "No Unauthorized Copyrighted Music",
+        "status": true,
+        "description": "Soundtracks sourced from CC0/CC-BY royalty-free audio libraries with commercial rights."
+      },
+      {
+        "title": "No Unauthorized Real-Person Likeness",
+        "status": true,
+        "description": "Synthetic characters generated without unconsented celebrity likeness."
+      },
+      {
+        "title": "No Unauthorized Voice Cloning",
+        "status": true,
+        "description": "Standard licensed neural TTS models used without cloning private individuals."
+      },
+      {
+        "title": "Asset License Records Available",
+        "status": true,
+        "description": "Complete asset_manifest.json provided detailing all model versions and licenses."
+      },
+      {
+        "title": "AI-Generated Content Disclosure Recommendation",
+        "status": true,
+        "description": "Recommended: Creator should check YouTube 'Altered or synthetic content' disclosure box."
+      },
+      {
+        "title": "Synchronized Subtitles Available",
+        "status": true,
+        "description": "English and Hindi SRT and VTT subtitles generated."
+      }
+    ],
+    "disclaimer": "This platform does not guarantee YouTube monetization or absolute legal clearance. Creators remain responsible for complying with YouTube platform policies."
+  }
+}
