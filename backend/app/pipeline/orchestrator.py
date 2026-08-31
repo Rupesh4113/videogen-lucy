@@ -423,9 +423,7 @@ class WorkflowOrchestrator:
         """
         Regenerates an individual scene and its shots without rebuilding the entire video.
         """
-        stmt = select(Scene).where(Scene.id == scene_id)
-        res = await self.db.execute(stmt)
-        scene = res.scalar_one_or_none()
+        scene = await self.db.get(Scene, scene_id)
         if not scene:
             raise ValueError(f"Scene {scene_id} not found.")
 
@@ -468,4 +466,5 @@ class WorkflowOrchestrator:
         )
         scene.status = "COMPLETED"
         await self.db.commit()
+        await self.db.refresh(scene)
         return scene

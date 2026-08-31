@@ -4,7 +4,8 @@ End-to-End Test for the Complete 14-Stage AI Video Production Pipeline.
 import pytest
 from pathlib import Path
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.app.models.entities import Project
+from sqlalchemy import select
+from backend.app.models.entities import Project, Scene
 from backend.app.pipeline.orchestrator import WorkflowOrchestrator
 from backend.app.config import settings
 
@@ -40,12 +41,12 @@ async def test_full_video_pipeline_end_to_end(db_session: AsyncSession):
     final_video_url = await orchestrator.execute_full_video_pipeline(project.id)
     assert final_video_url is not None
 
-    await db_session.refresh(project)
-    assert project.status == "COMPLETED"
-    assert project.progress_percentage == 100
-    assert project.final_video_url is not None
-    assert project.manifest_url is not None
-    assert project.subtitle_en_url is not None
+    db_proj = await db_session.get(Project, project.id)
+    assert db_proj.status == "COMPLETED"
+    assert db_proj.progress_percentage == 100
+    assert db_proj.final_video_url is not None
+    assert db_proj.manifest_url is not None
+    assert db_proj.subtitle_en_url is not None
 
     # Check that output files actually exist
     project_dir = settings.OUTPUT_DIR / project.id
@@ -54,10 +55,6 @@ async def test_full_video_pipeline_end_to_end(db_session: AsyncSession):
     assert (project_dir / "subtitles_en.srt").exists()
 
     # 4. Test Single Scene Regeneration without re-running entire pipeline
-    first_scene = sb.scenes[0]
-    # Fetch database scene entity
-    from sqlalchemy import select
-    from backend.app.models.entities import Scene
     stmt = select(Scene).where(Scene.project_id == project.id, Scene.scene_number == 1)
     db_sc = (await db_session.execute(stmt)).scalar_one()
 

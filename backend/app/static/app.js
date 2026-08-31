@@ -1,5 +1,5 @@
 /**
- * Videogen-Lucy Web Application Logic
+ * Videogen-Lucy Web Application Logic + Dual-Mode Authentication
  */
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize Lucide Icons
@@ -12,8 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
   let pollInterval = null;
   let activeTab = "create";
   let loadedSubtitles = [];
+  let authToken = localStorage.getItem("videogen_token") || null;
+  let currentUser = JSON.parse(localStorage.getItem("videogen_user") || "null");
+  let isRegisterMode = false;
+  let activeOtpTarget = null;
 
-  // DOM Elements
+  // DOM Elements - Navigation & Forms
   const navButtons = document.querySelectorAll(".nav-item");
   const tabPanes = document.querySelectorAll(".tab-pane");
   const promptInput = document.getElementById("promptInput");
@@ -48,6 +52,287 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressPercentText = document.getElementById("progressPercentText");
   const activeProjectPill = document.getElementById("activeProjectPill");
   const activeProjectTitle = document.getElementById("activeProjectTitle");
+
+  // Auth DOM Elements
+  const authModal = document.getElementById("authModal");
+  const btnLoginModal = document.getElementById("btnLoginModal");
+  const btnCloseAuthModal = document.getElementById("btnCloseAuthModal");
+  const userAuthPill = document.getElementById("userAuthPill");
+  const userNameDisplay = document.getElementById("userNameDisplay");
+  const btnLogoutBtn = document.getElementById("btnLogoutBtn");
+
+  const tabBtnEmail = document.getElementById("tabBtnEmail");
+  const tabBtnMobile = document.getElementById("tabBtnMobile");
+  const paneEmail = document.getElementById("paneEmail");
+  const paneMobile = document.getElementById("paneMobile");
+
+  const formEmailAuth = document.getElementById("formEmailAuth");
+  const authNameInput = document.getElementById("authNameInput");
+  const authEmailInput = document.getElementById("authEmailInput");
+  const authPasswordInput = document.getElementById("authPasswordInput");
+  const registerNameGroup = document.getElementById("registerNameGroup");
+  const btnSubmitEmailAuth = document.getElementById("btnSubmitEmailAuth");
+  const btnToggleRegisterMode = document.getElementById("btnToggleRegisterMode");
+  const authTogglePrompt = document.getElementById("authTogglePrompt");
+  const emailAuthError = document.getElementById("emailAuthError");
+
+  const formMobileAuth = document.getElementById("formMobileAuth");
+  const authPhoneInput = document.getElementById("authPhoneInput");
+  const btnSendOtp = document.getElementById("btnSendOtp");
+  const otpStepPhone = document.getElementById("otpStepPhone");
+  const otpStepVerify = document.getElementById("otpStepVerify");
+  const authOtpInput = document.getElementById("authOtpInput");
+  const authPhoneNameInput = document.getElementById("authPhoneNameInput");
+  const btnBackToPhone = document.getElementById("btnBackToPhone");
+  const otpDeliveryNotice = document.getElementById("otpDeliveryNotice");
+  const mobileAuthError = document.getElementById("mobileAuthError");
+
+  // Auth Helper: Authenticated Fetch
+  async function authFetch(url, options = {}) {
+    const headers = options.headers ? { ...options.headers } : {};
+    if (authToken) {
+      headers["Authorization"] = `Bearer ${authToken}`;
+    }
+    return fetch(url, { ...options, headers });
+  }
+
+  // Update UI Auth State
+  function renderAuthState() {
+    if (currentUser && authToken) {
+      btnLoginModal.classList.add("hidden");
+      userAuthPill.classList.remove("hidden");
+      userNameDisplay.textContent = currentUser.name || currentUser.email || currentUser.phone_number || "User";
+    } else {
+      btnLoginModal.classList.remove("hidden");
+      userAuthPill.classList.add("hidden");
+    }
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  // Check initial Auth Token validity
+  async function checkCurrentUser() {
+    if (!authToken) {
+      renderAuthState();
+      return;
+    }
+    try {
+      const res = await authFetch("/api/v1/auth/me");
+      if (res.ok) {
+        currentUser = await res.json();
+        localStorage.setItem("videogen_user", JSON.stringify(currentUser));
+      } else {
+        // Token invalid
+        authToken = null;
+        currentUser = null;
+        localStorage.removeItem("videogen_token");
+        localStorage.removeItem("videogen_user");
+      }
+    } catch (e) {
+      console.warn("Auth check error", e);
+    }
+    renderAuthState();
+  }
+  checkCurrentUser();
+
+  // Auth Modal Handlers
+  btnLoginModal.addEventListener("click", () => {
+    authModal.classList.remove("hidden");
+    resetAuthModal();
+  });
+
+  btnCloseAuthModal.addEventListener("click", () => {
+    authModal.classList.add("hidden");
+  });
+
+  btnLogoutBtn.addEventListener("click", () => {
+    authToken = null;
+    currentUser = null;
+    localStorage.removeItem("videogen_token");
+    localStorage.removeItem("videogen_user");
+    renderAuthState();
+    if (activeTab === "projects") {
+      loadProjectsHistory();
+    }
+  });
+
+  // Switch Auth Tabs (Email vs Mobile)
+  tabBtnEmail.addEventListener("click", () => {
+    tabBtnEmail.classList.add("active");
+    tabBtnMobile.classList.remove("active");
+    paneEmail.classList.add("active");
+    paneMobile.classList.remove("active");
+    emailAuthError.classList.add("hidden");
+  });
+
+  tabBtnMobile.addEventListener("click", () => {
+    tabBtnMobile.classList.add("active");
+    tabBtnEmail.classList.remove("active");
+    paneMobile.classList.add("active");
+    paneEmail.classList.remove("active");
+    mobileAuthError.classList.add("hidden");
+  });
+
+  function resetAuthModal() {
+    isRegisterMode = false;
+    registerNameGroup.classList.add("hidden");
+    btnSubmitEmailAuth.textContent = "Sign In";
+    authTogglePrompt.textContent = "Don't have an account?";
+    btnToggleRegisterMode.textContent = "Create Account";
+    emailAuthError.classList.add("hidden");
+    mobileAuthError.classList.add("hidden");
+    otpStepPhone.classList.remove("hidden");
+    otpStepVerify.classList.add("hidden");
+  }
+
+  // Toggle Email Register vs Login
+  btnToggleRegisterMode.addEventListener("click", () => {
+    isRegisterMode = !isRegisterMode;
+    emailAuthError.classList.add("hidden");
+    if (isRegisterMode) {
+      registerNameGroup.classList.remove("hidden");
+      btnSubmitEmailAuth.textContent = "Create Account";
+      authTogglePrompt.textContent = "Already have an account?";
+      btnToggleRegisterMode.textContent = "Sign In";
+    } else {
+      registerNameGroup.classList.add("hidden");
+      btnSubmitEmailAuth.textContent = "Sign In";
+      authTogglePrompt.textContent = "Don't have an account?";
+      btnToggleRegisterMode.textContent = "Create Account";
+    }
+  });
+
+  // Handle Email & Password Submit
+  formEmailAuth.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    emailAuthError.classList.add("hidden");
+    btnSubmitEmailAuth.disabled = true;
+
+    const email = authEmailInput.value.trim();
+    const password = authPasswordInput.value;
+    const name = authNameInput.value.trim();
+
+    try {
+      const endpoint = isRegisterMode ? "/api/v1/auth/register" : "/api/v1/auth/login";
+      const payload = isRegisterMode ? { email, password, name } : { email, password };
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.detail || "Authentication failed");
+      }
+
+      // Save token & user
+      authToken = data.access_token;
+      currentUser = data.user;
+      localStorage.setItem("videogen_token", authToken);
+      localStorage.setItem("videogen_user", JSON.stringify(currentUser));
+
+      authModal.classList.add("hidden");
+      renderAuthState();
+      if (activeTab === "projects") loadProjectsHistory();
+
+    } catch (err) {
+      emailAuthError.textContent = err.message;
+      emailAuthError.classList.remove("hidden");
+    } finally {
+      btnSubmitEmailAuth.disabled = false;
+    }
+  });
+
+  // Handle Send OTP (Mobile Phone)
+  btnSendOtp.addEventListener("click", async () => {
+    const phone = authPhoneInput.value.trim();
+    if (!phone) {
+      alert("Please enter a mobile phone number.");
+      return;
+    }
+
+    btnSendOtp.disabled = true;
+    btnSendOtp.innerHTML = `<i data-lucide="loader" class="animate-spin"></i> Sending OTP...`;
+    mobileAuthError.classList.add("hidden");
+
+    try {
+      const res = await fetch("/api/v1/auth/otp/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone_or_email: phone })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.detail || "Failed to send OTP");
+      }
+
+      activeOtpTarget = phone;
+      otpStepPhone.classList.add("hidden");
+      otpStepVerify.classList.remove("hidden");
+      
+      let notice = `OTP sent to ${phone}. Valid for 10 minutes.`;
+      if (data.dev_otp_code) {
+        notice += ` (Dev OTP Code: ${data.dev_otp_code})`;
+        authOtpInput.value = data.dev_otp_code; // autofill in dev mode for ease
+      }
+      otpDeliveryNotice.textContent = notice;
+
+    } catch (err) {
+      mobileAuthError.textContent = err.message;
+      mobileAuthError.classList.remove("hidden");
+    } finally {
+      btnSendOtp.disabled = false;
+      btnSendOtp.innerHTML = `<i data-lucide="send"></i> Send 6-Digit OTP Code`;
+      if (window.lucide) window.lucide.createIcons();
+    }
+  });
+
+  btnBackToPhone.addEventListener("click", () => {
+    otpStepVerify.classList.add("hidden");
+    otpStepPhone.classList.remove("hidden");
+  });
+
+  // Handle Verify OTP Submit
+  formMobileAuth.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const otpCode = authOtpInput.value.trim();
+    const name = authPhoneNameInput.value.trim();
+
+    if (!activeOtpTarget || !otpCode) return;
+
+    mobileAuthError.classList.add("hidden");
+    try {
+      const res = await fetch("/api/v1/auth/otp/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phone_or_email: activeOtpTarget,
+          otp_code: otpCode,
+          name: name || undefined
+        })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.detail || "Invalid OTP code");
+      }
+
+      authToken = data.access_token;
+      currentUser = data.user;
+      localStorage.setItem("videogen_token", authToken);
+      localStorage.setItem("videogen_user", JSON.stringify(currentUser));
+
+      authModal.classList.add("hidden");
+      renderAuthState();
+      if (activeTab === "projects") loadProjectsHistory();
+
+    } catch (err) {
+      mobileAuthError.textContent = err.message;
+      mobileAuthError.classList.remove("hidden");
+    }
+  });
 
   // 1. Tab Navigation
   navButtons.forEach(btn => {
@@ -180,7 +465,7 @@ document.addEventListener("DOMContentLoaded", () => {
         music_mood: musicMoodSelect.value
       };
 
-      const projRes = await fetch("/api/v1/projects", {
+      const projRes = await authFetch("/api/v1/projects", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(projectPayload)
@@ -190,7 +475,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       setActiveProjectUI(proj.title || "New Project", "PLANNING", 10);
 
-      const sbRes = await fetch(`/api/v1/projects/${currentProjectId}/storyboard`, {
+      const sbRes = await authFetch(`/api/v1/projects/${currentProjectId}/storyboard`, {
         method: "POST"
       });
       const storyboard = await sbRes.json();
@@ -230,7 +515,7 @@ document.addEventListener("DOMContentLoaded", () => {
         music_mood: musicMoodSelect.value
       };
 
-      const projRes = await fetch("/api/v1/projects", {
+      const projRes = await authFetch("/api/v1/projects", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(projectPayload)
@@ -238,7 +523,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const proj = await projRes.json();
       currentProjectId = proj.id;
 
-      await fetch(`/api/v1/projects/${currentProjectId}/generate`, { method: "POST" });
+      await authFetch(`/api/v1/projects/${currentProjectId}/generate`, { method: "POST" });
       setActiveProjectUI(proj.title || "Full Generation", "QUEUED", 5);
       startPollingStatus(currentProjectId);
     } catch (e) {
@@ -253,7 +538,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!currentProjectId) return;
     btnApproveStoryboard.disabled = true;
     try {
-      await fetch(`/api/v1/projects/${currentProjectId}/generate`, { method: "POST" });
+      await authFetch(`/api/v1/projects/${currentProjectId}/generate`, { method: "POST" });
       startPollingStatus(currentProjectId);
       switchTab("create");
     } catch (e) {
@@ -348,7 +633,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     pollInterval = setInterval(async () => {
       try {
-        const res = await fetch(`/api/v1/projects/${projectId}/status`);
+        const res = await authFetch(`/api/v1/projects/${projectId}/status`);
         if (!res.ok) return;
         const data = await res.json();
 
@@ -444,7 +729,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function loadSceneStudio(projectId) {
     const container = document.getElementById("sceneStudioList");
     try {
-      const res = await fetch(`/api/v1/projects/${projectId}/scenes`);
+      const res = await authFetch(`/api/v1/projects/${projectId}/scenes`);
       const scenes = await res.json();
       container.innerHTML = "";
 
@@ -479,7 +764,7 @@ document.addEventListener("DOMContentLoaded", () => {
           b.disabled = true;
           b.innerHTML = `<i data-lucide="loader" class="animate-spin"></i> Regenerating...`;
           try {
-            await fetch(`/api/v1/projects/${projectId}/scenes/${scId}/regenerate`, { method: "POST" });
+            await authFetch(`/api/v1/projects/${projectId}/scenes/${scId}/regenerate`, { method: "POST" });
             await loadSceneStudio(projectId);
           } catch (err) {
             alert("Regeneration failed: " + err.message);
@@ -527,7 +812,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function loadProjectsHistory() {
     const container = document.getElementById("projectsListContainer");
     try {
-      const res = await fetch("/api/v1/projects");
+      const res = await authFetch("/api/v1/projects");
       const list = await res.json();
       if (!list || list.length === 0) {
         container.innerHTML = "<p class='text-muted'>No past generations found.</p>";

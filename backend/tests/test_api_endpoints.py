@@ -3,6 +3,7 @@ Tests for FastAPI REST Endpoints.
 """
 import pytest
 from httpx import AsyncClient, ASGITransport
+from sqlalchemy.ext.asyncio import AsyncSession
 from backend.app.main import app
 
 
@@ -33,7 +34,7 @@ async def test_safety_check_endpoint():
 
 
 @pytest.mark.asyncio
-async def test_project_crud_and_storyboard_endpoints():
+async def test_project_crud_and_storyboard_endpoints(db_session: AsyncSession):
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         # Create Project
@@ -60,6 +61,8 @@ async def test_project_crud_and_storyboard_endpoints():
 
         # Generate Storyboard
         sb_res = await client.post(f"/api/v1/projects/{project_id}/storyboard")
+        if sb_res.status_code != 200:
+            print("ERROR IN STORYBOARD:", sb_res.text)
         assert sb_res.status_code == 200
         sb_data = sb_res.json()
         assert "story" in sb_data

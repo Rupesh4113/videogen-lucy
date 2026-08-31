@@ -48,7 +48,7 @@
         </button>
         <button class="nav-item" data-tab="projects">
           <i data-lucide="folder-kanban"></i>
-          <span>Projects</span>
+          <span>My Projects</span>
         </button>
       </nav>
 
@@ -75,9 +75,24 @@
           <button class="btn btn-secondary btn-sm" id="btnExamplePrompt">
             <i data-lucide="lightbulb"></i> Load Example (Monsoon Mother)
           </button>
+          
           <div class="active-project-pill hidden" id="activeProjectPill">
             <span class="status-dot"></span>
             <span id="activeProjectTitle">Project #1</span>
+          </div>
+
+          <!-- User Authentication Header Section -->
+          <div class="auth-header-wrap">
+            <button class="btn btn-primary btn-sm" id="btnLoginModal">
+              <i data-lucide="user"></i> Sign In / Register
+            </button>
+            <div class="user-pill hidden" id="userAuthPill">
+              <i data-lucide="user-check" class="text-success"></i>
+              <span id="userNameDisplay" class="font-semibold text-xs">User</span>
+              <button class="btn-icon-link" id="btnLogoutBtn" title="Log Out">
+                <i data-lucide="log-out"></i>
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -477,6 +492,89 @@
         </div>
       </section>
     </main>
+  </div>
+
+  <!-- Authentication Modal (Email/Password & Mobile/OTP) -->
+  <div class="modal-backdrop hidden" id="authModal">
+    <div class="auth-modal-card">
+      <div class="flex-between mb-3">
+        <div class="brand-text">
+          <h3 class="font-bold text-lg" id="authModalTitle">Sign In to Videogen-Lucy</h3>
+          <p class="text-xs text-muted">Manage your AI video projects and licenses</p>
+        </div>
+        <button class="btn-close" id="btnCloseAuthModal">&times;</button>
+      </div>
+
+      <!-- Auth Mode Switcher Tabs -->
+      <div class="auth-tabs mb-4">
+        <button class="auth-tab-btn active" id="tabBtnEmail">
+          <i data-lucide="mail"></i> Email & Password
+        </button>
+        <button class="auth-tab-btn" id="tabBtnMobile">
+          <i data-lucide="phone"></i> Mobile & OTP
+        </button>
+      </div>
+
+      <!-- Tab 1: Email & Password Form -->
+      <div class="auth-pane active" id="paneEmail">
+        <form id="formEmailAuth">
+          <div class="form-group hidden" id="registerNameGroup">
+            <label for="authNameInput">Full Name</label>
+            <input type="text" id="authNameInput" placeholder="e.g. Rahul Sharma">
+          </div>
+          <div class="form-group">
+            <label for="authEmailInput">Email Address</label>
+            <input type="text" id="authEmailInput" placeholder="name@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="authPasswordInput">Password</label>
+            <input type="password" id="authPasswordInput" placeholder="••••••••" required>
+          </div>
+          <div class="auth-error-msg hidden" id="emailAuthError"></div>
+          <button type="submit" class="btn btn-primary w-full mt-2" id="btnSubmitEmailAuth">
+            Sign In
+          </button>
+        </form>
+        <div class="auth-toggle-row mt-3 text-center">
+          <span class="text-xs text-muted" id="authTogglePrompt">Don't have an account?</span>
+          <button type="button" class="link-btn text-xs ml-1" id="btnToggleRegisterMode">Create Account</button>
+        </div>
+      </div>
+
+      <!-- Tab 2: Mobile Number & OTP Form -->
+      <div class="auth-pane" id="paneMobile">
+        <form id="formMobileAuth">
+          <!-- Step A: Enter Phone Number -->
+          <div id="otpStepPhone">
+            <div class="form-group">
+              <label for="authPhoneInput">Mobile Phone Number</label>
+              <input type="text" id="authPhoneInput" placeholder="e.g. +91 98765 43210 or 9876543210" required>
+            </div>
+            <button type="button" class="btn btn-accent w-full mt-2" id="btnSendOtp">
+              <i data-lucide="send"></i> Send 6-Digit OTP Code
+            </button>
+          </div>
+
+          <!-- Step B: Enter OTP Code -->
+          <div id="otpStepVerify" class="hidden">
+            <div class="form-group">
+              <label for="authOtpInput">Enter 6-Digit OTP Code</label>
+              <input type="text" id="authOtpInput" maxlength="6" placeholder="123456" class="otp-input" required>
+              <span class="text-xs text-muted mt-1 block" id="otpDeliveryNotice"></span>
+            </div>
+            <div class="form-group">
+              <label for="authPhoneNameInput">Your Name (Optional)</label>
+              <input type="text" id="authPhoneNameInput" placeholder="e.g. Priya Patel">
+            </div>
+            <div class="flex gap-2 mt-2">
+              <button type="button" class="btn btn-secondary flex-1" id="btnBackToPhone">Back</button>
+              <button type="submit" class="btn btn-primary flex-2" id="btnVerifyOtp">Verify & Log In</button>
+            </div>
+          </div>
+          <div class="auth-error-msg hidden" id="mobileAuthError"></div>
+        </form>
+      </div>
+    </div>
   </div>
 
   <script src="/static/app.js"></script>

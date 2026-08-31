@@ -20,6 +20,7 @@ class ProjectCreateRequest(BaseModel):
 
 class ProjectResponse(BaseModel):
     id: str
+    user_id: Optional[str] = None
     title: str
     prompt: str
     language: str
@@ -58,5 +59,4 @@ class CostEstimateResponse(BaseModel):
     estimated_generation_time_minutes: float
     estimated_gpu_cost_usd: float
     estimated_storage_gb: float
-    estimated_vram_requirement_gb: float
-    recommended_model: str
+    estimated_vram_requirement_gb: int
