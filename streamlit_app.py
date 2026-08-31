@@ -8,12 +8,18 @@ Supports:
 - YouTube-Ready 1080p H.264/AAC MP4, SRT/VTT Subtitles, Asset Manifests
 """
 import os
+import sys
 import io
 import json
 import zipfile
 import asyncio
 from pathlib import Path
 from datetime import datetime, timezone
+
+# Ensure root repository directory is on sys.path for Streamlit Cloud & Hugging Face
+ROOT_DIR = Path(__file__).resolve().parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
 import streamlit as st
 from sqlalchemy import select, or_
