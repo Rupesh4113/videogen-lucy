@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Videogen-Lucy — Open-Source AI Long-Form Video Platform</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">
+          <i data-lucide="clapperboard"></i>
+        </div>
+        <div class="brand-text">
+          <h2>Videogen-Lucy</h2>
+          <span class="badge-tag">Wan2.1 Pipeline</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="create">
+          <i data-lucide="sparkles"></i>
+          <span>Create Story</span>
+        </button>
+        <button class="nav-item" data-tab="storyboard">
+          <i data-lucide="layout-grid"></i>
+          <span>Storyboard Preview</span>
+        </button>
+        <button class="nav-item" data-tab="scenes">
+          <i data-lucide="film"></i>
+          <span>Scene Studio</span>
+        </button>
+        <button class="nav-item" data-tab="theater">
+          <i data-lucide="play-circle"></i>
+          <span>Video Theater</span>
+        </button>
+        <button class="nav-item" data-tab="compliance">
+          <i data-lucide="shield-check"></i>
+          <span>YouTube Compliance</span>
+        </button>
+        <button class="nav-item" data-tab="projects">
+          <i data-lucide="folder-kanban"></i>
+          <span>Projects</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="model-badge">
+          <i data-lucide="cpu"></i>
+          <div>
+            <div class="text-xs font-semibold">Engine Status</div>
+            <div class="text-xs text-muted" id="engineStatusText">Wan2.1 • Ready</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Navigation / Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 id="pageTitle">Create AI Long-Form Video</h1>
+          <p class="subtitle" id="pageSubtitle">5–30 minute story-driven video generation with consistent characters and audio.</p>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-secondary btn-sm" id="btnExamplePrompt">
+            <i data-lucide="lightbulb"></i> Load Example (Monsoon Mother)
+          </button>
+          <div class="active-project-pill hidden" id="activeProjectPill">
+            <span class="status-dot"></span>
+            <span id="activeProjectTitle">Project #1</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Tab: Create Story Form -->
+      <section class="tab-pane active" id="tab-create">
+        <div class="grid-2col">
+          <!-- Left: Prompt & Settings Form -->
+          <div class="card p-6">
+            <h2 class="card-title"><i data-lucide="pen-tool"></i> Story & Video Setup</h2>
+
+            <div class="form-group">
+              <div class="label-row">
+                <label for="promptInput">Video Prompt (English or Hindi)</label>
+                <button type="button" class="link-btn" id="btnCheckSafety">Check Copyright & Safety</button>
+              </div>
+              <textarea id="promptInput" rows="5" placeholder="e.g. Create a heartwarming 10-minute story about a mother living in an Indian village during the monsoon. Her baby becomes sick and she takes care of the baby throughout the night."></textarea>
+              <div id="safetyAlertBox" class="safety-alert hidden"></div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="languageSelect">Prompt & Narration Language</label>
+                <select id="languageSelect">
+                  <option value="en">English (Indian / Neutral)</option>
+                  <option value="hi">Hindi (हिंदी - Natural Indian Accent)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="durationSelect">Video Duration</label>
+                <select id="durationSelect">
+                  <option value="300">5 minutes (~6 scenes, 30 shots)</option>
+                  <option value="600" selected>10 minutes (~12 scenes, 60 shots)</option>
+                  <option value="900">15 minutes (~18 scenes, 90 shots)</option>
+                  <option value="1200">20 minutes (~24 scenes, 120 shots)</option>
+                  <option value="1800">30 minutes (~36 scenes, 180 shots)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="videoStyleSelect">Video Style</label>
+                <select id="videoStyleSelect">
+                  <option value="Cinematic animation">Cinematic animation</option>
+                  <option value="Realistic animation">Realistic animation</option>
+                  <option value="3D animation">3D animation</option>
+                  <option value="2D animation">2D animation</option>
+                  <option value="Children's animation">Children's animation</option>
+                  <option value="Storytelling">Storytelling</option>
+                  <option value="Documentary-style animation">Documentary-style animation</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="charStyleSelect">Character Style</label>
+                <select id="charStyleSelect">
+                  <option value="Semi-realistic">Semi-realistic</option>
+                  <option value="Human-like">Human-like</option>
+                  <option value="Cartoon">Cartoon</option>
+                  <option value="3D">3D</option>
+                  <option value="2D">2D</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="voiceSelect">Voice Strategy</label>
+                <select id="voiceSelect">
+                  <option value="Narrator + characters">Narrator + Characters</option>
+                  <option value="Female">Female Voice</option>
+                  <option value="Male">Male Voice</option>
+                  <option value="Multiple characters">Multiple Characters</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="resolutionSelect">Resolution</label>
+                <select id="resolutionSelect">
+                  <option value="1080p">1080p Full HD</option>
+                  <option value="720p">720p HD</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="aspectRatioSelect">Aspect Ratio</label>
+                <select id="aspectRatioSelect">
+                  <option value="16:9">16:9 (YouTube)</option>
+                  <option value="9:16">9:16 (Shorts / Reels)</option>
+                  <option value="1:1">1:1 (Square)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="musicMoodSelect">Background Music & Soundscape</label>
+              <select id="musicMoodSelect">
+                <option value="Cinematic">Cinematic Strings & Brass (CC0)</option>
+                <option value="Emotional">Emotional Piano & Cello (CC-BY 4.0)</option>
+                <option value="Indian" selected>Indian Traditional Sitar & Bansuri (CC0)</option>
+                <option value="Suspense">Midnight Suspense Drone (CC0)</option>
+                <option value="Happy">Acoustic Sunlight & Joy (CC0)</option>
+                <option value="None">None</option>
+              </select>
+            </div>
+
+            <div class="btn-group mt-4">
+              <button type="button" class="btn btn-primary" id="btnGenerateStoryboard">
+                <i data-lucide="sparkles"></i> 1. Generate Storyboard Preview
+              </button>
+              <button type="button" class="btn btn-accent" id="btnDirectGenerate">
+                <i data-lucide="video"></i> 2. Start Full Video Pipeline
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Estimation & Production Pipeline Monitor -->
+          <div class="flex-col gap-4">
+            <!-- Cost & GPU Estimator Card -->
+            <div class="card p-6">
+              <h2 class="card-title"><i data-lucide="calculator"></i> Cost & Resource Estimation</h2>
+              <div class="estimator-grid">
+                <div class="stat-box">
+                  <div class="stat-label">Estimated Scenes</div>
+                  <div class="stat-val" id="estScenes">12</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-label">Total Shots</div>
+                  <div class="stat-val" id="estShots">60</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-label">Est. GPU Time</div>
+                  <div class="stat-val" id="estGpuTime">25.0 min</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-label">Est. Cloud Cost</div>
+                  <div class="stat-val text-success" id="estCost">$0.88</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-label">Est. Storage</div>
+                  <div class="stat-val" id="estStorage">2.7 GB</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-label">Required VRAM</div>
+                  <div class="stat-val text-accent" id="estVram">24 GB</div>
+                </div>
+              </div>
+              <div class="model-note mt-3">
+                <i data-lucide="info"></i>
+                <span>Multi-shot orchestration ensures zero VRAM overflow by generating short 4–10s clips before long-form FFmpeg assembly.</span>
+              </div>
+            </div>
+
+            <!-- Live Pipeline Stage Status Card -->
+            <div class="card p-6">
+              <div class="flex-between mb-3">
+                <h2 class="card-title"><i data-lucide="activity"></i> Production Status</h2>
+                <span class="badge" id="currentStageBadge">IDLE</span>
+              </div>
+              
+              <div class="progress-bar-wrapper">
+                <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+              </div>
+              <div class="flex-between text-xs text-muted mt-2">
+                <span id="progressStatusMessage">Waiting for user input...</span>
+                <span id="progressPercentText">0%</span>
+              </div>
+
+              <!-- Pipeline Stage Indicators -->
+              <div class="pipeline-steps mt-4">
+                <div class="step-item" id="step-PLANNING"><span>1. Story Planning</span></div>
+                <div class="step-item" id="step-CHARACTER_GENERATION"><span>2. Character Bibles</span></div>
+                <div class="step-item" id="step-SCENE_GENERATION"><span>3. Shot Planning</span></div>
+                <div class="step-item" id="step-VIDEO_GENERATION"><span>4. Wan2.1 Video Gen</span></div>
+                <div class="step-item" id="step-AUDIO_GENERATION"><span>5. Voice & Music</span></div>
+                <div class="step-item" id="step-ASSEMBLY"><span>6. Long-Form Assembly</span></div>
+                <div class="step-item" id="step-COMPLETED"><span>7. Ready</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab: Storyboard Preview & Editor -->
+      <section class="tab-pane" id="tab-storyboard">
+        <div class="flex-between mb-4">
+          <div>
+            <h2 class="section-title" id="sbStoryTitle">Storyboard Preview</h2>
+            <p class="subtitle" id="sbStoryLogline">Review and approve characters, environments, and scene breakdowns before video render.</p>
+          </div>
+          <button class="btn btn-primary" id="btnApproveStoryboard">
+            <i data-lucide="check-circle"></i> Approve & Generate Full Video
+          </button>
+        </div>
+
+        <!-- 3-Act Story Arc -->
+        <div class="card p-6 mb-4">
+          <h3 class="card-title"><i data-lucide="book-open"></i> 3-Act Story Narrative</h3>
+          <div class="story-arc-grid">
+            <div class="arc-card">
+              <div class="arc-badge">Act 1: Beginning</div>
+              <p id="sbBeginning">-</p>
+            </div>
+            <div class="arc-card">
+              <div class="arc-badge">Conflict & Rising Action</div>
+              <p id="sbConflict">-</p>
+            </div>
+            <div class="arc-card">
+              <div class="arc-badge">Act 2: Climax</div>
+              <p id="sbClimax">-</p>
+            </div>
+            <div class="arc-card">
+              <div class="arc-badge">Act 3: Resolution & Ending</div>
+              <p id="sbEnding">-</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Character & Location Bibles -->
+        <div class="grid-2col mb-4">
+          <div class="card p-6">
+            <h3 class="card-title"><i data-lucide="users"></i> Character Consistency Bible</h3>
+            <div id="characterCardsContainer" class="bible-list">
+              <p class="text-muted">No characters generated yet.</p>
+            </div>
+          </div>
+
+          <div class="card p-6">
+            <h3 class="card-title"><i data-lucide="map-pin"></i> Environment Consistency Bible</h3>
+            <div id="locationCardsContainer" class="bible-list">
+              <p class="text-muted">No locations generated yet.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Planned Scenes -->
+        <div class="card p-6">
+          <h3 class="card-title"><i data-lucide="list-ordered"></i> Planned Screenplay Scenes</h3>
+          <div id="plannedScenesContainer" class="scene-list"></div>
+        </div>
+      </section>
+
+      <!-- Tab: Scene Studio & Regeneration -->
+      <section class="tab-pane" id="tab-scenes">
+        <div class="flex-between mb-4">
+          <div>
+            <h2 class="section-title">Scene & Shot Studio</h2>
+            <p class="subtitle">Inspect individual shot clips, video continuity, and regenerate specific scenes.</p>
+          </div>
+        </div>
+
+        <div id="sceneStudioList" class="scene-studio-grid">
+          <p class="text-muted">Generate a project to preview and edit scenes.</p>
+        </div>
+      </section>
+
+      <!-- Tab: Video Theater & Download -->
+      <section class="tab-pane" id="tab-theater">
+        <div class="grid-2col">
+          <!-- Video Player Column -->
+          <div class="card p-6">
+            <h2 class="card-title mb-3"><i data-lucide="tv"></i> Master Video Player</h2>
+            <div class="video-container">
+              <video id="mainVideoPlayer" controls poster="/static/placeholder_poster.jpg">
+                <source id="mainVideoSource" src="" type="video/mp4">
+                <track id="mainSubtitlesTrackEn" kind="subtitles" srclang="en" label="English" default>
+                <track id="mainSubtitlesTrackHi" kind="subtitles" srclang="hi" label="Hindi (हिंदी)">
+                Your browser does not support HTML5 video.
+              </video>
+            </div>
+
+            <div class="flex-between mt-4">
+              <div>
+                <h3 id="playerVideoTitle" class="font-bold text-lg">Project Video</h3>
+                <span class="text-muted text-xs" id="playerVideoMeta">1080p • 24fps • H.264</span>
+              </div>
+              <button class="btn btn-secondary btn-sm" id="btnToggleSubtitles">
+                <i data-lucide="subtitles"></i> Toggle Subtitles
+              </button>
+            </div>
+          </div>
+
+          <!-- Download & Package Center -->
+          <div class="card p-6 flex-col gap-4">
+            <h2 class="card-title"><i data-lucide="download-cloud"></i> Export & Distribution Center</h2>
+            
+            <div class="download-list">
+              <a class="download-item" id="linkDownloadMp4" href="#" download>
+                <div class="flex items-center gap-3">
+                  <i data-lucide="file-video" class="text-accent"></i>
+                  <div>
+                    <div class="font-semibold">Master Video (MP4)</div>
+                    <div class="text-xs text-muted">1080p Full HD • Normalized EBU R128 Audio</div>
+                  </div>
+                </div>
+                <i data-lucide="download"></i>
+              </a>
+
+              <a class="download-item" id="linkDownloadSubEn" href="#" download>
+                <div class="flex items-center gap-3">
+                  <i data-lucide="file-text" class="text-primary"></i>
+                  <div>
+                    <div class="font-semibold">English Subtitles (SRT)</div>
+                    <div class="text-xs text-muted">Synchronized Dialogue & Narration</div>
+                  </div>
+                </div>
+                <i data-lucide="download"></i>
+              </a>
+
+              <a class="download-item" id="linkDownloadSubHi" href="#" download>
+                <div class="flex items-center gap-3">
+                  <i data-lucide="file-text" class="text-primary"></i>
+                  <div>
+                    <div class="font-semibold">Hindi Subtitles (VTT)</div>
+                    <div class="text-xs text-muted">Synchronized Devanagari Script</div>
+                  </div>
+                </div>
+                <i data-lucide="download"></i>
+              </a>
+
+              <a class="download-item" id="linkDownloadManifest" href="#" download>
+                <div class="flex items-center gap-3">
+                  <i data-lucide="file-json" class="text-success"></i>
+                  <div>
+                    <div class="font-semibold">Asset & License Manifest (JSON)</div>
+                    <div class="text-xs text-muted">Model hashes, seed records, CC licenses</div>
+                  </div>
+                </div>
+                <i data-lucide="download"></i>
+              </a>
+
+              <a class="download-item bg-accent-soft" id="linkDownloadZip" href="#">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="archive" class="text-accent"></i>
+                  <div>
+                    <div class="font-semibold text-accent">Full Production Package (ZIP)</div>
+                    <div class="text-xs text-muted">Video + Subtitles + Thumbnail + Manifest</div>
+                  </div>
+                </div>
+                <i data-lucide="download"></i>
+              </a>
+            </div>
+
+            <!-- YouTube Safe Publishing Notice -->
+            <div class="compliance-box mt-3">
+              <div class="flex items-center gap-2 mb-1">
+                <i data-lucide="shield-alert" class="text-warning"></i>
+                <span class="font-bold text-sm">YouTube AI Disclosure Guidance</span>
+              </div>
+              <p class="text-xs text-muted">
+                YouTube requires creators to disclose synthetic human-like characters or events. 
+                Select <strong>"Yes (Altered or synthetic content)"</strong> during video upload.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab: YouTube Compliance -->
+      <section class="tab-pane" id="tab-compliance">
+        <div class="card p-6 mb-4">
+          <div class="flex-between mb-3">
+            <div>
+              <h2 class="card-title"><i data-lucide="shield-check"></i> YouTube Safe Publishing Checklist</h2>
+              <p class="subtitle">Comprehensive legal and platform policy compliance audit for the generated video.</p>
+            </div>
+            <span class="badge bg-success-soft text-success font-bold">100% COMPLIANT</span>
+          </div>
+
+          <div class="compliance-checklist" id="complianceChecklistContainer">
+            <!-- Dynamically populated checklist -->
+          </div>
+
+          <div class="disclaimer-banner mt-4">
+            <i data-lucide="alert-circle"></i>
+            <div>
+              <strong>Legal Notice:</strong> AI-generated content can still create legal, licensing, personality-rights, trademark, or platform-policy issues. Review the generated asset manifest and applicable licenses before commercial publishing.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab: Projects List -->
+      <section class="tab-pane" id="tab-projects">
+        <div class="card p-6">
+          <h2 class="card-title mb-4"><i data-lucide="folder-kanban"></i> Generation History</h2>
+          <div id="projectsListContainer" class="projects-table-wrap">
+            <p class="text-muted">Loading projects...</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
