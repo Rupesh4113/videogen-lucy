@@ -2,6 +2,7 @@
 Videogen-Lucy — Streamlit Long-Form AI Video Generation Platform.
 Standalone Web Application Deployable to Streamlit Community Cloud, Hugging Face Spaces, or Self-Hosted Servers.
 Supports:
+- Google Flow / Google Veo 2.0 API Integration for High-Fidelity Video Generation
 - Dual-Mode Authentication (Email & Password + Mobile Phone & OTP)
 - 5-30 Minute Long-Form Video Generation with Character & Environment Consistency
 - Wan2.1 Multi-Shot Pipeline, EdgeTTS Speech Synthesis, Multi-Track Audio Mixing
@@ -277,12 +278,12 @@ async def _async_list_user_projects(user_id=None):
 
 
 # ==============================================================================
-# SIDEBAR: User Authentication & Navigation
+# SIDEBAR: User Authentication & Navigation & Settings
 # ==============================================================================
 with st.sidebar:
     st.image("https://img.icons8.com/fluency/96/clapperboard.png", width=64)
     st.title("Videogen-Lucy")
-    st.caption("AI Long-Form Video Platform • Wan2.1 Multi-Shot")
+    st.caption("AI Long-Form Video Platform • Google Flow / Wan2.1")
 
     st.markdown("---")
 
@@ -359,6 +360,42 @@ with st.sidebar:
                         st.rerun()
 
     st.markdown("---")
+
+    # AI Engine & API Configuration
+    with st.expander("⚡ Video Engine & Google Flow API", expanded=False):
+        engine_options = [
+            "Google Flow / Veo 2.0 (Google AI)",
+            "Wan2.1 (Local / Cloud GPU)",
+            "Replicate Cloud API",
+            "Simulation / Fast Cloud Mode"
+        ]
+        default_idx = 0 if (os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")) else 0
+        selected_engine = st.selectbox("Video Provider", engine_options, index=default_idx)
+
+        if "Google" in selected_engine:
+            settings.VIDEO_PROVIDER = "google_flow"
+            st.caption("🎬 Powered by **Google Veo 2.0 / Google Flow API**")
+            gkey = st.text_input(
+                "Google API Key (AI Studio / Vertex)",
+                type="password",
+                value=os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY") or "",
+                placeholder="AIzaSy..."
+            )
+            if gkey:
+                os.environ["GOOGLE_API_KEY"] = gkey
+                os.environ["GOOGLE_FLOW_API_KEY"] = gkey
+                os.environ["GEMINI_API_KEY"] = gkey
+                st.success("✓ Google Flow API Key active!")
+            else:
+                st.info("ℹ️ Enter key or use Instant Mode (renders preview clips without charge).")
+        elif "Wan2.1" in selected_engine:
+            settings.VIDEO_PROVIDER = "wan_local"
+        elif "Replicate" in selected_engine:
+            settings.VIDEO_PROVIDER = "replicate"
+        else:
+            settings.VIDEO_PROVIDER = "simulation"
+
+    st.markdown("---")
     nav_selection = st.radio(
         "Navigation",
         [
@@ -372,7 +409,7 @@ with st.sidebar:
     )
 
     st.markdown("---")
-    st.caption("Engine: **Wan2.1 (Multi-Shot) + FFmpeg**")
+    st.caption("Engine: **Google Flow / Wan2.1 Multi-Shot + FFmpeg**")
     st.caption("Voice: **EdgeTTS (EN/HI)** • Audio: **CC0 Sitar/Cinema**")
 
 
@@ -449,7 +486,7 @@ if nav_selection == "🎬 Create & Plan Story":
         
         st.metric("Estimated Scenes", f"{est['total_scenes_estimated']} scenes")
         st.metric("Total Shots", f"{est['total_shots_estimated']} shots")
-        st.metric("Est. GPU Time", f"{est['estimated_generation_time_minutes']} min")
+        st.metric("Est. Generation Time", f"{est['estimated_generation_time_minutes']} min")
         st.metric("Est. Cloud Cost", f"${est['estimated_gpu_cost_usd']:.2f}")
         st.metric("Est. Storage", f"{est['estimated_storage_gb']:.1f} GB")
 
@@ -503,7 +540,7 @@ if nav_selection == "🎬 Create & Plan Story":
                     }
                     u_id = st.session_state.user["id"] if st.session_state.user else None
                     
-                    prog_bar = st.progress(0, text="Initializing Wan2.1 Multi-Shot Generation Pipeline...")
+                    prog_bar = st.progress(0, text="Initializing Multi-Shot Video Pipeline...")
                     def _update_prog(stage, pct, msg):
                         prog_bar.progress(pct / 100.0, text=f"Stage: {stage} ({pct}%) — {msg}")
 
@@ -600,37 +637,51 @@ elif nav_selection == "📽️ Video Theater & Downloads":
     st.header("📽️ Video Theater & Export Distribution")
 
     if not st.session_state.current_project_id:
-        st.info("No active project loaded. Generate a video or open one from 'Project History'.")
+        st.info("No active project loaded. Generate a video in 'Create Story' or open one from 'Project History'.")
     else:
         proj_id = st.session_state.current_project_id
         proj, scenes = run_async(_async_get_project_details(proj_id))
 
         if proj:
-            col_vplay, col_vdown = st.columns([3, 2])
+            project_dir = settings.OUTPUT_DIR / proj_id
+            video_file = project_dir / "final_video.mp4"
 
-            with col_vplay:
-                st.subheader(f"Master Video: {proj.title}")
-                st.caption(f"Resolution: {proj.resolution} • Duration: {proj.target_duration}s • Format: 1080p H.264 / AAC MP4")
+            # Check if video already exists or needs rendering
+            if not video_file.exists():
+                st.warning(f"🎬 Video rendering has not started for **{proj.title}**.")
+                st.info("Click the button below to render all planned scenes, characters, audio tracks, and subtitles into the final 1080p master video:")
 
-                project_dir = settings.OUTPUT_DIR / proj_id
-                video_file = project_dir / "final_video.mp4"
+                if st.button("▶️ Render Long-Form Video Now (1-Click)", type="primary", use_container_width=True):
+                    prog_bar = st.progress(0, text="Starting Full Video Assembly...")
+                    def _update_prog(stage, pct, msg):
+                        prog_bar.progress(pct / 100.0, text=f"Stage: {stage} ({pct}%) — {msg}")
 
-                if video_file.exists():
+                    with st.spinner("Executing Production Pipeline (Wan2.1 / Google Flow + Audio + Subtitles)..."):
+                        try:
+                            video_url = run_async(_async_execute_pipeline(proj_id, _update_prog))
+                            st.success("Video Generated Successfully!")
+                            st.rerun()
+                        except Exception as err:
+                            st.error(f"Error rendering video: {err}")
+            else:
+                col_vplay, col_vdown = st.columns([3, 2])
+
+                with col_vplay:
+                    st.subheader(f"Master Video: {proj.title}")
+                    st.caption(f"Resolution: {proj.resolution} • Duration: {proj.target_duration}s • Format: 1080p H.264 / AAC MP4")
+
                     st.video(str(video_file))
-                else:
-                    st.warning("Video file rendering in progress or not found. Start generation in 'Create Story'.")
 
-                # Subtitles Box
-                sub_file = project_dir / "subtitles_en.srt"
-                if sub_file.exists():
-                    st.markdown("#### 💬 Synchronized Subtitles (SRT)")
-                    with st.expander("View Subtitle Stream", expanded=False):
-                        st.code(sub_file.read_text(encoding="utf-8"), language="text")
+                    # Subtitles Box
+                    sub_file = project_dir / "subtitles_en.srt"
+                    if sub_file.exists():
+                        st.markdown("#### 💬 Synchronized Subtitles (SRT)")
+                        with st.expander("View Subtitle Stream", expanded=False):
+                            st.code(sub_file.read_text(encoding="utf-8"), language="text")
 
-            with col_vdown:
-                st.subheader("📥 Export & Distribution Package")
+                with col_vdown:
+                    st.subheader("📥 Export & Distribution Package")
 
-                if video_file.exists():
                     with open(video_file, "rb") as f:
                         st.download_button(
                             label="📥 Download Master Video (1080p MP4)",
@@ -640,54 +691,54 @@ elif nav_selection == "📽️ Video Theater & Downloads":
                             use_container_width=True
                         )
 
-                if (project_dir / "subtitles_en.srt").exists():
-                    with open(project_dir / "subtitles_en.srt", "rb") as f:
+                    if (project_dir / "subtitles_en.srt").exists():
+                        with open(project_dir / "subtitles_en.srt", "rb") as f:
+                            st.download_button(
+                                label="📄 Download English Subtitles (SRT)",
+                                data=f,
+                                file_name="subtitles_en.srt",
+                                mime="text/plain",
+                                use_container_width=True
+                            )
+
+                    if (project_dir / "subtitles_hi.vtt").exists():
+                        with open(project_dir / "subtitles_hi.vtt", "rb") as f:
+                            st.download_button(
+                                label="📄 Download Hindi Subtitles (WebVTT)",
+                                data=f,
+                                file_name="subtitles_hi.vtt",
+                                mime="text/vtt",
+                                use_container_width=True
+                            )
+
+                    if (project_dir / "asset_manifest.json").exists():
+                        with open(project_dir / "asset_manifest.json", "rb") as f:
+                            st.download_button(
+                                label="📜 Download Asset & License Manifest (JSON)",
+                                data=f,
+                                file_name="asset_manifest.json",
+                                mime="application/json",
+                                use_container_width=True
+                            )
+
+                    # Full ZIP Bundle
+                    if project_dir.exists():
+                        zip_buf = io.BytesIO()
+                        with zipfile.ZipFile(zip_buf, "w", zipfile.ZIP_DEFLATED) as zf:
+                            for p in project_dir.glob("*"):
+                                if p.is_file():
+                                    zf.write(p, arcname=p.name)
+                        zip_buf.seek(0)
                         st.download_button(
-                            label="📄 Download English Subtitles (SRT)",
-                            data=f,
-                            file_name="subtitles_en.srt",
-                            mime="text/plain",
+                            label="📦 Download Full Production Bundle (ZIP)",
+                            data=zip_buf,
+                            file_name=f"videogen_{proj_id}_package.zip",
+                            mime="application/zip",
                             use_container_width=True
                         )
 
-                if (project_dir / "subtitles_hi.vtt").exists():
-                    with open(project_dir / "subtitles_hi.vtt", "rb") as f:
-                        st.download_button(
-                            label="📄 Download Hindi Subtitles (WebVTT)",
-                            data=f,
-                            file_name="subtitles_hi.vtt",
-                            mime="text/vtt",
-                            use_container_width=True
-                        )
-
-                if (project_dir / "asset_manifest.json").exists():
-                    with open(project_dir / "asset_manifest.json", "rb") as f:
-                        st.download_button(
-                            label="📜 Download Asset & License Manifest (JSON)",
-                            data=f,
-                            file_name="asset_manifest.json",
-                            mime="application/json",
-                            use_container_width=True
-                        )
-
-                # Full ZIP Bundle
-                if project_dir.exists():
-                    zip_buf = io.BytesIO()
-                    with zipfile.ZipFile(zip_buf, "w", zipfile.ZIP_DEFLATED) as zf:
-                        for p in project_dir.glob("*"):
-                            if p.is_file():
-                                zf.write(p, arcname=p.name)
-                    zip_buf.seek(0)
-                    st.download_button(
-                        label="📦 Download Full Production Bundle (ZIP)",
-                        data=zip_buf,
-                        file_name=f"videogen_{proj_id}_package.zip",
-                        mime="application/zip",
-                        use_container_width=True
-                    )
-
-                st.markdown("---")
-                st.warning("⚠️ **YouTube AI Disclosure**: When uploading to YouTube, select **'Yes (Altered or synthetic content)'** in Video Details.")
+                    st.markdown("---")
+                    st.warning("⚠️ **YouTube AI Disclosure**: When uploading to YouTube, select **'Yes (Altered or synthetic content)'** in Video Details.")
 
 
 # ==============================================================================

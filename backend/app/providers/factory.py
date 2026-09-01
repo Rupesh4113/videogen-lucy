@@ -7,6 +7,7 @@ from backend.app.providers.base import (
     BaseMusicProvider, BaseLipSyncProvider, BaseStorageProvider
 )
 from backend.app.providers.video.wan_provider import WanVideoProvider
+from backend.app.providers.video.google_flow_provider import GoogleFlowVideoProvider
 from backend.app.providers.video.replicate_provider import ReplicateVideoProvider
 from backend.app.providers.video.simulation_provider import SimulationVideoProvider
 from backend.app.providers.image.mock_image_provider import MockImageProvider
@@ -28,15 +29,14 @@ class ProviderFactory:
 
     @classmethod
     def get_video_provider(cls) -> BaseVideoProvider:
-        if cls._video_provider is None:
-            choice = settings.VIDEO_PROVIDER.lower()
-            if choice == "wan_local":
-                cls._video_provider = WanVideoProvider()
-            elif choice == "replicate":
-                cls._video_provider = ReplicateVideoProvider()
-            else:
-                cls._video_provider = SimulationVideoProvider()
-        return cls._video_provider
+        choice = settings.VIDEO_PROVIDER.lower()
+        if choice in ("google", "google_flow", "veo", "vertex_ai", "gemini_video"):
+            return GoogleFlowVideoProvider()
+        elif choice == "wan_local":
+            return WanVideoProvider()
+        elif choice == "replicate":
+            return ReplicateVideoProvider()
+        return SimulationVideoProvider()
 
     @classmethod
     def get_image_provider(cls) -> BaseImageProvider:
