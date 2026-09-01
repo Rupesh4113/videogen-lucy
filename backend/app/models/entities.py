@@ -1,6 +1,7 @@
 """
 SQLAlchemy ORM Entities for Videogen-Lucy.
 Implements the complete database schema including users, projects, stories, characters, locations, scenes, shots, jobs, license records, and OTP tokens.
+Includes extend_existing=True for seamless reloads in Streamlit and hot-reloading environments.
 """
 import uuid
 from datetime import datetime, timezone
@@ -21,6 +22,7 @@ def get_utc_now() -> datetime:
 
 class User(Base):
     __tablename__ = "users"
+    __table_args__ = {"extend_existing": True}
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     email = Column(String(255), unique=True, index=True, nullable=True)
@@ -38,6 +40,7 @@ class User(Base):
 
 class OTPToken(Base):
     __tablename__ = "otp_tokens"
+    __table_args__ = {"extend_existing": True}
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     phone_or_email = Column(String(255), index=True, nullable=False)
@@ -50,6 +53,7 @@ class OTPToken(Base):
 
 class Project(Base):
     __tablename__ = "projects"
+    __table_args__ = {"extend_existing": True}
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     user_id = Column(String(36), ForeignKey("users.id"), nullable=True)
@@ -92,6 +96,7 @@ class Project(Base):
 
 class Story(Base):
     __tablename__ = "stories"
+    __table_args__ = {"extend_existing": True}
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     project_id = Column(String(36), ForeignKey("projects.id"), unique=True, nullable=False)
@@ -118,6 +123,7 @@ class Story(Base):
 
 class Character(Base):
     __tablename__ = "characters"
+    __table_args__ = {"extend_existing": True}
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     project_id = Column(String(36), ForeignKey("projects.id"), nullable=False)
@@ -150,6 +156,7 @@ class Character(Base):
 
 class CharacterReference(Base):
     __tablename__ = "character_references"
+    __table_args__ = {"extend_existing": True}
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     character_id = Column(String(36), ForeignKey("characters.id"), nullable=False)
@@ -162,6 +169,7 @@ class CharacterReference(Base):
 
 class Location(Base):
     __tablename__ = "locations"
+    __table_args__ = {"extend_existing": True}
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     project_id = Column(String(36), ForeignKey("projects.id"), nullable=False)
@@ -184,6 +192,7 @@ class Location(Base):
 
 class Scene(Base):
     __tablename__ = "scenes"
+    __table_args__ = {"extend_existing": True}
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     project_id = Column(String(36), ForeignKey("projects.id"), nullable=False)
@@ -221,6 +230,7 @@ class Scene(Base):
 
 class Shot(Base):
     __tablename__ = "shots"
+    __table_args__ = {"extend_existing": True}
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     scene_id = Column(String(36), ForeignKey("scenes.id"), nullable=False)
@@ -254,6 +264,7 @@ class Shot(Base):
 
 class GenerationJob(Base):
     __tablename__ = "generation_jobs"
+    __table_args__ = {"extend_existing": True}
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     project_id = Column(String(36), ForeignKey("projects.id"), nullable=False)
@@ -279,6 +290,7 @@ class GenerationJob(Base):
 
 class LicenseRecord(Base):
     __tablename__ = "license_records"
+    __table_args__ = {"extend_existing": True}
 
     id = Column(String(36), primary_key=True, default=generate_uuid)
     project_id = Column(String(36), ForeignKey("projects.id"), nullable=False)
