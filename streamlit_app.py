@@ -14,7 +14,7 @@ import json
 import zipfile
 import asyncio
 from pathlib import Path
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 # Ensure root repository directory is on sys.path for Streamlit Cloud & Hugging Face
 ROOT_DIR = Path(__file__).resolve().parent
@@ -22,7 +22,8 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 import streamlit as st
-from sqlalchemy import select, or_
+from sqlalchemy import select, or_, delete
+from sqlalchemy.orm import selectinload
 
 # Backend Imports
 from backend.app.config import settings
@@ -123,7 +124,7 @@ async def _async_send_otp(phone_or_email):
     async with AsyncSessionLocal() as session:
         identifier = phone_or_email.strip()
         otp_code = generate_otp_code(6)
-        expires_at = datetime.now(timezone.utc) + asyncio.run(asyncio.sleep(0) or asyncio.to_thread(lambda: __import__('datetime').timedelta(minutes=10)))
+        expires_at = datetime.now(timezone.utc) + timedelta(minutes=10)
 
         otp_record = OTPToken(
             phone_or_email=identifier,
@@ -185,7 +186,7 @@ async def _async_verify_otp(phone_or_email, otp_code, name=None):
         }, None
 
 
-async def _async_create_project(payload, user_id=None):
+async def _async_create_and_generate_storyboard(payload, user_id=None):
     async with AsyncSessionLocal() as session:
         proj = Project(
             user_id=user_id,
@@ -203,7 +204,10 @@ async def _async_create_project(payload, user_id=None):
         session.add(proj)
         await session.commit()
         await session.refresh(proj)
-        return proj.id
+
+        orchestrator = WorkflowOrchestrator(session)
+        sb = await orchestrator.generate_storyboard(proj.id)
+        return proj.id, sb
 
 
 async def _async_generate_storyboard(project_id):
@@ -212,22 +216,52 @@ async def _async_generate_storyboard(project_id):
         return await orchestrator.generate_storyboard(project_id)
 
 
+async def _async_create_and_execute_pipeline(payload, user_id=None, progress_callback=None):
+    async with AsyncSessionLocal() as session:
+        proj = Project(
+            user_id=user_id,
+            prompt=payload["prompt"],
+            language=payload["language"],
+            target_duration=payload["target_duration"],
+            video_style=payload["video_style"],
+            character_style=payload["character_style"],
+            voice_type=payload["voice_type"],
+            resolution=payload["resolution"],
+            aspect_ratio=payload["aspect_ratio"],
+            music_mood=payload["music_mood"],
+            status="DRAFT"
+        )
+        session.add(proj)
+        await session.commit()
+        await session.refresh(proj)
+
+        orchestrator = WorkflowOrchestrator(session, progress_callback)
+        video_url = await orchestrator.execute_full_video_pipeline(proj.id, progress_callback)
+        return proj.id, video_url
+
+
 async def _async_execute_pipeline(project_id, progress_callback=None):
     async with AsyncSessionLocal() as session:
-        orchestrator = WorkflowOrchestrator(session)
+        orchestrator = WorkflowOrchestrator(session, progress_callback)
         return await orchestrator.execute_full_video_pipeline(project_id, progress_callback)
 
 
 async def _async_get_project_details(project_id):
     async with AsyncSessionLocal() as session:
-        stmt = select(Project).where(Project.id == project_id)
+        stmt = (
+            select(Project)
+            .options(
+                selectinload(Project.story),
+                selectinload(Project.characters),
+                selectinload(Project.locations),
+                selectinload(Project.scenes).selectinload(Scene.shots),
+            )
+            .where(Project.id == project_id)
+        )
         proj = (await session.execute(stmt)).scalar_one_or_none()
         if not proj:
-            return None
-        
-        scenes_stmt = select(Scene).where(Scene.project_id == project_id).order_by(Scene.order)
-        scenes = (await session.execute(scenes_stmt)).scalars().all()
-        return proj, scenes
+            return None, []
+        return proj, list(proj.scenes)
 
 
 async def _async_list_user_projects(user_id=None):
@@ -238,7 +272,8 @@ async def _async_list_user_projects(user_id=None):
             ).order_by(Project.created_at.desc())
         else:
             stmt = select(Project).order_by(Project.created_at.desc())
-        return (await session.execute(stmt)).scalars().all()
+        res = await session.execute(stmt)
+        return res.scalars().all()
 
 
 # ==============================================================================
@@ -429,6 +464,32 @@ if nav_selection == "🎬 Create & Plan Story":
                 st.error("Please enter a video prompt.")
             else:
                 with st.spinner("Generating 3-Act story structure, Character Bibles, and Scene breakdowns..."):
+                    try:
+                        payload = {
+                            "prompt": prompt_text,
+                            "language": lang,
+                            "target_duration": duration,
+                            "video_style": video_style,
+                            "character_style": char_style,
+                            "voice_type": "Narrator + characters",
+                            "resolution": resolution,
+                            "aspect_ratio": aspect_ratio,
+                            "music_mood": music_mood
+                        }
+                        u_id = st.session_state.user["id"] if st.session_state.user else None
+                        proj_id, sb = run_async(_async_create_and_generate_storyboard(payload, u_id))
+                        st.session_state.current_project_id = proj_id
+                        st.session_state.storyboard_data = sb
+                        st.success("Storyboard Preview generated successfully! Go to 'Storyboard Preview' tab.")
+                    except Exception as err:
+                        st.error(f"Error generating storyboard: {err}")
+
+    with col_act2:
+        if st.button("🚀 2. Direct Full Video Generation", type="secondary", use_container_width=True):
+            if not prompt_text:
+                st.error("Please enter a video prompt.")
+            else:
+                try:
                     payload = {
                         "prompt": prompt_text,
                         "language": lang,
@@ -441,42 +502,17 @@ if nav_selection == "🎬 Create & Plan Story":
                         "music_mood": music_mood
                     }
                     u_id = st.session_state.user["id"] if st.session_state.user else None
-                    proj_id = run_async(_async_create_project(payload, u_id))
-                    st.session_state.current_project_id = proj_id
+                    
+                    prog_bar = st.progress(0, text="Initializing Wan2.1 Multi-Shot Generation Pipeline...")
+                    def _update_prog(stage, pct, msg):
+                        prog_bar.progress(pct / 100.0, text=f"Stage: {stage} ({pct}%) — {msg}")
 
-                    sb = run_async(_async_generate_storyboard(proj_id))
-                    st.session_state.storyboard_data = sb
-                    st.success("Storyboard Preview generated successfully!")
-                    st.rerun()
-
-    with col_act2:
-        if st.button("🚀 2. Direct Full Video Generation", type="secondary", use_container_width=True):
-            if not prompt_text:
-                st.error("Please enter a video prompt.")
-            else:
-                payload = {
-                    "prompt": prompt_text,
-                    "language": lang,
-                    "target_duration": duration,
-                    "video_style": video_style,
-                    "character_style": char_style,
-                    "voice_type": "Narrator + characters",
-                    "resolution": resolution,
-                    "aspect_ratio": aspect_ratio,
-                    "music_mood": music_mood
-                }
-                u_id = st.session_state.user["id"] if st.session_state.user else None
-                proj_id = run_async(_async_create_project(payload, u_id))
-                st.session_state.current_project_id = proj_id
-
-                prog_bar = st.progress(0, text="Initializing Wan2.1 Multi-Shot Generation Pipeline...")
-                def _update_prog(stage, pct, msg):
-                    prog_bar.progress(pct / 100.0, text=f"Stage: {stage} ({pct}%) — {msg}")
-
-                with st.spinner("Executing Full Long-Form Video Production Pipeline..."):
-                    video_url = run_async(_async_execute_pipeline(proj_id, _update_prog))
-                    st.success("Full Long-Form Video Generated Successfully!")
-                    st.rerun()
+                    with st.spinner("Executing Full Long-Form Video Production Pipeline..."):
+                        proj_id, video_url = run_async(_async_create_and_execute_pipeline(payload, u_id, _update_prog))
+                        st.session_state.current_project_id = proj_id
+                        st.success("Full Long-Form Video Generated Successfully! Open 'Video Theater & Downloads' tab.")
+                except Exception as err:
+                    st.error(f"Error executing video pipeline: {err}")
 
 
 # ==============================================================================
@@ -517,16 +553,16 @@ elif nav_selection == "📖 Storyboard Preview":
             col_cb, col_lb = st.columns(2)
             with col_cb:
                 st.markdown("### 👥 Character Consistency Bible")
-                for c in proj.characters:
-                    with st.expander(f"{c.name} ({c.gender}, {c.age})", expanded=True):
+                for c in (proj.characters or []):
+                    with st.expander(f"{c.name} ({c.gender or 'Unknown'}, {c.age or 'Adult'})", expanded=True):
                         st.write(f"**Face & Appearance:** {c.face_description}")
                         st.write(f"**Clothing:** {c.clothing}")
                         st.write(f"**Voice Preset:** {c.voice_preset}")
 
             with col_lb:
                 st.markdown("### 🏞️ Environment Consistency Bible")
-                for loc in proj.locations:
-                    with st.expander(f"{loc.name} ({loc.time_of_day})", expanded=True):
+                for loc in (proj.locations or []):
+                    with st.expander(f"{loc.name} ({loc.time_of_day or 'Day'})", expanded=True):
                         st.write(f"**Description:** {loc.description}")
                         st.write(f"**Lighting & Weather:** {loc.lighting} • {loc.weather}")
 
@@ -535,7 +571,7 @@ elif nav_selection == "📖 Storyboard Preview":
             # Planned Screenplay Scenes
             st.markdown("### 📜 Screenplay Scenes & Shots")
             for sc in scenes:
-                with st.expander(f"Scene {sc.scene_number}: {sc.title} ({sc.duration_seconds}s) — {sc.location_name}", expanded=False):
+                with st.expander(f"Scene {sc.scene_number}: {sc.title or ''} ({sc.duration_seconds}s) — {sc.location_name}", expanded=False):
                     st.write(f"**Action:** {sc.action}")
                     if sc.narration:
                         st.write(f"**Narration:** *\"{sc.narration}\"*")
@@ -550,9 +586,11 @@ elif nav_selection == "📖 Storyboard Preview":
                     prog_bar.progress(pct / 100.0, text=f"Stage: {stage} ({pct}%) — {msg}")
 
                 with st.spinner("Executing Full Long-Form Video Production Pipeline..."):
-                    video_url = run_async(_async_execute_pipeline(proj_id, _update_prog))
-                    st.success("Video Generated Successfully!")
-                    st.rerun()
+                    try:
+                        video_url = run_async(_async_execute_pipeline(proj_id, _update_prog))
+                        st.success("Video Generated Successfully! Check 'Video Theater & Downloads' tab.")
+                    except Exception as err:
+                        st.error(f"Error rendering video: {err}")
 
 
 # ==============================================================================

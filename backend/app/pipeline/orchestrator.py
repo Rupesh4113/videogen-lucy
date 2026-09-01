@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Any, List, Optional, Callable
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, delete
 
 from backend.app.config import settings
 from backend.app.models.entities import (
@@ -64,6 +64,13 @@ class WorkflowOrchestrator:
         project = res.scalar_one_or_none()
         if not project:
             raise ValueError(f"Project {project_id} not found.")
+
+        # Clean up existing storyboard entities if re-generating for this project
+        await self.db.execute(delete(Story).where(Story.project_id == project_id))
+        await self.db.execute(delete(Character).where(Character.project_id == project_id))
+        await self.db.execute(delete(Location).where(Location.project_id == project_id))
+        await self.db.execute(delete(Scene).where(Scene.project_id == project_id))
+        await self.db.commit()
 
         await self._update_progress(project, "PLANNING", 5, "Analyzing prompt and language...")
 

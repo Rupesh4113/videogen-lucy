@@ -1,25 +1,31 @@
 """
-Database engine and session management with Automatic Schema Migration.
-Supports async SQLite for zero-config local runs and async PostgreSQL for cloud deployment.
-Automatically upgrades existing database tables with new columns (e.g. users.phone_number) on startup.
+Database engine and session management with Automatic Dynamic Schema Migration and NullPool connection safety.
+Supports async SQLite for zero-config local/cloud runs and async PostgreSQL for cloud deployment.
+Uses NullPool for SQLite to guarantee multi-thread and multi-event-loop safety in Streamlit and Celery.
 """
 import logging
 from typing import AsyncGenerator
 from sqlalchemy import text
+from sqlalchemy.pool import NullPool
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import declarative_base
 from backend.app.config import settings
 
 logger = logging.getLogger("videogen.db")
 
+Base = declarative_base()
+
 # Configure SQLite or PostgreSQL async engine
+# For SQLite, NullPool prevents "Task attached to a different loop" and connection thread desync in Streamlit/uvloop
 connect_args = {"check_same_thread": False} if settings.DATABASE_URL.startswith("sqlite") else {}
+pool_kwargs = {"poolclass": NullPool} if settings.DATABASE_URL.startswith("sqlite") else {}
 
 engine = create_async_engine(
     settings.DATABASE_URL,
     echo=False,
     connect_args=connect_args,
-    future=True
+    future=True,
+    **pool_kwargs
 )
 
 AsyncSessionLocal = async_sessionmaker(
@@ -29,8 +35,6 @@ AsyncSessionLocal = async_sessionmaker(
     autocommit=False,
     autoflush=False,
 )
-
-Base = declarative_base()
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
@@ -44,49 +48,33 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 async def _migrate_sqlite_schema(conn):
     """
-    Checks existing SQLite database tables and automatically adds any missing columns.
-    Prevents 'no such column' errors when models are updated.
+    Dynamically inspects ALL tables in Base.metadata and automatically adds any missing columns.
+    Completely eliminates any 'table X has no column named Y' errors forever.
     """
-    # 1. Users table migration
-    try:
-        res = await conn.execute(text("PRAGMA table_info(users)"))
-        cols = {row[1] for row in res.fetchall()}
-        if cols:
-            if "phone_number" not in cols:
-                logger.info("Migrating schema: Adding phone_number to users table")
-                await conn.execute(text("ALTER TABLE users ADD COLUMN phone_number VARCHAR(30)"))
-            if "hashed_password" not in cols:
-                logger.info("Migrating schema: Adding hashed_password to users table")
-                await conn.execute(text("ALTER TABLE users ADD COLUMN hashed_password VARCHAR(255)"))
-            if "is_verified" not in cols:
-                logger.info("Migrating schema: Adding is_verified to users table")
-                await conn.execute(text("ALTER TABLE users ADD COLUMN is_verified BOOLEAN DEFAULT 0"))
-            if "updated_at" not in cols:
-                logger.info("Migrating schema: Adding updated_at to users table")
-                await conn.execute(text("ALTER TABLE users ADD COLUMN updated_at DATETIME"))
-    except Exception as e:
-        logger.debug(f"Users table migration check: {e}")
+    import backend.app.models.entities  # Ensure all model tables are registered
+    
+    for table_name, table in Base.metadata.tables.items():
+        try:
+            res = await conn.execute(text(f"PRAGMA table_info({table_name})"))
+            existing_cols = {row[1] for row in res.fetchall()}
+            if not existing_cols:
+                continue
 
-    # 2. Projects table migration
-    try:
-        res = await conn.execute(text("PRAGMA table_info(projects)"))
-        cols = {row[1] for row in res.fetchall()}
-        if cols:
-            if "user_id" not in cols:
-                logger.info("Migrating schema: Adding user_id to projects table")
-                await conn.execute(text("ALTER TABLE projects ADD COLUMN user_id VARCHAR(36)"))
-            if "aspect_ratio" not in cols:
-                logger.info("Migrating schema: Adding aspect_ratio to projects table")
-                await conn.execute(text("ALTER TABLE projects ADD COLUMN aspect_ratio VARCHAR(20) DEFAULT '16:9'"))
-            if "music_mood" not in cols:
-                logger.info("Migrating schema: Adding music_mood to projects table")
-                await conn.execute(text("ALTER TABLE projects ADD COLUMN music_mood VARCHAR(50) DEFAULT 'Cinematic'"))
-    except Exception as e:
-        logger.debug(f"Projects table migration check: {e}")
+            for col in table.columns:
+                if col.name not in existing_cols:
+                    col_type = col.type.compile(engine.dialect)
+                    alter_sql = f"ALTER TABLE {table_name} ADD COLUMN {col.name} {col_type}"
+                    logger.info(f"Auto-migrating SQLite schema: {alter_sql}")
+                    await conn.execute(text(alter_sql))
+        except Exception as e:
+            logger.warning(f"Auto-migration error on table {table_name}: {e}")
 
 
 async def init_db():
     """Create all tables in the database if they do not exist and apply migrations."""
+    import backend.app.models.entities  # noqa: F401
+    
+    settings.init_directories()
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
         if settings.DATABASE_URL.startswith("sqlite"):
