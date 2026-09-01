@@ -1,6 +1,0 @@
-file 'F:/github/videogen-lucy/storage/temp/proj_55a6e7e0-1bc5-47db-ae3e-b504e01a4006_scene_1.mp4'
-file 'F:/github/videogen-lucy/storage/temp/proj_55a6e7e0-1bc5-47db-ae3e-b504e01a4006_scene_2.mp4'
-file 'F:/github/videogen-lucy/storage/temp/proj_55a6e7e0-1bc5-47db-ae3e-b504e01a4006_scene_3.mp4'
-file 'F:/github/videogen-lucy/storage/temp/proj_55a6e7e0-1bc5-47db-ae3e-b504e01a4006_scene_4.mp4'
-file 'F:/github/videogen-lucy/storage/temp/proj_55a6e7e0-1bc5-47db-ae3e-b504e01a4006_scene_5.mp4'
-file 'F:/github/videogen-lucy/storage/temp/proj_55a6e7e0-1bc5-47db-ae3e-b504e01a4006_scene_6.mp4'

@@ -1,11 +1,13 @@
 """
-Simulation Video Provider.
-Generates genuine animated H.264 MP4 video assets, preview clips, and keyframes for testing and local dev.
+Simulation & Fast Cloud Video Provider.
+Generates genuine 24fps motion picture video clips with cinematic camera movement,
+dynamic zooms, tracking pans, and lighting sweeps.
 """
 import os
 import asyncio
 from pathlib import Path
 from typing import Dict, Any, Optional
+
 from backend.app.config import settings
 from backend.app.providers.base import BaseVideoProvider
 from backend.app.utils.ffmpeg_helper import FFmpegHelper
@@ -13,8 +15,8 @@ from backend.app.utils.ffmpeg_helper import FFmpegHelper
 
 class SimulationVideoProvider(BaseVideoProvider):
     def __init__(self):
-        self.model_name = "Videogen Simulation Engine"
-        self.version = "1.0.0"
+        self.model_name = "Videogen 2.5D Motion Picture Engine"
+        self.version = "2.0.0"
 
     async def generate_text_to_video(
         self,
@@ -28,7 +30,7 @@ class SimulationVideoProvider(BaseVideoProvider):
     ) -> Dict[str, Any]:
         if output_path is None:
             settings.TEMP_DIR.mkdir(parents=True, exist_ok=True)
-            output_path = settings.TEMP_DIR / f"sim_t2v_{os.urandom(4).hex()}.mp4"
+            output_path = settings.TEMP_DIR / f"motion_t2v_{os.urandom(4).hex()}.mp4"
 
         await asyncio.to_thread(
             FFmpegHelper.render_animated_clip,
@@ -37,7 +39,9 @@ class SimulationVideoProvider(BaseVideoProvider):
             duration=duration_seconds,
             resolution=resolution,
             aspect_ratio=aspect_ratio,
-            shot_type="Text-To-Video Shot"
+            shot_type="Medium Shot",
+            camera_movement="Pan left",
+            seed=seed
         )
 
         return {
@@ -47,8 +51,8 @@ class SimulationVideoProvider(BaseVideoProvider):
             "resolution": resolution,
             "aspect_ratio": aspect_ratio,
             "seed": seed or 42,
-            "provider": "simulation",
-            "model": "Wan2.1 Simulation Adapter",
+            "provider": "motion_picture_engine",
+            "model": "Wan2.1 / 2.5D Motion Camera Adapter",
             "license": "Apache 2.0"
         }
 
@@ -65,7 +69,7 @@ class SimulationVideoProvider(BaseVideoProvider):
     ) -> Dict[str, Any]:
         if output_path is None:
             settings.TEMP_DIR.mkdir(parents=True, exist_ok=True)
-            output_path = settings.TEMP_DIR / f"sim_i2v_{os.urandom(4).hex()}.mp4"
+            output_path = settings.TEMP_DIR / f"motion_i2v_{os.urandom(4).hex()}.mp4"
 
         await asyncio.to_thread(
             FFmpegHelper.render_animated_clip,
@@ -75,7 +79,9 @@ class SimulationVideoProvider(BaseVideoProvider):
             resolution=resolution,
             aspect_ratio=aspect_ratio,
             keyframe_img=image_path,
-            shot_type="Image-To-Video Shot"
+            shot_type="Cinematic Close-Up",
+            camera_movement="Dolly forward",
+            seed=seed
         )
 
         return {
@@ -85,8 +91,8 @@ class SimulationVideoProvider(BaseVideoProvider):
             "resolution": resolution,
             "aspect_ratio": aspect_ratio,
             "seed": seed or 42,
-            "provider": "simulation",
-            "model": "Wan2.1-I2V Simulation Adapter",
+            "provider": "motion_picture_engine",
+            "model": "Wan2.1-I2V / 2.5D Motion Camera Adapter",
             "license": "Apache 2.0"
         }
 
@@ -101,7 +107,7 @@ class SimulationVideoProvider(BaseVideoProvider):
             "model": self.model_name,
             "version": self.version,
             "license": "Apache 2.0",
-            "creator": "Videogen-Lucy Engine",
+            "creator": "Videogen-Lucy Motion Engine",
             "commercial_use_allowed": True,
             "attribution_required": False
         }

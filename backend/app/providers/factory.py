@@ -10,6 +10,7 @@ from backend.app.providers.video.wan_provider import WanVideoProvider
 from backend.app.providers.video.google_flow_provider import GoogleFlowVideoProvider
 from backend.app.providers.video.replicate_provider import ReplicateVideoProvider
 from backend.app.providers.video.simulation_provider import SimulationVideoProvider
+from backend.app.providers.image.ai_image_provider import AIImageProvider
 from backend.app.providers.image.mock_image_provider import MockImageProvider
 from backend.app.providers.voice.edge_tts_provider import EdgeTTSVoiceProvider
 from backend.app.providers.voice.xtts_provider import XTTSVoiceProvider, ElevenLabsVoiceProvider
@@ -41,7 +42,7 @@ class ProviderFactory:
     @classmethod
     def get_image_provider(cls) -> BaseImageProvider:
         if cls._image_provider is None:
-            cls._image_provider = MockImageProvider()
+            cls._image_provider = AIImageProvider()
         return cls._image_provider
 
     @classmethod
