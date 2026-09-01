@@ -235,11 +235,18 @@ class WorkflowOrchestrator:
             estimated_duration_seconds=project.target_duration
         )
 
-    async def execute_full_video_pipeline(self, project_id: str) -> str:
+    async def execute_full_video_pipeline(
+        self,
+        project_id: str,
+        progress_callback: Optional[Callable[[str, int, str], None]] = None
+    ) -> str:
         """
         Phase 2: Runs the entire video generation, audio mixing, subtitle sync,
         and FFmpeg assembly pipeline to produce final 1080p video.
         """
+        if progress_callback:
+            self.progress_callback = progress_callback
+
         stmt = select(Project).where(Project.id == project_id)
         res = await self.db.execute(stmt)
         project = res.scalar_one_or_none()
