@@ -48,3 +48,22 @@ async def test_royalty_free_music_provider():
     assert Path(res["audio_path"]).exists()
     assert res["commercial_use_allowed"] is True
     assert "Universal" in res["license"] or "CC" in res["license"]
+
+
+@pytest.mark.asyncio
+async def test_google_veo_3_1_video_provider():
+    from backend.app.providers.video.google_flow_provider import GoogleVeoVideoProvider
+    provider = GoogleVeoVideoProvider(model_name="veo-3.1-generate-001")
+    
+    assert provider.model_name == "veo-3.1-generate-001"
+    lic = provider.get_license_info()
+    assert "Veo 3.1" in lic["model"]
+    assert "Google Cloud" in lic["license"]
+    
+    res = await provider.generate_text_to_video(
+        prompt="Cinematic Indian village street during monsoon rain",
+        duration_seconds=2.0
+    )
+    assert res["video_path"] is not None
+    assert Path(res["video_path"]).exists()
+    assert "Veo 3.1" in res["model"]

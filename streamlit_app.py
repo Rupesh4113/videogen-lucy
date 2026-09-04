@@ -2,7 +2,7 @@
 Videogen-Lucy — Streamlit Long-Form AI Video Generation Platform.
 Standalone Web Application Deployable to Streamlit Community Cloud, Hugging Face Spaces, or Self-Hosted Servers.
 Supports:
-- Google Flow / Google Veo 2.0 API Integration for High-Fidelity Video Generation
+- Google Veo 3.1 & Google Flow API Integration for High-Fidelity Video Generation
 - Dual-Mode Authentication (Email & Password + Mobile Phone & OTP)
 - 5-30 Minute Long-Form Video Generation with Character & Environment Consistency
 - Wan2.1 Multi-Shot Pipeline, EdgeTTS Speech Synthesis, Multi-Track Audio Mixing
@@ -283,7 +283,7 @@ async def _async_list_user_projects(user_id=None):
 with st.sidebar:
     st.image("https://img.icons8.com/fluency/96/clapperboard.png", width=64)
     st.title("Videogen-Lucy")
-    st.caption("AI Long-Form Video Platform • Google Flow / Wan2.1")
+    st.caption("AI Long-Form Video Platform • Google Veo 3.1 / Wan2.1")
 
     st.markdown("---")
 
@@ -362,9 +362,10 @@ with st.sidebar:
     st.markdown("---")
 
     # AI Engine & API Configuration
-    with st.expander("⚡ Video Engine & Google Flow API", expanded=False):
+    with st.expander("⚡ Video Engine & Google Veo 3.1 API", expanded=False):
         engine_options = [
-            "Google Flow / Veo 2.0 (Google AI)",
+            "Google Veo 3.1 (Latest Ultra-Realistic Video)",
+            "Google Veo 2.0 (Stable Google AI)",
             "Wan2.1 (Local / Cloud GPU)",
             "Replicate Cloud API",
             "Simulation / Fast Cloud Mode"
@@ -372,11 +373,29 @@ with st.sidebar:
         default_idx = 0 if (os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")) else 0
         selected_engine = st.selectbox("Video Provider", engine_options, index=default_idx)
 
-        if "Google" in selected_engine:
+        if "Google Veo" in selected_engine or "Veo" in selected_engine:
             settings.VIDEO_PROVIDER = "google_flow"
-            st.caption("🎬 Powered by **Google Veo 2.0 / Google Flow API**")
+            
+            # Veo Model Selection
+            default_model_idx = 0 if "3.1" in selected_engine else 3
+            veo_model_choice = st.selectbox(
+                "Veo Model Version",
+                [
+                    "veo-3.1-generate-001 (Veo 3.1 - Recommended)",
+                    "veo-3.1-generate-preview (Veo 3.1 Preview)",
+                    "veo-3.0-generate-001 (Veo 3.0 Production)",
+                    "veo-2.0-generate-001 (Veo 2.0 Stable)"
+                ],
+                index=default_model_idx
+            )
+            selected_model_code = veo_model_choice.split(" ")[0]
+            settings.GOOGLE_VEO_MODEL = selected_model_code
+            os.environ["GOOGLE_VEO_MODEL"] = selected_model_code
+            
+            st.caption(f"🎬 Active Model: **{selected_model_code}** • 1080p Cinematic Synthesis")
+            
             gkey = st.text_input(
-                "Google API Key (AI Studio / Vertex)",
+                "Google API Key (AI Studio / Gemini / Vertex)",
                 type="password",
                 value=os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY") or "",
                 placeholder="AIzaSy..."
@@ -385,9 +404,16 @@ with st.sidebar:
                 os.environ["GOOGLE_API_KEY"] = gkey
                 os.environ["GOOGLE_FLOW_API_KEY"] = gkey
                 os.environ["GEMINI_API_KEY"] = gkey
-                st.success("✓ Google Flow API Key active!")
+                st.success("✓ Google Veo 3.1 API Key active!")
             else:
-                st.info("ℹ️ Enter key or use Instant Mode (renders preview clips without charge).")
+                st.info("ℹ️ Enter key or use Fast Cloud Mode (renders preview clips without charge).")
+
+            with st.expander("GCP Vertex AI Settings (Optional)", expanded=False):
+                gcp_proj = st.text_input("GCP Project ID", value=os.getenv("GCP_PROJECT_ID", ""), placeholder="my-gcp-project")
+                gcp_loc = st.text_input("GCP Location", value=os.getenv("GCP_LOCATION", "us-central1"))
+                if gcp_proj:
+                    os.environ["GCP_PROJECT_ID"] = gcp_proj
+                    os.environ["GCP_LOCATION"] = gcp_loc
         elif "Wan2.1" in selected_engine:
             settings.VIDEO_PROVIDER = "wan_local"
         elif "Replicate" in selected_engine:
@@ -409,7 +435,7 @@ with st.sidebar:
     )
 
     st.markdown("---")
-    st.caption("Engine: **Google Flow / Wan2.1 Multi-Shot + FFmpeg**")
+    st.caption("Engine: **Google Veo 3.1 / Wan2.1 Multi-Shot + FFmpeg**")
     st.caption("Voice: **EdgeTTS (EN/HI)** • Audio: **CC0 Sitar/Cinema**")
 
 

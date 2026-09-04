@@ -7,7 +7,7 @@ from backend.app.providers.base import (
     BaseMusicProvider, BaseLipSyncProvider, BaseStorageProvider
 )
 from backend.app.providers.video.wan_provider import WanVideoProvider
-from backend.app.providers.video.google_flow_provider import GoogleFlowVideoProvider
+from backend.app.providers.video.google_flow_provider import GoogleFlowVideoProvider, GoogleVeoVideoProvider
 from backend.app.providers.video.replicate_provider import ReplicateVideoProvider
 from backend.app.providers.video.simulation_provider import SimulationVideoProvider
 from backend.app.providers.image.ai_image_provider import AIImageProvider
@@ -31,8 +31,9 @@ class ProviderFactory:
     @classmethod
     def get_video_provider(cls) -> BaseVideoProvider:
         choice = settings.VIDEO_PROVIDER.lower()
-        if choice in ("google", "google_flow", "veo", "vertex_ai", "gemini_video"):
-            return GoogleFlowVideoProvider()
+        if any(k in choice for k in ("google", "veo", "vertex_ai", "gemini_video")):
+            model_override = "veo-3.1-generate-001" if any(k in choice for k in ["3", "3.1"]) else getattr(settings, "GOOGLE_VEO_MODEL", "veo-3.1-generate-001")
+            return GoogleFlowVideoProvider(model_name=model_override)
         elif choice == "wan_local":
             return WanVideoProvider()
         elif choice == "replicate":
