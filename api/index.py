@@ -9,4 +9,7 @@ ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
-from backend.app.main import app  # noqa: F401
+from backend.app.main import app as _app
+
+# Top-level ASGI application instance for Vercel Serverless
+app = _app

@@ -11,8 +11,10 @@ ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
 
-# Top-level FastAPI application instance for Vercel & ASGI web servers
-from backend.app.main import app  # noqa: F401
+from backend.app.main import app as _app
+
+# Explicit top-level FastAPI instance definition for Vercel AST parser
+app = _app
 
 if __name__ == "__main__":
     import uvicorn
