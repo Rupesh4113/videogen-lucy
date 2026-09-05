@@ -1,7 +1,7 @@
 """
 Continuity Tracking Engine.
 Maintains state across consecutive shots and scenes, ensuring character clothing,
-held props, weather, lighting, and spatial positions remain strictly consistent.
+held props, weather, lighting, spatial positions, and reference media consistency.
 """
 from typing import Dict, Any, Optional, List, Union
 from backend.app.schemas.screenplay import SceneSchema, ShotSchema
@@ -42,7 +42,9 @@ class ContinuityEngine:
         self,
         current_scene: Union[SceneSchema, SceneEntity],
         current_shot: Union[ShotSchema, ShotEntity],
-        previous_shot: Optional[Union[ShotSchema, ShotEntity]] = None
+        previous_shot: Optional[Union[ShotSchema, ShotEntity]] = None,
+        lock_character_appearance: bool = True,
+        lock_environment: bool = True
     ) -> str:
         """
         Synthesizes a continuity constraint string to inject into the next shot prompt.
@@ -52,16 +54,22 @@ class ContinuityEngine:
         time_of_day = getattr(current_scene, "time_of_day", "Day")
         
         if previous_shot is None and not self.state_history:
-            return f"Initial scene state at {loc_name}, weather is {lighting}."
+            return f"Initial scene state at {loc_name}, lighting is {lighting}."
 
         last_state = self.state_history[-1] if self.state_history else {}
-        prev_desc = previous_shot.description if previous_shot else (last_state.get("active_props", [""])[0])
+        prev_desc = getattr(previous_shot, "description", None) if previous_shot else (last_state.get("active_props", [""])[0])
 
-        continuity_notes = [
-            f"Preserve previous action context: '{prev_desc}'.",
-            f"Maintain location: '{loc_name}' with time of day: '{time_of_day}'.",
-            "Maintain exact same clothing, hairstyles, and facial features without modification."
-        ]
+        continuity_notes = []
+        if prev_desc:
+            continuity_notes.append(f"Preserve previous action context: '{prev_desc}'.")
+
+        if lock_environment:
+            continuity_notes.append(f"Strict Environment Lock: Maintain '{loc_name}' with time of day '{time_of_day}'.")
+        else:
+            continuity_notes.append(f"Location: '{loc_name}', Time: '{time_of_day}'.")
+
+        if lock_character_appearance:
+            continuity_notes.append("Strict Identity Lock: Keep exact same facial features, hairstyle, body shape, and wardrobe.")
 
         chars = getattr(current_scene, "characters", None) or getattr(current_scene, "characters_json", None)
         if chars:

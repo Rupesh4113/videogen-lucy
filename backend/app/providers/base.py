@@ -59,6 +59,44 @@ class BaseVideoProvider(ABC):
         """Return model name, version, and license information."""
         pass
 
+    async def generate_from_references(
+        self,
+        prompt: str,
+        reference_images: Optional[List[Path]] = None,
+        reference_videos: Optional[List[Path]] = None,
+        negative_prompt: Optional[str] = None,
+        duration_seconds: float = 5.0,
+        resolution: str = "1080p",
+        aspect_ratio: str = "16:9",
+        seed: Optional[int] = None,
+        output_path: Optional[Path] = None,
+    ) -> Dict[str, Any]:
+        """
+        Generates video conditioned on reference images and videos.
+        If reference image is available, uses Image-to-Video starting frame synthesis.
+        For video references, extracts motion/keyframes and conditioning instructions.
+        """
+        if reference_images and len(reference_images) > 0 and Path(reference_images[0]).exists():
+            return await self.generate_image_to_video(
+                image_path=Path(reference_images[0]),
+                prompt=prompt,
+                negative_prompt=negative_prompt,
+                duration_seconds=duration_seconds,
+                resolution=resolution,
+                aspect_ratio=aspect_ratio,
+                seed=seed,
+                output_path=output_path
+            )
+        return await self.generate_text_to_video(
+            prompt=prompt,
+            negative_prompt=negative_prompt,
+            duration_seconds=duration_seconds,
+            resolution=resolution,
+            aspect_ratio=aspect_ratio,
+            seed=seed,
+            output_path=output_path
+        )
+
 
 class BaseImageProvider(ABC):
     @abstractmethod

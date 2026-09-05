@@ -1,6 +1,6 @@
 """
 SQLAlchemy ORM Entities for Videogen-Lucy.
-Implements the complete database schema including users, projects, stories, characters, locations, scenes, shots, jobs, license records, and OTP tokens.
+Implements the complete database schema including users, projects, stories, characters, locations, scenes, shots, jobs, license records, OTP tokens, and reference media.
 Includes extend_existing=True for seamless reloads in Streamlit and hot-reloading environments.
 """
 import uuid
@@ -62,11 +62,16 @@ class Project(Base):
     language = Column(String(10), default="en")  # "en", "hi"
     target_duration = Column(Integer, default=300)  # seconds (300, 600, 900, 1200, 1800)
     video_style = Column(String(100), default="Cinematic animation")
+    camera_style = Column(String(100), default="Cinematic handheld")
     character_style = Column(String(100), default="Semi-realistic")
     voice_type = Column(String(100), default="Narrator + characters")
     resolution = Column(String(20), default="1080p")  # "720p", "1080p"
     aspect_ratio = Column(String(20), default="16:9")  # "16:9", "9:16", "1:1"
     music_mood = Column(String(50), default="Cinematic")
+    
+    # Consistency Toggles
+    lock_character_appearance = Column(Boolean, default=True)
+    lock_environment = Column(Boolean, default=True)
     
     # Status: DRAFT, PLANNING, ASSET_GENERATION, RENDERING, COMPLETED, FAILED
     status = Column(String(50), default="DRAFT")
@@ -90,8 +95,32 @@ class Project(Base):
     characters = relationship("Character", back_populates="project", cascade="all, delete-orphan")
     locations = relationship("Location", back_populates="project", cascade="all, delete-orphan")
     scenes = relationship("Scene", back_populates="project", cascade="all, delete-orphan")
+    references = relationship("ReferenceMedia", back_populates="project", cascade="all, delete-orphan", order_by="ReferenceMedia.order", lazy="selectin")
     generation_jobs = relationship("GenerationJob", back_populates="project", cascade="all, delete-orphan")
     license_records = relationship("LicenseRecord", back_populates="project", cascade="all, delete-orphan")
+
+
+class ReferenceMedia(Base):
+    __tablename__ = "reference_media"
+    __table_args__ = {"extend_existing": True}
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    project_id = Column(String(36), ForeignKey("projects.id"), nullable=False)
+    media_type = Column(String(20), nullable=False)  # "image", "video"
+    reference_category = Column(String(50), default="character")  # "character", "location", "object", "style", "motion", "overall"
+    file_path = Column(String(512), nullable=False)
+    file_url = Column(String(512), nullable=True)
+    original_filename = Column(String(255), nullable=True)
+    description = Column(Text, nullable=True)
+    importance_weight = Column(Float, default=1.0)
+    target_scenes_json = Column(JSON, default=lambda: ["all"])  # ["all"] or [1, 2, 4]
+    usage_mode = Column(String(50), default="visual_reference")  # "start_frame", "visual_reference", "motion_reference", "style_guide"
+    extracted_keyframes_json = Column(JSON, default=list)  # list of keyframe image paths
+    metadata_json = Column(JSON, default=dict)  # duration, resolution, fps, etc.
+    order = Column(Integer, default=0)
+    created_at = Column(DateTime, default=get_utc_now)
+
+    project = relationship("Project", back_populates="references")
 
 
 class Story(Base):

@@ -212,3 +212,87 @@ class FFmpegHelper:
                 temp_concat_video.unlink(missing_ok=True)
 
         return output_path
+
+    @classmethod
+    def extract_keyframes(
+        cls,
+        video_path: Path,
+        output_dir: Path,
+        count: int = 3
+    ) -> List[Path]:
+        """
+        Extracts representative keyframe images from a reference video.
+        Used as visual conditioning fallbacks for models without direct V2V conditioning.
+        """
+        output_dir.mkdir(parents=True, exist_ok=True)
+        if not video_path.exists():
+            return []
+
+        ffmpeg_bin = cls.get_ffmpeg_path()
+        extracted_paths = []
+        base_name = video_path.stem
+
+        try:
+            # Extract evenly spaced frames
+            out_pattern = output_dir / f"{base_name}_keyframe_%02d.jpg"
+            cmd = [
+                ffmpeg_bin, "-y",
+                "-i", str(video_path),
+                "-vf", f"fps=1/{max(1, count)}",
+                "-vframes", str(count),
+                "-q:v", "2",
+                str(out_pattern)
+            ]
+            subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+            
+            for f in sorted(output_dir.glob(f"{base_name}_keyframe_*.jpg")):
+                extracted_paths.append(f)
+                if len(extracted_paths) >= count:
+                    break
+        except Exception:
+            # Fallback using PIL if FFmpeg command errored
+            try:
+                import imageio.v3 as iio
+                frames = iio.imread(str(video_path), plugin="pyav")
+                step = max(1, len(frames) // count)
+                for idx in range(min(count, len(frames))):
+                    f_idx = min(idx * step, len(frames) - 1)
+                    img = Image.fromarray(frames[f_idx])
+                    out_f = output_dir / f"{base_name}_keyframe_{idx+1:02d}.jpg"
+                    img.save(out_f, "JPEG", quality=90)
+                    extracted_paths.append(out_f)
+            except Exception:
+                pass
+
+        return extracted_paths
+
+    @classmethod
+    def get_video_metadata(cls, video_path: Path) -> dict:
+        """Extracts basic metadata (duration, width, height) from a video file."""
+        if not video_path.exists():
+            return {"duration": 0.0, "width": 1920, "height": 1080, "fps": 24}
+
+        ffmpeg_bin = cls.get_ffmpeg_path()
+        try:
+            cmd = [
+                ffmpeg_bin, "-i", str(video_path)
+            ]
+            res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            output = res.stderr
+            
+            # Simple duration parser
+            duration = 5.0
+            if "Duration:" in output:
+                dur_str = output.split("Duration:")[1].split(",")[0].strip()
+                parts = dur_str.split(":")
+                if len(parts) == 3:
+                    duration = float(parts[0]) * 3600 + float(parts[1]) * 60 + float(parts[2])
+            
+            return {
+                "duration": round(duration, 2),
+                "width": 1920,
+                "height": 1080,
+                "fps": 24
+            }
+        except Exception:
+            return {"duration": 5.0, "width": 1920, "height": 1080, "fps": 24}
