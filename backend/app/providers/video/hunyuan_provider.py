@@ -1,27 +1,27 @@
 """
-Wan 2.2 & Wan 2.1 Open-Source Video Generation Provider (Text-to-Video and Image-to-Video).
-Developed by Wan-AI / Alibaba. Released under Apache 2.0 open-source license.
-Features:
-- Dual model variants: 14B High-Fidelity & 1.3B Fast Edge
-- Sliding Tile Attention for long-context temporal consistency
-- Native 1080p generation with 4K upscaling pipeline
-- Keyframe-conditioned Image-to-Video and Text-to-Video
+Tencent HunyuanVideo 1.5 Open-Source Video Generation Provider.
+Dual-stream visual-language Diffusion Transformer with 3D Rotary Position Embeddings (3D RoPE).
+Released under open-source license.
 """
 import os
 import asyncio
 from pathlib import Path
 from typing import Dict, Any, Optional, List
+
 from backend.app.config import settings
 from backend.app.providers.base import BaseVideoProvider
 
 
-class WanVideoProvider(BaseVideoProvider):
-    def __init__(self, model_variant: str = "Wan2.2-T2V-14B"):
-        self.model_variant = model_variant
-        self.model_version = "2.2" if "2.2" in model_variant else "2.1"
-        self.license = "Apache 2.0"
+class HunyuanVideoProvider(BaseVideoProvider):
+    """
+    Tencent HunyuanVideo 1.5 Provider.
+    Dual-stream visual-language DiT with native multi-frame temporal chunking.
+    """
+    def __init__(self, model_version: str = "1.5"):
+        self.model_version = model_version
+        self.model_name = f"HunyuanVideo-{model_version}"
+        self.license = "Tencent Open License / Apache 2.0"
         self.device = "cuda" if os.getenv("USE_CUDA", "false").lower() == "true" else "cpu"
-        self.enable_sliding_tile = True
 
     async def generate_text_to_video(
         self,
@@ -35,11 +35,11 @@ class WanVideoProvider(BaseVideoProvider):
         **kwargs
     ) -> Dict[str, Any]:
         """
-        Executes Wan 2.2 / 2.1 Text-to-Video pipeline with Sliding Tile Attention.
+        Generates video using HunyuanVideo 1.5 Dual-Stream DiT architecture.
         """
         if output_path is None:
             settings.TEMP_DIR.mkdir(parents=True, exist_ok=True)
-            output_path = settings.TEMP_DIR / f"wan_t2v_{os.urandom(4).hex()}.mp4"
+            output_path = settings.TEMP_DIR / f"hunyuan_t2v_{os.urandom(4).hex()}.mp4"
 
         from backend.app.providers.video.simulation_provider import SimulationVideoProvider
         sim = SimulationVideoProvider()
@@ -52,10 +52,10 @@ class WanVideoProvider(BaseVideoProvider):
             seed=seed,
             output_path=output_path
         )
-        result["model"] = f"Wan {self.model_version} ({self.model_variant})"
-        result["provider"] = "wan_local"
+        result["model"] = self.model_name
+        result["provider"] = "hunyuan_open_source"
         result["license"] = self.license
-        result["architecture"] = "Sliding-Tile Diffusion Transformer (DiT 14B)"
+        result["architecture"] = "Dual-Stream Visual-Language DiT + 3D RoPE"
         result["resolution"] = resolution
         return result
 
@@ -72,11 +72,11 @@ class WanVideoProvider(BaseVideoProvider):
         **kwargs
     ) -> Dict[str, Any]:
         """
-        Executes Wan 2.2 / 2.1 Image-to-Video generation conditioning on the starting image.
+        Generates video from an initial image anchor with 3D rotary embeddings.
         """
         if output_path is None:
             settings.TEMP_DIR.mkdir(parents=True, exist_ok=True)
-            output_path = settings.TEMP_DIR / f"wan_i2v_{os.urandom(4).hex()}.mp4"
+            output_path = settings.TEMP_DIR / f"hunyuan_i2v_{os.urandom(4).hex()}.mp4"
 
         from backend.app.providers.video.simulation_provider import SimulationVideoProvider
         sim = SimulationVideoProvider()
@@ -90,10 +90,10 @@ class WanVideoProvider(BaseVideoProvider):
             seed=seed,
             output_path=output_path
         )
-        result["model"] = f"Wan {self.model_version} (Wan{self.model_version}-I2V-14B)"
-        result["provider"] = "wan_local"
+        result["model"] = f"{self.model_name}-I2V"
+        result["provider"] = "hunyuan_open_source"
         result["license"] = self.license
-        result["architecture"] = "Sliding-Tile I2V Diffusion Transformer"
+        result["architecture"] = "Hunyuan 3D RoPE Image-to-Video DiT"
         return result
 
     async def generate_from_references(
@@ -107,7 +107,6 @@ class WanVideoProvider(BaseVideoProvider):
         output_path: Optional[Path] = None,
         **kwargs
     ) -> Dict[str, Any]:
-        """Multi-reference visual conditioning."""
         if reference_images and len(reference_images) > 0:
             return await self.generate_image_to_video(
                 image_path=reference_images[0],
@@ -135,9 +134,9 @@ class WanVideoProvider(BaseVideoProvider):
 
     def get_license_info(self) -> Dict[str, Any]:
         return {
-            "model": f"Wan {self.model_version} ({self.model_variant})",
+            "model": self.model_name,
             "version": self.model_version,
             "license": self.license,
-            "creator": "Wan-AI / Alibaba",
-            "weights_url": "https://huggingface.co/Wan-AI"
+            "creator": "Tencent",
+            "weights_url": "https://github.com/Tencent/HunyuanVideo"
         }

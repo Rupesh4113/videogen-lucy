@@ -13,11 +13,18 @@ class ResourceEstimator:
         """
         mins = max(1.0, float(target_duration_seconds) / 60.0)
         
-        # 5 min -> ~6 scenes, 30 shots
-        # 10 min -> ~12 scenes, 60 shots
-        # 20 min -> ~24 scenes, 120 shots
-        # 30 min -> ~36 scenes, 180 shots
-        estimated_scenes = max(4, int(mins * 1.2))
+        # 1 min -> 2 scenes, 10 shots
+        # 3 min -> 4 scenes, 20 shots
+        # 5 min -> 6 scenes, 30 shots
+        # 10 min -> 12 scenes, 60 shots
+        # 20 min -> 24 scenes, 120 shots
+        # 30 min -> 36 scenes, 180 shots
+        if target_duration_seconds <= 60:
+            estimated_scenes = 2
+        elif target_duration_seconds <= 180:
+            estimated_scenes = 4
+        else:
+            estimated_scenes = max(2, int(mins * 1.2))
         estimated_shots = estimated_scenes * 5
 
         # Wan2.1 14B takes ~20-30s per 5s shot on A100 GPU

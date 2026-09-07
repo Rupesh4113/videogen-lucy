@@ -479,19 +479,74 @@ with st.sidebar:
     st.markdown("---")
 
     # AI Engine & API Configuration
-    with st.expander("⚡ Video Engine (OpenAI Sora / Google Veo 3.1 / Wan2.1)", expanded=False):
+    with st.expander("⚡ 2026 Video Engine Hub (Open-Source & Commercial T2V)", expanded=False):
         engine_options = [
-            "OpenAI Sora (Sora-1.0 / Sora-Turbo DiT)",
-            "Google Veo 3.1 (Latest Ultra-Realistic Video)",
-            "Google Veo 2.0 (Stable Google AI)",
-            "Wan2.1 (Local / Cloud GPU)",
+            "Wan 2.2 / 2.1 (Alibaba Open-Source - 14B/1.3B DiT, Sliding Tile)",
+            "Tencent HunyuanVideo 1.5 (Open-Source - Dual-Stream DiT, 3D RoPE)",
+            "Lightricks LTX-Video 2.3 (Open-Source - Spatial-Temporal Token Carving)",
+            "THUDM CogVideoX-5B (Open-Source - 3D Causal VAE)",
+            "Google Veo 3.1 (Commercial - 1080p/4K Ultra-Realistic Video)",
+            "Runway Gen-4.5 (Commercial - @reference consistency & physics)",
+            "Kling 3.0 (Commercial - High Motion & Complex Physics)",
+            "Seedance 2.0 (Commercial - 60s Joint Audio-Video Generation)",
+            "OpenAI Sora (Sora-1.0 / Sora-Turbo Spacetime DiT)",
             "Replicate Cloud API",
             "Simulation / Fast Cloud Mode"
         ]
-        default_idx = 0 if (os.getenv("SORA_API_KEY") or os.getenv("OPENAI_API_KEY")) else 0
-        selected_engine = st.selectbox("Video Provider", engine_options, index=default_idx)
+        selected_engine = st.selectbox("Video Provider Engine", engine_options, index=0)
 
-        if "OpenAI Sora" in selected_engine or "Sora" in selected_engine:
+        if "Wan 2.2" in selected_engine or "Wan" in selected_engine:
+            settings.VIDEO_PROVIDER = "wan_local"
+            wan_variant = st.selectbox("Wan Model Architecture", ["wan-2.2-14b (Flagship 14B DiT)", "wan-2.2-1.3b (Fast 1.3B Consumer)", "wan-2.1-14b (Wan 2.1 14B)", "wan-2.1-1.3b (Wan 2.1 1.3B)"], index=0)
+            settings.WAN_MODEL_VARIANT = wan_variant.split(" ")[0]
+            st.caption("🚀 Architecture: **3D Variational DiT + Sliding Tile Attention** • Native 1080p/4K Multi-Shot")
+
+        elif "HunyuanVideo" in selected_engine or "Hunyuan" in selected_engine:
+            settings.VIDEO_PROVIDER = "hunyuan_local"
+            hunyuan_variant = st.selectbox("Hunyuan Model Version", ["hunyuan-video-1.5 (Flagship Dual-Stream)", "hunyuan-video-1.0 (Standard)"], index=0)
+            st.caption("🇨🇳 Architecture: **Dual-Stream Visual-Language DiT + 3D RoPE** • 54/120 Native Temporal Frames")
+
+        elif "LTX-Video" in selected_engine or "LTX" in selected_engine:
+            settings.VIDEO_PROVIDER = "ltx_local"
+            ltx_variant = st.selectbox("LTX-Video Version", ["ltx-video-2.3 (Real-Time Token Carving)", "ltx-video-2.0 (Standard)"], index=0)
+            st.caption("⚡ Architecture: **High-Efficiency DiT with Spatial-Temporal Token Carving** • Ultra-fast consumer GPU inference")
+
+        elif "CogVideoX" in selected_engine or "CogVideo" in selected_engine:
+            settings.VIDEO_PROVIDER = "cogvideo_local"
+            cog_variant = st.selectbox("CogVideoX Model", ["cogvideox-5b (High Capacity 5B)", "cogvideox-2b (Lightweight 2B)", "cogvideox-1.5 (Pro)"], index=0)
+            st.caption("🧠 Architecture: **3D Causal VAE Compression + Expert Transformer** • Open Commercial Weights")
+
+        elif "Runway" in selected_engine:
+            settings.VIDEO_PROVIDER = "runway_commercial"
+            runway_model = st.selectbox("Runway Model Version", ["gen-4.5 (Latest Flagship - @reference)", "gen-4 (Production)", "gen-3-alpha (Legacy)"], index=0)
+            settings.RUNWAY_MODEL = runway_model.split(" ")[0]
+            r_key = st.text_input("Runway API Key", type="password", value=os.getenv("RUNWAY_API_KEY", ""), placeholder="key_...")
+            if r_key:
+                os.environ["RUNWAY_API_KEY"] = r_key
+                st.success("✓ Runway API Key configured!")
+            st.caption("🎬 Features: **@reference identity locking & Aleph cinematic physics**")
+
+        elif "Kling" in selected_engine:
+            settings.VIDEO_PROVIDER = "kling_commercial"
+            kling_model = st.selectbox("Kling AI Model", ["kling-3.0 (Next-Gen High Motion)", "kling-1.5 (Pro 1080p)", "kling-1.0 (Standard)"], index=0)
+            settings.KLING_MODEL = kling_model.split(" ")[0]
+            k_key = st.text_input("Kling AI API Key", type="password", value=os.getenv("KLING_API_KEY", ""), placeholder="kling_...")
+            if k_key:
+                os.environ["KLING_API_KEY"] = k_key
+                st.success("✓ Kling API Key configured!")
+            st.caption("🌪️ Features: **Dynamic fluid/cloth/camera motion & high-velocity physics**")
+
+        elif "Seedance" in selected_engine:
+            settings.VIDEO_PROVIDER = "seedance_commercial"
+            sd_model = st.selectbox("Seedance Model", ["seedance-2.0 (Joint Audio-Video DiT)", "seedance-1.0 (Video Only)"], index=0)
+            settings.SEEDANCE_MODEL = sd_model.split(" ")[0]
+            sd_key = st.text_input("Seedance API Key", type="password", value=os.getenv("SEEDANCE_API_KEY", ""), placeholder="sd_...")
+            if sd_key:
+                os.environ["SEEDANCE_API_KEY"] = sd_key
+                st.success("✓ Seedance API Key configured!")
+            st.caption("🎵 Features: **60-second joint native audio-visual synchronization**")
+
+        elif "OpenAI Sora" in selected_engine or "Sora" in selected_engine:
             settings.VIDEO_PROVIDER = "openai_sora"
             
             sora_model_choice = st.selectbox(
@@ -529,8 +584,6 @@ with st.sidebar:
         elif "Google Veo" in selected_engine or "Veo" in selected_engine:
             settings.VIDEO_PROVIDER = "google_flow"
             
-            # Veo Model Selection
-            default_model_idx = 0 if "3.1" in selected_engine else 3
             veo_model_choice = st.selectbox(
                 "Veo Model Version",
                 [
@@ -539,13 +592,13 @@ with st.sidebar:
                     "veo-3.0-generate-001 (Veo 3.0 Production)",
                     "veo-2.0-generate-001 (Veo 2.0 Stable)"
                 ],
-                index=default_model_idx
+                index=0
             )
             selected_model_code = veo_model_choice.split(" ")[0]
             settings.GOOGLE_VEO_MODEL = selected_model_code
             os.environ["GOOGLE_VEO_MODEL"] = selected_model_code
             
-            st.caption(f"🎬 Active Model: **{selected_model_code}** • 1080p Cinematic Synthesis")
+            st.caption(f"🎬 Active Model: **{selected_model_code}** • 1080p/4K Cinematic Synthesis")
             
             gkey = st.text_input(
                 "Google API Key (AI Studio / Gemini / Vertex)",
@@ -567,8 +620,6 @@ with st.sidebar:
                 if gcp_proj:
                     os.environ["GCP_PROJECT_ID"] = gcp_proj
                     os.environ["GCP_LOCATION"] = gcp_loc
-        elif "Wan2.1" in selected_engine:
-            settings.VIDEO_PROVIDER = "wan_local"
         elif "Replicate" in selected_engine:
             settings.VIDEO_PROVIDER = "replicate"
         else:
@@ -598,8 +649,8 @@ with st.sidebar:
     )
 
     st.markdown("---")
-    st.caption("Engine: **OpenAI Sora / Google Veo 3.1 / Wan2.1 Multi-Shot**")
-    st.caption("Voice: **EdgeTTS (EN/HI)** • Audio: **CC0 Sitar/Cinema**")
+    st.caption("Engines: **Wan 2.2 / Hunyuan 1.5 / LTX 2.3 / CogVideoX / Veo 3.1 / Runway / Kling / Sora**")
+    st.caption("Voice: **EdgeTTS (EN/HI)** • Audio: **CC0 Indian & Cinematic Soundscapes**")
 
 
 # ==============================================================================
@@ -756,18 +807,27 @@ if nav_selection == "🎬 Create & Plan Story":
         col_f1, col_f2 = st.columns(2)
         with col_f1:
             lang = st.selectbox("Prompt & Narration Language", ["en", "hi"], format_func=lambda x: "English (Indian/Neutral)" if x == "en" else "Hindi (हिंदी - Natural Indian Accent)")
+            duration_labels = {
+                60: "1 minute (60s - Shorts / Reels, 2 scenes, ~10 shots)",
+                180: "3 minutes (180s - YouTube Quick Story, 4 scenes, ~20 shots)",
+                300: "5 minutes (300s - YouTube Standard, 6 scenes, ~30 shots)",
+                600: "10 minutes (600s - YouTube Long-form, 12 scenes, ~60 shots)",
+                900: "15 minutes (900s - YouTube Mid-Feature, 18 scenes, ~90 shots)",
+                1200: "20 minutes (1200s - Episodic Anime, 24 scenes, ~120 shots)",
+                1800: "30 minutes (1800s - Broadcast Episode, 36 scenes, ~180 shots)"
+            }
             duration = st.selectbox(
-                "Video Duration",
-                [300, 600, 900, 1200, 1800],
-                index=1,
-                format_func=lambda x: f"{x // 60} minutes (~{x // 50} scenes, {x // 10} shots)"
+                "Video Duration (1 to 30 Minutes)",
+                [60, 180, 300, 600, 900, 1200, 1800],
+                index=3,
+                format_func=lambda x: duration_labels.get(x, f"{x // 60} minutes")
             )
             video_style = st.selectbox(
                 "Visual Style",
                 [
                     "Indian village realism", "Cinematic realistic", "Photorealistic",
-                    "Bollywood cinematic", "Documentary realism", "3D animation",
-                    "Anime", "Commercial", "Travel film", "Children's animation"
+                    "Hand-painted Japanese animation", "Bollywood cinematic", "Documentary realism",
+                    "3D animation", "Anime", "Commercial", "Travel film", "Children's animation"
                 ]
             )
 
@@ -780,8 +840,8 @@ if nav_selection == "🎬 Create & Plan Story":
                     "Static camera", "Natural documentary camera"
                 ]
             )
-            char_style = st.selectbox("Character Style", ["Semi-realistic", "Human-like", "Cinematic photoreal", "3D animated", "2D hand-drawn"])
-            resolution = st.selectbox("Resolution", ["1080p", "720p"])
+            char_style = st.selectbox("Character Style", ["Semi-realistic", "Human-like", "Cinematic photoreal", "3D animated", "2D hand-drawn", "Hand-painted anime"])
+            resolution = st.selectbox("Resolution", ["1080p", "4K", "720p"])
             aspect_ratio = st.selectbox("Aspect Ratio", ["16:9", "9:16", "1:1"])
 
         music_mood = st.selectbox(

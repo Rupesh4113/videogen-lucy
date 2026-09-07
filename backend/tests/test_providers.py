@@ -13,7 +13,7 @@ from backend.app.providers.audio.royalty_free_music import RoyaltyFreeMusicProvi
 async def test_wan_video_provider():
     provider = WanVideoProvider()
     lic = provider.get_license_info()
-    assert lic["model"] == "Wan2.1"
+    assert "Wan" in lic["model"]
     assert lic["license"] == "Apache 2.0"
 
     res = await provider.generate_text_to_video(

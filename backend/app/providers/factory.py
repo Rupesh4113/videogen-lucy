@@ -7,6 +7,10 @@ from backend.app.providers.base import (
     BaseMusicProvider, BaseLipSyncProvider, BaseStorageProvider
 )
 from backend.app.providers.video.wan_provider import WanVideoProvider
+from backend.app.providers.video.hunyuan_provider import HunyuanVideoProvider
+from backend.app.providers.video.ltx_provider import LTXVideoProvider
+from backend.app.providers.video.cogvideo_provider import CogVideoXProvider
+from backend.app.providers.video.commercial_hub_provider import CommercialT2VProvider
 from backend.app.providers.video.google_flow_provider import GoogleFlowVideoProvider, GoogleVeoVideoProvider
 from backend.app.providers.video.sora_provider import OpenAISoraVideoProvider, SoraVideoProvider
 from backend.app.providers.video.replicate_provider import ReplicateVideoProvider
@@ -30,16 +34,32 @@ class ProviderFactory:
     _storage_provider: BaseStorageProvider = None
 
     @classmethod
-    def get_video_provider(cls) -> BaseVideoProvider:
-        choice = settings.VIDEO_PROVIDER.lower()
-        if any(k in choice for k in ("sora", "openai_sora", "openai")):
+    def get_video_provider(cls, provider_name: str = None) -> BaseVideoProvider:
+        choice = (provider_name or settings.VIDEO_PROVIDER).lower()
+        if any(k in choice for k in ("wan2.2", "wan_2.2", "wan22")):
+            return WanVideoProvider(model_variant="Wan2.2-T2V-14B")
+        elif any(k in choice for k in ("wan", "wan2.1", "wan_local")):
+            return WanVideoProvider(model_variant="Wan2.1-T2V-14B")
+        elif any(k in choice for k in ("hunyuan", "hunyuanvideo")):
+            return HunyuanVideoProvider(model_version="1.5")
+        elif any(k in choice for k in ("ltx", "ltx-video", "ltx_2.3")):
+            return LTXVideoProvider(model_version="2.3")
+        elif any(k in choice for k in ("cogvideo", "cogvideox")):
+            return CogVideoXProvider(model_variant="CogVideoX-5B")
+        elif any(k in choice for k in ("runway", "gen4", "gen-4", "gen4.5")):
+            return CommercialT2VProvider(platform_name="runway_gen4")
+        elif any(k in choice for k in ("kling", "kling3")):
+            return CommercialT2VProvider(platform_name="kling_3.0")
+        elif any(k in choice for k in ("seedance", "bytedance")):
+            return CommercialT2VProvider(platform_name="seedance_2.0")
+        elif any(k in choice for k in ("luma", "dream_machine")):
+            return CommercialT2VProvider(platform_name="luma_dream_machine")
+        elif any(k in choice for k in ("sora", "openai_sora", "openai")):
             model_override = "sora-turbo" if "turbo" in choice else getattr(settings, "SORA_MODEL", "sora-1.0")
             return OpenAISoraVideoProvider(model_name=model_override)
         elif any(k in choice for k in ("google", "veo", "vertex_ai", "gemini_video")):
             model_override = "veo-3.1-generate-001" if any(k in choice for k in ["3", "3.1"]) else getattr(settings, "GOOGLE_VEO_MODEL", "veo-3.1-generate-001")
             return GoogleFlowVideoProvider(model_name=model_override)
-        elif choice == "wan_local":
-            return WanVideoProvider()
         elif choice == "replicate":
             return ReplicateVideoProvider()
         return SimulationVideoProvider()

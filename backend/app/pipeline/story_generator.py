@@ -12,15 +12,24 @@ class StoryGenerator:
     def calculate_scene_count(cls, duration_seconds: int) -> int:
         """
         Calculates appropriate scene count for requested duration:
+        1 min (60s): 2 scenes (~30s per scene)
+        3 min (180s): 4 scenes (~45s per scene)
         5 min (300s): 6 scenes (~50s per scene)
         10 min (600s): 12 scenes (~50s per scene)
+        15 min (900s): 18 scenes (~50s per scene)
         20 min (1200s): 24 scenes (~50s per scene)
         30 min (1800s): 36 scenes (~50s per scene)
         """
-        if duration_seconds <= 300:
+        if duration_seconds <= 60:
+            return 2
+        elif duration_seconds <= 180:
+            return 4
+        elif duration_seconds <= 300:
             return 6
         elif duration_seconds <= 600:
             return 12
+        elif duration_seconds <= 900:
+            return 18
         elif duration_seconds <= 1200:
             return 24
         else:
