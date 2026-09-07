@@ -32,6 +32,9 @@ class Settings:
 
     # API Keys & Cloud Credentials (Optional)
     OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY")
+    SORA_API_KEY: Optional[str] = os.getenv("SORA_API_KEY", os.getenv("OPENAI_API_KEY"))
+    SORA_MODEL: str = os.getenv("SORA_MODEL", "sora-1.0")  # "sora-1.0", "sora-turbo"
+    SORA_ENABLE_RECAPTIONING: bool = os.getenv("SORA_ENABLE_RECAPTIONING", "true").lower() == "true"
     GOOGLE_API_KEY: Optional[str] = os.getenv("GOOGLE_API_KEY")
     GOOGLE_FLOW_API_KEY: Optional[str] = os.getenv("GOOGLE_FLOW_API_KEY")
     GEMINI_API_KEY: Optional[str] = os.getenv("GEMINI_API_KEY")

@@ -439,18 +439,54 @@ with st.sidebar:
     st.markdown("---")
 
     # AI Engine & API Configuration
-    with st.expander("⚡ Video Engine & Google Veo 3.1 API", expanded=False):
+    with st.expander("⚡ Video Engine (OpenAI Sora / Google Veo 3.1 / Wan2.1)", expanded=False):
         engine_options = [
+            "OpenAI Sora (Sora-1.0 / Sora-Turbo DiT)",
             "Google Veo 3.1 (Latest Ultra-Realistic Video)",
             "Google Veo 2.0 (Stable Google AI)",
             "Wan2.1 (Local / Cloud GPU)",
             "Replicate Cloud API",
             "Simulation / Fast Cloud Mode"
         ]
-        default_idx = 0 if (os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")) else 0
+        default_idx = 0 if (os.getenv("SORA_API_KEY") or os.getenv("OPENAI_API_KEY")) else 0
         selected_engine = st.selectbox("Video Provider", engine_options, index=default_idx)
 
-        if "Google Veo" in selected_engine or "Veo" in selected_engine:
+        if "OpenAI Sora" in selected_engine or "Sora" in selected_engine:
+            settings.VIDEO_PROVIDER = "openai_sora"
+            
+            sora_model_choice = st.selectbox(
+                "Sora Model Architecture",
+                [
+                    "sora-1.0 (Flagship Spacetime DiT - Recommended)",
+                    "sora-turbo (Sora Turbo - High Speed Generation)"
+                ],
+                index=0
+            )
+            selected_sora_code = "sora-1.0" if "sora-1.0" in sora_model_choice else "sora-turbo"
+            settings.SORA_MODEL = selected_sora_code
+            os.environ["SORA_MODEL"] = selected_sora_code
+            
+            sora_key = st.text_input(
+                "OpenAI / Sora API Key",
+                type="password",
+                value=os.getenv("SORA_API_KEY") or os.getenv("OPENAI_API_KEY") or "",
+                placeholder="sk-..."
+            )
+            if sora_key:
+                os.environ["SORA_API_KEY"] = sora_key
+                os.environ["OPENAI_API_KEY"] = sora_key
+                settings.SORA_API_KEY = sora_key
+                st.success("✓ OpenAI Sora API Key active!")
+            else:
+                st.info("ℹ️ Enter OpenAI API Key or use Fast Cloud Mode for simulated spacetime preview rendering.")
+
+            sora_recaption = st.checkbox("Enable Sora Spacetime Re-Captioning Engine (5D Expansion)", value=True)
+            settings.SORA_ENABLE_RECAPTIONING = sora_recaption
+            os.environ["SORA_ENABLE_RECAPTIONING"] = "true" if sora_recaption else "false"
+            
+            st.caption("🌌 Architecture: **Spacetime Latent Patch Diffusion Transformer (DiT)** • Variable Aspect 16:9 / 9:16 / 1:1")
+
+        elif "Google Veo" in selected_engine or "Veo" in selected_engine:
             settings.VIDEO_PROVIDER = "google_flow"
             
             # Veo Model Selection
@@ -512,7 +548,7 @@ with st.sidebar:
     )
 
     st.markdown("---")
-    st.caption("Engine: **Google Veo 3.1 / Wan2.1 Multi-Shot + FFmpeg**")
+    st.caption("Engine: **OpenAI Sora / Google Veo 3.1 / Wan2.1 Multi-Shot**")
     st.caption("Voice: **EdgeTTS (EN/HI)** • Audio: **CC0 Sitar/Cinema**")
 
 
