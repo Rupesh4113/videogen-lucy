@@ -1,0 +1,16 @@
+{
+  "model_id": "test_model_123",
+  "name": "TestActorLoRA",
+  "base_model": "Wan2.2-T2V-14B",
+  "training_type": "character",
+  "trigger_word": "[v_test_actor]",
+  "lora_rank": 16,
+  "lora_alpha": 32,
+  "learning_rate": 0.0001,
+  "training_steps": 50,
+  "epochs": 5,
+  "final_loss": 0.0475,
+  "sample_count": 1,
+  "weights_file": "F:\\github\\videogen-lucy\\storage\\trained_loras\\test_model_123_testactorlora\\testactorlora_lora.safetensors",
+  "created_at": "26325.6496005"
+}

@@ -54,6 +54,7 @@ async def create_payment_order(
                 plan_title=order.plan_title
             )
             resp.upi_uri = upi_data["upi_uri"]
+            resp.qr_code_data = upi_data["qr_code_data"]
             resp.merchant_upi_vpa = upi_data["merchant_vpa"]
             resp.merchant_name = upi_data["merchant_name"]
             resp.bank_details = upi_data["bank_details"]

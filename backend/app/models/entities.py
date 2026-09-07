@@ -41,6 +41,7 @@ class User(Base):
 
     projects = relationship("Project", back_populates="user", cascade="all, delete-orphan", lazy="selectin")
     orders = relationship("PaymentOrder", back_populates="user", cascade="all, delete-orphan", lazy="selectin")
+    trained_models = relationship("TrainedModel", back_populates="user", cascade="all, delete-orphan", lazy="selectin")
 
 
 class OTPToken(Base):
@@ -365,4 +366,71 @@ class PaymentOrder(Base):
     paid_at = Column(DateTime, nullable=True)
 
     user = relationship("User", back_populates="orders")
+
+
+class TrainedModel(Base):
+    __tablename__ = "trained_models"
+    __table_args__ = {"extend_existing": True}
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), ForeignKey("users.id"), nullable=True)
+    name = Column(String(255), nullable=False)
+    base_model = Column(String(100), default="Wan2.2-T2V-14B")  # "Wan2.2-T2V-14B", "HunyuanVideo-1.5", "CogVideoX-5B", "LTX-Video-2.3"
+    training_type = Column(String(50), default="character")  # "character", "style", "motion"
+    trigger_word = Column(String(100), nullable=False)  # e.g., "[v_himalayan_monsoon]"
+    
+    source_youtube_url = Column(String(512), nullable=True)
+    source_video_title = Column(String(255), nullable=True)
+    source_channel = Column(String(255), nullable=True)
+    dataset_count = Column(Integer, default=0)
+    
+    lora_rank = Column(Integer, default=32)
+    lora_alpha = Column(Integer, default=64)
+    learning_rate = Column(Float, default=1e-4)
+    training_steps = Column(Integer, default=500)
+    epochs = Column(Integer, default=10)
+    batch_size = Column(Integer, default=1)
+    
+    weights_path = Column(String(512), nullable=True)  # .safetensors file path
+    config_path = Column(String(512), nullable=True)   # json config file path
+    sample_preview_url = Column(String(512), nullable=True)
+    
+    status = Column(String(50), default="DRAFT")  # "DRAFT", "EXTRACTING", "READY_TO_TRAIN", "TRAINING", "COMPLETED", "FAILED"
+    progress = Column(Integer, default=0)
+    current_epoch = Column(Integer, default=0)
+    current_step = Column(Integer, default=0)
+    final_loss = Column(Float, nullable=True)
+    loss_history = Column(JSON, default=list)
+    error_message = Column(Text, nullable=True)
+    
+    created_at = Column(DateTime, default=get_utc_now)
+    updated_at = Column(DateTime, default=get_utc_now, onupdate=get_utc_now)
+
+    user = relationship("User", back_populates="trained_models")
+    samples = relationship("DatasetSample", back_populates="model", cascade="all, delete-orphan", lazy="selectin")
+
+
+class DatasetSample(Base):
+    __tablename__ = "dataset_samples"
+    __table_args__ = {"extend_existing": True}
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    model_id = Column(String(36), ForeignKey("trained_models.id"), nullable=False)
+    sample_type = Column(String(50), default="video_clip")  # "video_clip", "keyframe_image"
+    file_path = Column(String(512), nullable=False)
+    thumbnail_path = Column(String(512), nullable=True)
+    
+    timestamp_start = Column(Float, default=0.0)
+    timestamp_end = Column(Float, default=5.0)
+    duration = Column(Float, default=5.0)
+    resolution = Column(String(50), default="1080p")
+    
+    caption = Column(Text, nullable=False)
+    tags = Column(JSON, default=list)
+    is_approved = Column(Boolean, default=True)
+    
+    created_at = Column(DateTime, default=get_utc_now)
+
+    model = relationship("TrainedModel", back_populates="samples")
+
 

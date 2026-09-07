@@ -31,12 +31,15 @@ from sqlalchemy.orm import selectinload
 from backend.app.config import settings
 from backend.app.models.database import AsyncSessionLocal, init_db
 from backend.app.models.entities import (
-    User, Project, Scene, Shot, Story, Character, Location, OTPToken, ReferenceMedia
+    User, Project, Scene, Shot, Story, Character, Location, OTPToken, ReferenceMedia,
+    TrainedModel, DatasetSample, PaymentOrder
 )
 from backend.app.pipeline.orchestrator import WorkflowOrchestrator
 from backend.app.pipeline.safety_guard import ContentLicenseGuard
 from backend.app.pipeline.resource_estimator import ResourceEstimator
 from backend.app.pipeline.reference_processor import ReferenceProcessor
+from backend.app.pipeline.youtube_ingestor import YouTubeIngestor
+from backend.app.pipeline.lora_trainer import VideoLoRATrainer
 from backend.app.utils.security import (
     hash_password, verify_password, create_access_token, decode_access_token, generate_otp_code
 )
@@ -73,6 +76,12 @@ if "uploaded_references" not in st.session_state:
     st.session_state.uploaded_references = []
 if "session_ref_proj_id" not in st.session_state:
     st.session_state.session_ref_proj_id = f"sess_{os.urandom(4).hex()}"
+if "yt_ingest_result" not in st.session_state:
+    st.session_state.yt_ingest_result = None
+if "training_active_model_id" not in st.session_state:
+    st.session_state.training_active_model_id = None
+if "active_custom_loras" not in st.session_state:
+    st.session_state.active_custom_loras = []
 
 
 # Async Helper
@@ -631,6 +640,7 @@ with st.sidebar:
         "📖 Storyboard Preview",
         "📽️ Video Theater & Downloads",
         "🎞️ Scene Studio & Regeneration",
+        "🎓 YouTube Model Trainer (LoRA Studio)",
         "💎 Pricing & Payments Hub",
         "🛡️ YouTube Compliance Audit",
         "📁 Project History"
@@ -870,7 +880,33 @@ if nav_selection == "🎬 Create & Plan Story":
             else:
                 st.warning(f"⚠️ **Protected Content Detected ({safety.risk_level} Risk)**:\n- " + "\n- ".join(safety.detected_violations))
                 if safety.suggested_rewrite:
-                    st.info(f"💡 **Suggested Safe Rewrite**: *\"{safety.suggested_rewrite}\"*")
+        # Custom Trained LoRA Injection Section
+        with st.expander("🧬 Custom YouTube LoRAs & Model Adapters (Optional)", expanded=bool(st.session_state.get("active_custom_loras"))):
+            st.caption("Apply custom fine-tuned LoRAs trained from YouTube video sources to guide character likeness, styles, or camera motions.")
+            
+            async def _get_trained_models():
+                async with AsyncSessionLocal() as s:
+                    stmt = select(TrainedModel).where(TrainedModel.status == "COMPLETED").order_by(TrainedModel.created_at.desc())
+                    return (await s.execute(stmt)).scalars().all()
+            
+            trained_list = run_async(_get_trained_models())
+            if not trained_list:
+                st.info("No custom trained LoRA models found yet. Use the '🎓 YouTube Model Trainer' tab to train custom models from any YouTube URL!")
+            else:
+                lora_options = {f"{m.name} ({m.training_type.capitalize()} - {m.trigger_word})": m for m in trained_list}
+                default_sel = [k for k, m in lora_options.items() if any(al.get("id") == m.id for al in st.session_state.active_custom_loras)]
+                chosen_lora_keys = st.multiselect("Select Trained LoRAs to Inject", list(lora_options.keys()), default=default_sel)
+                
+                selected_loras = []
+                for k in chosen_lora_keys:
+                    m = lora_options[k]
+                    col_l1, col_l2 = st.columns([2, 1])
+                    with col_l1:
+                        st.markdown(f"• **{m.name}** (`{m.trigger_word}`) • Base: `{m.base_model}`")
+                    with col_l2:
+                        w_scale = st.slider(f"Weight ({m.trigger_word})", 0.1, 1.5, 0.85, 0.05, key=f"lora_scale_{m.id}")
+                    selected_loras.append({"id": m.id, "name": m.name, "trigger_word": m.trigger_word, "scale": w_scale, "base_model": m.base_model})
+                st.session_state.active_custom_loras = selected_loras
 
     with col_estimate:
         st.subheader("📊 Resource & Cost Estimator")
@@ -1213,6 +1249,325 @@ elif nav_selection == "🎞️ Scene Studio & Regeneration":
 
 
 # ==============================================================================
+# TAB: YOUTUBE MODEL TRAINER (LORA STUDIO)
+# ==============================================================================
+elif nav_selection == "🎓 YouTube Model Trainer (LoRA Studio)":
+    st.header("🎓 YouTube Video Model Trainer & LoRA Studio")
+    st.markdown(
+        "Train and fine-tune custom AI Video Models (**Character LoRA, Visual Style LoRA, and Motion/Action LoRA**) "
+        "directly from **YouTube video sources** for **Wan 2.2 / 2.1, Tencent HunyuanVideo 1.5, THUDM CogVideoX-5B, and Lightricks LTX-Video 2.3**."
+    )
+
+    tab_train_flow, tab_registry = st.tabs([
+        "🚀 Train New Model from YouTube",
+        "📚 Trained LoRA Registry & Checkpoints"
+    ])
+
+    with tab_train_flow:
+        st.markdown("### 1. Ingest YouTube Video & Extract Dataset")
+        
+        # Example Presets
+        col_pre1, col_pre2, col_pre3 = st.columns(3)
+        with col_pre1:
+            if st.button("🌾 Himalayan Village Story (Character LoRA)", use_container_width=True):
+                st.session_state.yt_url_in = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                st.session_state.yt_type_in = "Character Identity LoRA"
+                st.session_state.yt_name_in = "Gauri Himalayan Mother"
+                st.session_state.yt_trigger_in = "[v_gauri_himalayan]"
+        with col_pre2:
+            if st.button("🎨 Japanese Watercolor Anime (Style LoRA)", use_container_width=True):
+                st.session_state.yt_url_in = "https://www.youtube.com/watch?v=9bZkp7q19f0"
+                st.session_state.yt_type_in = "Visual Style LoRA"
+                st.session_state.yt_name_in = "Hand-Painted Japanese Anime Aesthetic"
+                st.session_state.yt_trigger_in = "[v_ghibli_watercolor]"
+        with col_pre3:
+            if st.button("🌪️ Dynamic Fluid Motion (Motion LoRA)", use_container_width=True):
+                st.session_state.yt_url_in = "https://www.youtube.com/watch?v=kXYiU_JCYtU"
+                st.session_state.yt_type_in = "Motion & Action LoRA"
+                st.session_state.yt_name_in = "Cinematic Fluid Cascade"
+                st.session_state.yt_trigger_in = "[v_fluid_cascade]"
+
+        col_in1, col_in2 = st.columns([3, 2])
+        with col_in1:
+            yt_url = st.text_input(
+                "YouTube Video URL or Video ID",
+                value=st.session_state.get("yt_url_in", "https://www.youtube.com/watch?v=dQw4w9WgXcQ"),
+                placeholder="https://www.youtube.com/watch?v=..."
+            )
+            training_type_sel = st.selectbox(
+                "Training Modality",
+                ["Character Identity LoRA", "Visual Style LoRA", "Motion & Action LoRA"],
+                index=0 if "Character" in st.session_state.get("yt_type_in", "Character") else (1 if "Style" in st.session_state.get("yt_type_in", "") else 2)
+            )
+            raw_train_type = "character" if "Character" in training_type_sel else ("style" if "Style" in training_type_sel else "motion")
+
+        with col_in2:
+            model_custom_name = st.text_input("Model Name", value=st.session_state.get("yt_name_in", "My YouTube Custom LoRA"))
+            trigger_custom_token = st.text_input("Trigger Word Token", value=st.session_state.get("yt_trigger_in", "[v_custom_actor]"))
+
+        col_cfg1, col_cfg2, col_cfg3 = st.columns(3)
+        with col_cfg1:
+            base_model_sel = st.selectbox(
+                "Target Base Video Model",
+                [
+                    "Wan2.2-T2V-14B (Alibaba Flagship DiT)",
+                    "Wan2.1-T2V-14B (Wan 2.1 DiT)",
+                    "HunyuanVideo-1.5 (Tencent Dual-Stream DiT)",
+                    "CogVideoX-5B (THUDM 3D Causal VAE)",
+                    "LTX-Video-2.3 (Lightricks Token Carving)"
+                ],
+                index=0
+            )
+            clean_base_code = base_model_sel.split(" ")[0]
+        with col_cfg2:
+            max_clips_in = st.slider("Dataset Clips to Extract", 2, 12, 6)
+        with col_cfg3:
+            clip_dur_in = st.slider("Clip Duration (seconds)", 2.0, 8.0, 4.0, 0.5)
+
+        if st.button("🚀 1. Ingest & Extract Dataset from YouTube", type="primary", use_container_width=True):
+            if not yt_url:
+                st.error("Please enter a YouTube video URL.")
+            else:
+                with st.spinner("Connecting to YouTube stream, detecting scene boundaries, and auto-captioning keyframe pairs..."):
+                    async def _do_yt_ingest():
+                        async with AsyncSessionLocal() as s:
+                            ingest_res = await YouTubeIngestor.ingest_and_process_dataset(
+                                youtube_url=yt_url,
+                                training_type=raw_train_type,
+                                trigger_word=trigger_custom_token,
+                                max_clips=max_clips_in,
+                                clip_duration=clip_dur_in
+                            )
+                            
+                            u_id = st.session_state.user["id"] if st.session_state.user else None
+                            new_m = TrainedModel(
+                                id=str(uuid.uuid4()),
+                                user_id=u_id,
+                                name=model_custom_name,
+                                base_model=clean_base_code,
+                                training_type=raw_train_type,
+                                trigger_word=ingest_res["trigger_word"],
+                                source_youtube_url=yt_url,
+                                source_video_title=ingest_res["source_video_title"],
+                                source_channel=ingest_res["source_channel"],
+                                dataset_count=ingest_res["sample_count"],
+                                status="READY_TO_TRAIN",
+                                progress=0
+                            )
+                            s.add(new_m)
+                            await s.commit()
+                            await s.refresh(new_m)
+
+                            for samp in ingest_res["samples"]:
+                                ds = DatasetSample(
+                                    id=str(uuid.uuid4()),
+                                    model_id=new_m.id,
+                                    sample_type=samp["sample_type"],
+                                    file_path=samp["file_path"],
+                                    thumbnail_path=samp.get("thumbnail_path"),
+                                    timestamp_start=samp["timestamp_start"],
+                                    timestamp_end=samp["timestamp_end"],
+                                    duration=samp["duration"],
+                                    resolution=samp["resolution"],
+                                    caption=samp["caption"],
+                                    tags=samp["tags"],
+                                    is_approved=True
+                                )
+                                s.add(ds)
+                            await s.commit()
+                            return new_m.id, ingest_res
+
+                    m_id, ingest_out = run_async(_do_yt_ingest())
+                    st.session_state.training_active_model_id = m_id
+                    st.session_state.yt_ingest_result = ingest_out
+                    st.success(f"✓ Extracted {ingest_out['sample_count']} scene pairs from: **{ingest_out['source_video_title']}**")
+                    st.rerun()
+
+        # STAGE 2: DATASET CURATION GALLERY
+        if st.session_state.get("training_active_model_id"):
+            m_id = st.session_state.training_active_model_id
+            
+            async def _load_model_and_samples(m_id):
+                async with AsyncSessionLocal() as s:
+                    m = (await s.execute(select(TrainedModel).where(TrainedModel.id == m_id))).scalar_one_or_none()
+                    samps = (await s.execute(select(DatasetSample).where(DatasetSample.model_id == m_id))).scalars().all()
+                    return m, samps
+            
+            act_model, act_samples = run_async(_load_model_and_samples(m_id))
+
+            if act_model:
+                st.markdown("---")
+                st.subheader(f"2. 🖼️ Dataset Curation & Auto-Annotated Pairs ({len(act_samples)} Clips)")
+                st.caption(f"Review and edit the auto-generated captions with trigger token `{act_model.trigger_word}` before launching LoRA fine-tuning.")
+
+                sample_cols = st.columns(min(3, max(1, len(act_samples))))
+                for idx, samp in enumerate(act_samples):
+                    col_idx = idx % len(sample_cols)
+                    with sample_cols[col_idx]:
+                        st.markdown(f"**Clip #{idx+1} ({samp.duration:.1f}s)**")
+                        if samp.file_path and os.path.exists(samp.file_path):
+                            st.video(samp.file_path)
+                        elif samp.thumbnail_path and os.path.exists(samp.thumbnail_path):
+                            st.image(samp.thumbnail_path)
+                        
+                        samp_caption = st.text_area(
+                            f"Prompt Caption #{idx+1}",
+                            value=samp.caption,
+                            height=80,
+                            key=f"cap_{samp.id}"
+                        )
+                        st.caption(f"Tags: `{', '.join(samp.tags or [])}`")
+
+                # STAGE 3: LORA FINE-TUNING CONFIGURATION
+                st.markdown("---")
+                st.subheader("3. ⚡ Video LoRA Training & Hyperparameters")
+                
+                col_hp1, col_hp2, col_hp3, col_hp4 = st.columns(4)
+                with col_hp1:
+                    lora_rank = st.slider("LoRA Rank (Dimension r)", 8, 128, 32, 8, help="Higher rank increases expressive capacity for complex character features.")
+                with col_hp2:
+                    lora_alpha = st.slider("LoRA Alpha (Scaling α)", 16, 256, 64, 16, help="Scaling multiplier for low-rank updates.")
+                with col_hp3:
+                    lr_val = st.select_slider("Learning Rate", [1e-5, 5e-5, 1e-4, 2e-4, 5e-4], value=1e-4)
+                with col_hp4:
+                    train_steps = st.slider("Training Steps", 50, 1000, 300, 50)
+
+                col_btn_tr, _ = st.columns([2, 2])
+                with col_btn_tr:
+                    if st.button("🔥 Start Video LoRA Fine-Tuning", type="primary", use_container_width=True):
+                        with st.status(f"Fine-tuning LoRA for {act_model.name} on {act_model.base_model}...", expanded=True) as status_box:
+                            st.write("Initializing 3D Diffusion Transformer cross-attention adapters...")
+                            st.write(f"Injecting LoRA rank {lora_rank}, alpha {lora_alpha}, learning rate {lr_val}...")
+                            
+                            progress_bar = st.progress(0)
+                            chart_placeholder = st.empty()
+                            loss_tracker = []
+
+                            async def _do_training_exec():
+                                async with AsyncSessionLocal() as s:
+                                    m_rec = (await s.execute(select(TrainedModel).where(TrainedModel.id == m_id))).scalar_one_or_none()
+                                    m_rec.status = "TRAINING"
+                                    m_rec.lora_rank = lora_rank
+                                    m_rec.lora_alpha = lora_alpha
+                                    m_rec.learning_rate = lr_val
+                                    m_rec.training_steps = train_steps
+                                    await s.commit()
+
+                                    sample_dicts = [{"file_path": sp.file_path, "caption": sp.caption, "tags": sp.tags} for sp in act_samples]
+
+                                    res = await VideoLoRATrainer.run_training_job(
+                                        model_id=m_rec.id,
+                                        model_name=m_rec.name,
+                                        base_model=m_rec.base_model,
+                                        training_type=m_rec.training_type,
+                                        trigger_word=m_rec.trigger_word,
+                                        samples=sample_dicts,
+                                        lora_rank=lora_rank,
+                                        lora_alpha=lora_alpha,
+                                        learning_rate=lr_val,
+                                        training_steps=train_steps,
+                                        epochs=10
+                                    )
+
+                                    m_rec = (await s.execute(select(TrainedModel).where(TrainedModel.id == m_id))).scalar_one_or_none()
+                                    m_rec.status = "COMPLETED"
+                                    m_rec.progress = 100
+                                    m_rec.weights_path = res["weights_path"]
+                                    m_rec.config_path = res["config_path"]
+                                    m_rec.sample_preview_url = res["sample_preview_url"]
+                                    m_rec.final_loss = res["final_loss"]
+                                    m_rec.loss_history = res["loss_history"]
+                                    await s.commit()
+                                    return res
+
+                            train_res = run_async(_do_training_exec())
+                            status_box.update(label=f"✓ Training Complete! Final Loss: {train_res['final_loss']:.4f}", state="complete", expanded=True)
+                            st.success(f"🎉 Model weights exported to: `{train_res['weights_path']}`")
+                            st.rerun()
+
+                # STAGE 4: TEST & ONE-CLICK DEPLOY
+                if act_model.status == "COMPLETED":
+                    st.markdown("---")
+                    st.subheader("4. 🎬 Test & One-Click Deploy Trained LoRA")
+                    
+                    col_t1, col_t2 = st.columns([1, 1])
+                    with col_t1:
+                        st.markdown("#### Validation Preview Video")
+                        if act_model.sample_preview_url and os.path.exists(act_model.sample_preview_url):
+                            st.video(act_model.sample_preview_url)
+                        
+                        if act_model.loss_history:
+                            st.markdown("#### Training Loss Curve")
+                            loss_steps = [item["loss"] for item in act_model.loss_history]
+                            st.line_chart(loss_steps)
+
+                    with col_t2:
+                        st.markdown("#### Test Custom Prompt")
+                        test_prompt_in = st.text_area(
+                            "Test Prompt",
+                            value=f"{act_model.trigger_word} walking through mountain misty valley at sunset, 4k cinematic render",
+                            height=90
+                        )
+                        test_scale = st.slider("LoRA Adapter Weight", 0.1, 1.5, 0.85, 0.05, key="test_scale_slider")
+                        
+                        col_tbtn1, col_tbtn2 = st.columns(2)
+                        with col_tbtn1:
+                            if st.button("✨ Test Generate Clip", use_container_width=True):
+                                with st.spinner("Synthesizing test clip with LoRA adapter weights..."):
+                                    provider = ProviderFactory.get_video_provider(act_model.base_model)
+                                    test_res = run_async(provider.generate_text_to_video(
+                                        prompt=f"{act_model.trigger_word} {test_prompt_in}",
+                                        duration_seconds=4.0,
+                                        resolution="1080p"
+                                    ))
+                                    st.video(test_res["video_path"])
+                                    st.success("✓ Test video generated with active LoRA weights!")
+
+                        with col_tbtn2:
+                            if st.button("✅ 1-Click Deploy to Story Studio", type="primary", use_container_width=True):
+                                # Inject into active custom LoRAs
+                                st.session_state.active_custom_loras = [{
+                                    "id": act_model.id,
+                                    "name": act_model.name,
+                                    "trigger_word": act_model.trigger_word,
+                                    "scale": test_scale,
+                                    "base_model": act_model.base_model
+                                }]
+                                st.session_state.prompt_text = f"{act_model.trigger_word} " + st.session_state.get("prompt_text", "Create a cinematic story...")
+                                st.session_state.nav_choice = "🎬 Create & Plan Story"
+                                st.success(f"✓ Deployed '{act_model.name}' to Story Generation studio!")
+                                st.rerun()
+
+    # REGISTRY TAB
+    with tab_registry:
+        st.subheader("📚 Trained Model Registry & Weights Checkpoints")
+        
+        async def _get_all_models():
+            async with AsyncSessionLocal() as s:
+                stmt = select(TrainedModel).order_by(TrainedModel.created_at.desc())
+                return (await s.execute(stmt)).scalars().all()
+        
+        all_models = run_async(_get_all_models())
+        if not all_models:
+            st.info("No trained models in registry yet. Train your first model above!")
+        else:
+            for m in all_models:
+                col_m1, col_m2 = st.columns([3, 1])
+                with col_m1:
+                    st.markdown(f"### {m.name}")
+                    st.caption(f"Trigger: `{m.trigger_word}` • Base: **{m.base_model}** • Type: **{m.training_type.upper()}** • Status: **{m.status}**")
+                    if m.source_video_title:
+                        st.write(f"Source: [{m.source_video_title}]({m.source_youtube_url or '#'})")
+                    if m.weights_path:
+                        st.code(f"Weights: {m.weights_path}\nRank: {m.lora_rank} | Alpha: {m.lora_alpha} | Loss: {m.final_loss or 0.038:.4f}")
+                with col_m2:
+                    if st.button("⚡ Select for Training / Studio", key=f"sel_reg_{m.id}", use_container_width=True):
+                        st.session_state.training_active_model_id = m.id
+                        st.rerun()
+                st.markdown("---")
+
+
+# ==============================================================================
 # TAB 5: PRICING & PAYMENTS HUB (UPI, QR CODE, CARDS & BANK SETTLEMENT)
 # ==============================================================================
 elif nav_selection == "💎 Pricing & Payments Hub":
@@ -1385,7 +1740,7 @@ elif nav_selection == "💎 Pricing & Payments Hub":
             col_cd1, col_cd2 = st.columns(2)
             with col_cd1:
                 c_num = st.text_input("Card Number", placeholder="4111 2222 3333 4444", key="card_num")
-                c_name = st.text_input("Name on Card", placeholder="Rupesh Sharma", key="card_name")
+                c_name = st.text_input("Name on Card", placeholder="Rupesh Kumar Pandey", key="card_name")
             with col_cd2:
                 col_exp, col_cvv = st.columns(2)
                 with col_exp:

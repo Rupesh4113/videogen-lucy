@@ -32,13 +32,29 @@ class PromptCompiler:
         reference_media: Optional[List[Any]] = None,
         lock_character_appearance: bool = True,
         lock_environment: bool = True,
-        continuity_note: Optional[str] = None
+        continuity_note: Optional[str] = None,
+        lora_models: Optional[List[Dict[str, Any]]] = None
     ) -> Dict[str, Any]:
         """
-        Compiles scene, shot, character, location, and uploaded reference media into
+        Compiles scene, shot, character, location, uploaded reference media, and custom LoRA models into
         an optimized conditioning prompt for AI video generation models.
         """
         reference_media = reference_media or []
+        lora_models = lora_models or []
+
+        # 0. Custom LoRA Trigger & Adapter Layer
+        lora_triggers = []
+        lora_tags = []
+        for lora in lora_models:
+            t_word = lora.get("trigger_word", "")
+            l_name = lora.get("name", "custom_lora")
+            l_scale = lora.get("scale", 0.85)
+            if t_word:
+                lora_triggers.append(t_word)
+            lora_tags.append(f"<lora:{l_name}:{l_scale}>")
+
+        lora_prefix = f"{' '.join(lora_triggers)} " if lora_triggers else ""
+        lora_suffix = f" {' '.join(lora_tags)}" if lora_tags else ""
 
         # 1. Style & Aesthetics Layer
         style_refs = [
@@ -47,7 +63,7 @@ class PromptCompiler:
         ]
         style_ref_text = f" Visual Inspiration: {'; '.join(style_refs)}." if style_refs else ""
         style_prompt = (
-            f"masterpiece cinematic render, {video_style}, {camera_style}, "
+            f"{lora_prefix}masterpiece cinematic render, {video_style}, {camera_style}, "
             f"highly detailed realistic human motion, rich cinematic lighting, 8k resolution.{style_ref_text}"
         )
 
@@ -123,6 +139,7 @@ class PromptCompiler:
             f"ACTION: {shot_action}. "
             f"{obj_prompt}"
             f"{continuity_prompt}"
+            f"{lora_suffix}"
         ).strip()
 
         # 8. Negative Prompt Assembly
@@ -156,5 +173,6 @@ class PromptCompiler:
             "continuity_prompt": continuity_prompt,
             "full_positive_prompt": full_positive,
             "negative_prompt": full_negative,
-            "start_frame_path": start_frame_path
+            "start_frame_path": start_frame_path,
+            "lora_tags": lora_tags
         }

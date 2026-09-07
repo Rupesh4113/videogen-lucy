@@ -84,6 +84,30 @@ class UPIQRGenerator:
         }
 
     @classmethod
+    def get_merchant_static_qr_image(cls) -> Optional[str]:
+        """
+        Returns the merchant-uploaded static payment QR code as a base64 Data URL if available.
+        """
+        possible_paths = [
+            settings.BASE_DIR / "backend" / "app" / "static" / "merchant_payment_qr.jpg",
+            settings.BASE_DIR / "backend" / "app" / "static" / "merchant_payment_qr.png",
+            settings.STORAGE_DIR / "assets" / "merchant_payment_qr.jpg",
+            settings.STORAGE_DIR / "assets" / "merchant_payment_qr.png",
+            settings.ASSETS_DIR / "merchant_payment_qr.jpg",
+        ]
+        for p in possible_paths:
+            if p.exists():
+                try:
+                    with open(p, "rb") as f:
+                        img_bytes = f.read()
+                    ext = "jpeg" if p.suffix.lower() in [".jpg", ".jpeg"] else "png"
+                    b64_str = base64.b64encode(img_bytes).decode("utf-8")
+                    return f"data:image/{ext};base64,{b64_str}"
+                except Exception:
+                    pass
+        return None
+
+    @classmethod
     def create_payment_payload(
         cls,
         amount_inr: float,
@@ -104,7 +128,8 @@ class UPIQRGenerator:
             merchant_vpa=vpa,
             merchant_name=name
         )
-        qr_b64 = cls.generate_qr_code_image(uri)
+        # Use merchant uploaded QR code if available, else dynamic QR code
+        qr_b64 = cls.get_merchant_static_qr_image() or cls.generate_qr_code_image(uri)
         app_links = cls.get_upi_app_links(uri)
 
         return {

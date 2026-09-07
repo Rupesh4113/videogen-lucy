@@ -39,6 +39,25 @@ def test_upi_qr_code_image_generation():
     assert qr_data.startswith("data:image/png;base64,") or qr_data.startswith("https://")
 
 
+def test_merchant_account_details_and_custom_qr():
+    assert settings.MERCHANT_NAME == "Rupesh Kumar Pandey"
+    assert settings.MERCHANT_BANK_NAME == "HDFC Bank"
+    assert settings.MERCHANT_ACCOUNT_NO == "50100055168323"
+    assert settings.MERCHANT_IFSC == "HDFC0000832"
+
+    payload = UPIQRGenerator.create_payment_payload(
+        amount_inr=799.0,
+        order_id="TEST_ORD_MERCHANT_01",
+        plan_title="Studio Master"
+    )
+    assert payload["merchant_name"] == "Rupesh Kumar Pandey"
+    assert payload["bank_details"]["account_holder"] == "Rupesh Kumar Pandey"
+    assert payload["bank_details"]["bank_name"] == "HDFC Bank"
+    assert payload["bank_details"]["account_number"] == "50100055168323"
+    assert payload["bank_details"]["ifsc"] == "HDFC0000832"
+    assert payload["qr_code_data"].startswith("data:image/")
+
+
 def test_payment_plans_catalog_inr_and_usd():
     inr_plans = PaymentGatewayManager.get_plans(currency="INR")
     usd_plans = PaymentGatewayManager.get_plans(currency="USD")
