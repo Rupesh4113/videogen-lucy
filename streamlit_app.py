@@ -98,6 +98,8 @@ async def _async_register_user(email, password, name, phone=None):
             name=name or email_clean.split("@")[0].capitalize(),
             phone_number=phone.strip() if phone else None,
             hashed_password=hash_password(password),
+            video_credits=settings.DEFAULT_FREE_CREDITS,
+            plan_tier="FREE",
             is_active=True,
             is_verified=True
         )
@@ -108,7 +110,9 @@ async def _async_register_user(email, password, name, phone=None):
             "id": new_user.id,
             "email": new_user.email,
             "name": new_user.name,
-            "phone_number": new_user.phone_number
+            "phone_number": new_user.phone_number,
+            "video_credits": new_user.video_credits or 15,
+            "plan_tier": new_user.plan_tier or "FREE"
         }, None
 
 
@@ -125,7 +129,9 @@ async def _async_login_user(email, password):
             "id": user.id,
             "email": user.email,
             "name": user.name,
-            "phone_number": user.phone_number
+            "phone_number": user.phone_number,
+            "video_credits": user.video_credits or 15,
+            "plan_tier": user.plan_tier or "FREE"
         }, None
 
 
@@ -185,6 +191,8 @@ async def _async_verify_otp(identifier: str, code: str, name_fallback: str = Non
                 email=clean_id.lower() if not is_phone else None,
                 phone_number=clean_id if is_phone else None,
                 name=name_fallback or (f"Mobile User {clean_id[-4:]}" if is_phone else clean_id.split("@")[0].capitalize()),
+                video_credits=settings.DEFAULT_FREE_CREDITS,
+                plan_tier="FREE",
                 is_active=True,
                 is_verified=True
             )
@@ -196,8 +204,26 @@ async def _async_verify_otp(identifier: str, code: str, name_fallback: str = Non
             "id": user.id,
             "email": user.email,
             "name": user.name,
-            "phone_number": user.phone_number
+            "phone_number": user.phone_number,
+            "video_credits": user.video_credits or 15,
+            "plan_tier": user.plan_tier or "FREE"
         }, None
+
+
+async def _async_refresh_user(user_id: str):
+    async with AsyncSessionLocal() as session:
+        stmt = select(User).where(User.id == user_id)
+        user = (await session.execute(stmt)).scalar_one_or_none()
+        if user:
+            return {
+                "id": user.id,
+                "email": user.email,
+                "name": user.name,
+                "phone_number": user.phone_number,
+                "video_credits": user.video_credits or 15,
+                "plan_tier": user.plan_tier or "FREE"
+            }
+        return None
 
 
 async def _async_create_and_generate_storyboard(payload, user_id=None):
@@ -350,15 +376,29 @@ with st.sidebar:
 
     # User Profile / Login Card
     if st.session_state.user:
-        st.success(f"👤 Logged in as: **{st.session_state.user.get('name', 'User')}**")
+        # Refresh latest user balance
+        u_info = run_async(_async_refresh_user(st.session_state.user["id"]))
+        if u_info:
+            st.session_state.user = u_info
+            
+        u_credits = st.session_state.user.get("video_credits", 15)
+        u_tier = st.session_state.user.get("plan_tier", "FREE")
+        
+        st.success(f"👤 **{st.session_state.user.get('name', 'Creator')}**")
         if st.session_state.user.get("email"):
             st.caption(f"📧 {st.session_state.user['email']}")
-        if st.session_state.user.get("phone_number"):
-            st.caption(f"📱 {st.session_state.user['phone_number']}")
         
-        if st.button("🚪 Log Out", use_container_width=True):
-            st.session_state.user = None
-            st.rerun()
+        st.info(f"🪙 **Credits: {u_credits} Mins** • Plan: **{u_tier}**")
+        
+        col_side_u1, col_side_u2 = st.columns(2)
+        with col_side_u1:
+            if st.button("💎 Buy Credits", use_container_width=True):
+                st.session_state.nav_choice = "💎 Pricing & Payments Hub"
+                st.rerun()
+        with col_side_u2:
+            if st.button("🚪 Logout", use_container_width=True):
+                st.session_state.user = None
+                st.rerun()
     else:
         with st.expander("👤 Sign In / Register (Dual Auth)", expanded=True):
             auth_mode = st.radio("Authentication Method", ["Email & Password", "Mobile Phone & OTP"], horizontal=True)
@@ -535,16 +575,26 @@ with st.sidebar:
             settings.VIDEO_PROVIDER = "simulation"
 
     st.markdown("---")
+    nav_options = [
+        "🎬 Create & Plan Story",
+        "📖 Storyboard Preview",
+        "📽️ Video Theater & Downloads",
+        "🎞️ Scene Studio & Regeneration",
+        "💎 Pricing & Payments Hub",
+        "🛡️ YouTube Compliance Audit",
+        "📁 Project History"
+    ]
+    
+    # Check if a button redirected to a specific tab
+    current_nav_idx = 0
+    if "nav_choice" in st.session_state and st.session_state.nav_choice in nav_options:
+        current_nav_idx = nav_options.index(st.session_state.nav_choice)
+        del st.session_state.nav_choice
+
     nav_selection = st.radio(
         "Navigation",
-        [
-            "🎬 Create & Plan Story",
-            "📖 Storyboard Preview",
-            "📽️ Video Theater & Downloads",
-            "🎞️ Scene Studio & Regeneration",
-            "🛡️ YouTube Compliance Audit",
-            "📁 Project History"
-        ]
+        nav_options,
+        index=current_nav_idx
     )
 
     st.markdown("---")
@@ -1103,7 +1153,268 @@ elif nav_selection == "🎞️ Scene Studio & Regeneration":
 
 
 # ==============================================================================
-# TAB 5: YOUTUBE COMPLIANCE AUDIT
+# TAB 5: PRICING & PAYMENTS HUB (UPI, QR CODE, CARDS & BANK SETTLEMENT)
+# ==============================================================================
+elif nav_selection == "💎 Pricing & Payments Hub":
+    from backend.app.providers.payment.gateway_manager import PaymentGatewayManager
+    from backend.app.providers.payment.upi_qr_generator import UPIQRGenerator
+
+    st.header("💎 Subscription Plans, Video Credits & Payment Hub")
+    st.markdown("Unlock 1080p generation credits, Sora/Veo multi-shot rendering, and commercial licenses. Pay instantly via **UPI QR Code (GPay/PhonePe/Paytm), Cards, NetBanking, or Direct Bank Wire** in **INR (₹)** or **USD ($)**.")
+
+    # User Status Bar
+    if st.session_state.user:
+        u_info = run_async(_async_refresh_user(st.session_state.user["id"]))
+        if u_info:
+            st.session_state.user = u_info
+        
+        c_val = st.session_state.user.get("video_credits", 15)
+        t_val = st.session_state.user.get("plan_tier", "FREE")
+        st.success(f"👤 Account: **{st.session_state.user.get('name')}** • 🪙 Available Credits: **{c_val} Minutes** • Active Tier: **{t_val}**")
+    else:
+        st.warning("⚠️ You are currently in Guest Mode. Please **Sign In** from the sidebar so purchased credits are linked to your account.")
+
+    st.markdown("---")
+
+    # Currency Switcher
+    col_curr_title, col_curr_sel = st.columns([3, 2])
+    with col_curr_title:
+        st.subheader("1. Choose Your Video Generation Plan")
+    with col_curr_sel:
+        currency_pref = st.radio(
+            "Select Currency",
+            ["🇮🇳 INR (₹) - UPI & Indian Banking", "🇺🇸 USD ($) - Global Cards & Stripe"],
+            horizontal=True,
+            label_visibility="collapsed"
+        )
+    
+    active_curr = "INR" if "INR" in currency_pref else "USD"
+    plans = PaymentGatewayManager.get_plans(currency=active_curr)
+
+    if "active_checkout_plan" not in st.session_state:
+        st.session_state.active_checkout_plan = "creator_pro"
+
+    # Display 4 Plan Columns
+    cols = st.columns(4)
+    for idx, plan in enumerate(plans):
+        with cols[idx]:
+            # Plan Card Box
+            card_border = "border: 2px solid #6366F1;" if plan["is_popular"] else "border: 1px solid #334155;"
+            badge_html = f"<span style='background-color:#4F46E5; color:white; padding:2px 8px; border-radius:12px; font-size:12px;'>{plan.get('badge', '')}</span>" if plan.get('badge') else ""
+            
+            st.markdown(
+                f"""
+                <div style='{card_border} border-radius:12px; padding:16px; min-height:360px; background-color:rgba(15, 23, 42, 0.6);'>
+                    <div style='display:flex; justify-content:space-between; align-items:center;'>
+                        <h3 style='margin:0;'>{plan['title']}</h3>
+                        {badge_html}
+                    </div>
+                    <p style='color:#94A3B8; font-size:13px; margin:8px 0;'>{plan['description']}</p>
+                    <h2 style='color:#38BDF8; margin:12px 0;'>{plan['display_price']} <span style='font-size:14px; color:#94A3B8;'>/ package</span></h2>
+                    <p style='font-weight:bold; color:#10B981;'>🪙 {plan['video_credits']} Mins Video Credits</p>
+                    <hr style='border-color:#334155;'>
+                    <ul style='font-size:13px; padding-left:16px; color:#CBD5E1;'>
+                        {"".join([f"<li>{f}</li>" for f in plan['features']])}
+                    </ul>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+            
+            btn_label = "Active / Current" if plan["id"] == "free_tier" and not st.session_state.user else ("Select Free" if plan["id"] == "free_tier" else f"⚡ Choose {plan['title']}")
+            if st.button(btn_label, key=f"btn_plan_{plan['id']}", use_container_width=True, type="primary" if plan["is_popular"] else "secondary"):
+                st.session_state.active_checkout_plan = plan["id"]
+                st.rerun()
+
+    # Checkout & Payment Terminal
+    st.markdown("---")
+    selected_plan = PaymentGatewayManager.get_plan_by_id(st.session_state.active_checkout_plan) or plans[1]
+    
+    st.subheader(f"2. Complete Payment for **{selected_plan['title']}** ({selected_plan['video_credits']} Minutes)")
+    
+    amount_to_pay = selected_plan["price_inr"] if active_curr == "INR" else selected_plan["price_usd"]
+    
+    if amount_to_pay == 0:
+        st.success("🎉 This plan is completely FREE! You receive 15 free video generation minutes automatically upon registration.")
+    else:
+        tab_upi, tab_card, tab_bank = st.tabs([
+            "📲 Instant UPI QR Code (GPay / PhonePe / Paytm)",
+            "💳 Credit / Debit Card & NetBanking",
+            "🏦 Direct Bank Transfer (IMPS / NEFT / Wire)"
+        ])
+
+        # TAB A: UPI QR CODE
+        with tab_upi:
+            col_qr_img, col_qr_details = st.columns([1, 2])
+            
+            # Generate live UPI payload
+            temp_order_id = f"ORD_{os.urandom(4).hex().upper()}"
+            upi_payload = UPIQRGenerator.create_payment_payload(
+                amount_inr=amount_to_pay if active_curr == "INR" else (amount_to_pay * 85.0),
+                order_id=temp_order_id,
+                plan_title=selected_plan["title"]
+            )
+            
+            with col_qr_img:
+                st.image(upi_payload["qr_code_data"], caption="Scan with any UPI App (GPay, PhonePe, Paytm, BHIM, CRED)", use_container_width=True)
+                st.caption(f"Amount: **₹{upi_payload['amount_inr']:.2f}** • 0% Extra Fee")
+
+            with col_qr_details:
+                st.markdown("#### ⚡ 3-Step Instant Payment")
+                st.markdown(f"1. Open **Google Pay, PhonePe, Paytm, BHIM, or CRED** on your mobile.")
+                st.markdown(f"2. Scan the QR code or send payment to UPI ID: **`{upi_payload['merchant_vpa']}`**")
+                st.markdown(f"3. Enter the **12-digit UPI UTR / Transaction Number** below to instantly unlock your **{selected_plan['video_credits']} Minutes**.")
+                
+                st.markdown("---")
+                user_utr = st.text_input("Enter 12-Digit UPI UTR / Transaction Ref ID", placeholder="e.g. 423984129841", key="input_upi_utr")
+                
+                col_c1, col_c2 = st.columns([2, 1])
+                with col_c1:
+                    if st.button("✓ Confirm Payment & Unlock Credits", type="primary", use_container_width=True):
+                        if not user_utr:
+                            st.error("Please enter the UPI UTR / Reference ID from your payment app.")
+                        else:
+                            with st.spinner("Verifying settlement and crediting account..."):
+                                async def _do_upi_fulfill():
+                                    async with AsyncSessionLocal() as s:
+                                        u_id = st.session_state.user["id"] if st.session_state.user else None
+                                        order = await PaymentGatewayManager.create_payment_order(
+                                            db=s,
+                                            plan_id=selected_plan["id"],
+                                            currency="INR",
+                                            payment_method="upi_qr",
+                                            user_id=u_id
+                                        )
+                                        return await PaymentGatewayManager.verify_and_fulfill_payment(
+                                            db=s,
+                                            order_id=order.id,
+                                            transaction_ref=user_utr
+                                        )
+                                res = run_async(_do_upi_fulfill())
+                                st.success(f"🎉 {res['message']}")
+                                st.info(f"📄 Invoice Number: `{res.get('invoice_number')}` • Ref: `{res.get('transaction_ref')}`")
+                                st.rerun()
+
+                with col_c2:
+                    if st.button("⚡ Fast Dev Verify", use_container_width=True):
+                        with st.spinner("Processing simulated verification..."):
+                            async def _do_sim_fulfill():
+                                async with AsyncSessionLocal() as s:
+                                    u_id = st.session_state.user["id"] if st.session_state.user else None
+                                    order = await PaymentGatewayManager.create_payment_order(
+                                        db=s,
+                                        plan_id=selected_plan["id"],
+                                        currency="INR",
+                                        payment_method="upi_qr",
+                                        user_id=u_id
+                                    )
+                                    return await PaymentGatewayManager.verify_and_fulfill_payment(
+                                        db=s,
+                                        order_id=order.id,
+                                        transaction_ref=f"DEV_UTR_{os.urandom(3).hex().upper()}"
+                                    )
+                            res = run_async(_do_sim_fulfill())
+                            st.success(f"✓ Dev payment simulated! {selected_plan['video_credits']} Minutes added.")
+                            st.rerun()
+
+        # TAB B: CREDIT / DEBIT CARDS
+        with tab_card:
+            st.markdown(f"#### 💳 Card & NetBanking Checkout ({active_curr} {amount_to_pay:.2f})")
+            st.caption("Supports Visa, MasterCard, RuPay, American Express, and International Cards.")
+            
+            col_cd1, col_cd2 = st.columns(2)
+            with col_cd1:
+                c_num = st.text_input("Card Number", placeholder="4111 2222 3333 4444", key="card_num")
+                c_name = st.text_input("Name on Card", placeholder="Rupesh Sharma", key="card_name")
+            with col_cd2:
+                col_exp, col_cvv = st.columns(2)
+                with col_exp:
+                    c_exp = st.text_input("Expiry (MM/YY)", placeholder="12/28", key="card_exp")
+                with col_cvv:
+                    c_cvv = st.text_input("CVV", type="password", max_chars=4, placeholder="123", key="card_cvv")
+            
+            if st.button(f"🔒 Pay {active_curr} {amount_to_pay:.2f} via Secure Gateway", type="primary", use_container_width=True):
+                with st.spinner("Authorizing payment with bank gateway..."):
+                    async def _do_card_fulfill():
+                        async with AsyncSessionLocal() as s:
+                            u_id = st.session_state.user["id"] if st.session_state.user else None
+                            order = await PaymentGatewayManager.create_payment_order(
+                                db=s,
+                                plan_id=selected_plan["id"],
+                                currency=active_curr,
+                                payment_method="card",
+                                user_id=u_id
+                            )
+                            return await PaymentGatewayManager.verify_and_fulfill_payment(
+                                db=s,
+                                order_id=order.id,
+                                transaction_ref=f"CARD_TXN_{os.urandom(4).hex().upper()}"
+                            )
+                    res = run_async(_do_card_fulfill())
+                    st.success(f"🎉 Payment Authorized! {selected_plan['video_credits']} Minutes added to your account.")
+                    st.rerun()
+
+        # TAB C: DIRECT BANK TRANSFER
+        with tab_bank:
+            st.markdown("#### 🏦 Direct Bank Account Settlement (IMPS / NEFT / RTGS / Swift Wire)")
+            st.caption("Direct wire settlement to merchant account. No gateway processing fees.")
+            
+            bank_info = upi_payload["bank_details"]
+            col_b1, col_b2 = st.columns(2)
+            with col_b1:
+                st.markdown(f"**Beneficiary Name:** `{bank_info['account_holder']}`")
+                st.markdown(f"**Bank Name:** `{bank_info['bank_name']}`")
+                st.markdown(f"**Account Number:** `{bank_info['account_number']}`")
+            with col_b2:
+                st.markdown(f"**IFSC Code:** `{bank_info['ifsc']}`")
+                st.markdown(f"**SWIFT / BIC Code:** `{bank_info['swift']}`")
+                st.markdown(f"**Amount to Transfer:** `₹{amount_to_pay:.2f}` (or `${amount_to_pay:.2f}` USD)")
+
+            st.markdown("---")
+            b_ref = st.text_input("Bank Wire Reference Number / UTR", placeholder="e.g. N1234567890", key="bank_ref_in")
+            if st.button("Submit Wire Reference for Instant Credit", type="primary"):
+                if not b_ref:
+                    st.error("Please enter your bank transfer reference / UTR number.")
+                else:
+                    async def _do_bank_fulfill():
+                        async with AsyncSessionLocal() as s:
+                            u_id = st.session_state.user["id"] if st.session_state.user else None
+                            order = await PaymentGatewayManager.create_payment_order(
+                                db=s,
+                                plan_id=selected_plan["id"],
+                                currency=active_curr,
+                                payment_method="bank_transfer",
+                                user_id=u_id
+                            )
+                            return await PaymentGatewayManager.verify_and_fulfill_payment(
+                                db=s,
+                                order_id=order.id,
+                                transaction_ref=b_ref
+                            )
+                    res = run_async(_do_bank_fulfill())
+                    st.success(f"✓ Bank transfer recorded and verified! {selected_plan['video_credits']} Minutes credited.")
+                    st.rerun()
+
+    # User Billing History
+    if st.session_state.user:
+        st.markdown("---")
+        st.subheader("3. 📜 Billing & Invoice History")
+        
+        async def _get_orders():
+            async with AsyncSessionLocal() as s:
+                stmt = select(PaymentOrder).where(PaymentOrder.user_id == st.session_state.user["id"]).order_by(PaymentOrder.created_at.desc())
+                return (await s.execute(stmt)).scalars().all()
+                
+        user_orders = run_async(_get_orders())
+        if not user_orders:
+            st.info("No past transactions found on this account.")
+        else:
+            for o in user_orders:
+                st.markdown(f"• **{o.plan_title}** — `{o.currency} {o.amount:.2f}` • Status: **{o.status}** • Credits: `+{o.credits_granted} Mins` • Invoice: `{o.invoice_number}` • Date: `{o.created_at.strftime('%d %b %Y, %H:%M')}`")
+
+
+# ==============================================================================
+# TAB 6: YOUTUBE COMPLIANCE AUDIT
 # ==============================================================================
 elif nav_selection == "🛡️ YouTube Compliance Audit":
     st.header("🛡️ YouTube Safe Publishing & Compliance Audit")

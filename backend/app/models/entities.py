@@ -32,10 +32,15 @@ class User(Base):
     api_key_hash = Column(String(255), nullable=True)
     is_active = Column(Boolean, default=True)
     is_verified = Column(Boolean, default=False)
+    video_credits = Column(Integer, default=15)  # minutes of video generation credit
+    plan_tier = Column(String(50), default="FREE")  # "FREE", "CREATOR", "STUDIO", "ENTERPRISE"
+    total_spent = Column(Float, default=0.0)
+    currency_pref = Column(String(10), default="INR")  # "INR", "USD"
     created_at = Column(DateTime, default=get_utc_now)
     updated_at = Column(DateTime, default=get_utc_now, onupdate=get_utc_now)
 
-    projects = relationship("Project", back_populates="user", cascade="all, delete-orphan")
+    projects = relationship("Project", back_populates="user", cascade="all, delete-orphan", lazy="selectin")
+    orders = relationship("PaymentOrder", back_populates="user", cascade="all, delete-orphan", lazy="selectin")
 
 
 class OTPToken(Base):
@@ -335,3 +340,29 @@ class LicenseRecord(Base):
     created_at = Column(DateTime, default=get_utc_now)
 
     project = relationship("Project", back_populates="license_records")
+
+
+class PaymentOrder(Base):
+    __tablename__ = "payment_orders"
+    __table_args__ = {"extend_existing": True}
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), ForeignKey("users.id"), nullable=True)
+    plan_id = Column(String(50), nullable=False)
+    plan_title = Column(String(100), nullable=False)
+    amount = Column(Float, nullable=False)
+    currency = Column(String(10), default="INR")  # "INR", "USD"
+    credits_granted = Column(Integer, default=50)  # video generation minutes
+    payment_method = Column(String(50), default="upi_qr")  # "upi_qr", "card", "razorpay", "stripe", "bank_transfer"
+    status = Column(String(50), default="PENDING")  # "PENDING", "COMPLETED", "FAILED", "REFUNDED"
+    transaction_ref = Column(String(255), nullable=True)  # UPI UTR / Stripe Charge ID / Gateway ID
+    gateway_order_id = Column(String(255), nullable=True)
+    qr_code_data = Column(Text, nullable=True)
+    payer_email = Column(String(255), nullable=True)
+    payer_phone = Column(String(50), nullable=True)
+    invoice_number = Column(String(50), nullable=True)
+    created_at = Column(DateTime, default=get_utc_now)
+    paid_at = Column(DateTime, nullable=True)
+
+    user = relationship("User", back_populates="orders")
+

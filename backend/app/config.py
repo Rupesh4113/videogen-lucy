@@ -4,6 +4,10 @@ Application Configuration for Videogen-Lucy AI Video Generation Platform.
 import os
 from pathlib import Path
 from typing import Optional
+from dotenv import load_dotenv
+
+# Load environment variables from .env file if present
+load_dotenv()
 
 class Settings:
     # App Information
@@ -53,6 +57,19 @@ class Settings:
     DEFAULT_ASPECT_RATIO: str = os.getenv("DEFAULT_ASPECT_RATIO", "16:9")  # "16:9", "9:16", "1:1"
     DEFAULT_FPS: int = int(os.getenv("DEFAULT_FPS", "24"))
     FFMPEG_PATH: str = os.getenv("FFMPEG_PATH", "ffmpeg")
+
+    # Payment Gateway & Bank Settlement (INR & USD, UPI, Cards, Bank Transfer)
+    MERCHANT_UPI_VPA: str = os.getenv("MERCHANT_UPI_VPA", "videogen@upi")
+    MERCHANT_NAME: str = os.getenv("MERCHANT_NAME", "Videogen Lucy AI")
+    MERCHANT_BANK_NAME: str = os.getenv("MERCHANT_BANK_NAME", "State Bank of India / HDFC Bank")
+    MERCHANT_ACCOUNT_NO: str = os.getenv("MERCHANT_ACCOUNT_NO", "50100489201948")
+    MERCHANT_IFSC: str = os.getenv("MERCHANT_IFSC", "HDFC0001234")
+    MERCHANT_SWIFT: str = os.getenv("MERCHANT_SWIFT", "HDFCINBBXXX")
+    RAZORPAY_KEY_ID: Optional[str] = os.getenv("RAZORPAY_KEY_ID")
+    RAZORPAY_KEY_SECRET: Optional[str] = os.getenv("RAZORPAY_KEY_SECRET")
+    STRIPE_PUBLISHABLE_KEY: Optional[str] = os.getenv("STRIPE_PUBLISHABLE_KEY")
+    STRIPE_SECRET_KEY: Optional[str] = os.getenv("STRIPE_SECRET_KEY")
+    DEFAULT_FREE_CREDITS: int = int(os.getenv("DEFAULT_FREE_CREDITS", "15"))  # 15 minutes free credit on signup
     
     # Celery / Redis
     REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
