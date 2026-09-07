@@ -93,8 +93,8 @@ from torch.utils.data import Dataset, DataLoader
 
 # Hyperparameters
 BASE_MODEL = "{base_model}"
-DATASET_DIR = "{dataset_dir}"
-OUTPUT_DIR = "{output_dir}"
+DATASET_DIR = r"{dataset_dir}"
+OUTPUT_DIR = r"{output_dir}"
 TRIGGER_WORD = "{trigger_word}"
 LORA_RANK = {lora_rank}
 LORA_ALPHA = {lora_alpha}

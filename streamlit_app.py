@@ -880,6 +880,8 @@ if nav_selection == "🎬 Create & Plan Story":
             else:
                 st.warning(f"⚠️ **Protected Content Detected ({safety.risk_level} Risk)**:\n- " + "\n- ".join(safety.detected_violations))
                 if safety.suggested_rewrite:
+                    st.info(f"💡 **Suggested Safe Alternative**: `{safety.suggested_rewrite}`")
+
         # Custom Trained LoRA Injection Section
         with st.expander("🧬 Custom YouTube LoRAs & Model Adapters (Optional)", expanded=bool(st.session_state.get("active_custom_loras"))):
             st.caption("Apply custom fine-tuned LoRAs trained from YouTube video sources to guide character likeness, styles, or camera motions.")

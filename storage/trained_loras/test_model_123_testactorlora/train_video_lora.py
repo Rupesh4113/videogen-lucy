@@ -11,8 +11,8 @@ from torch.utils.data import Dataset, DataLoader
 
 # Hyperparameters
 BASE_MODEL = "Wan2.2-T2V-14B"
-DATASET_DIR = "F:\github\videogen-lucy\storage\trained_loras\test_model_123_testactorlora"
-OUTPUT_DIR = "F:\github\videogen-lucy\storage\trained_loras\test_model_123_testactorlora"
+DATASET_DIR = r"F:\github\videogen-lucy\storage\trained_loras\test_model_123_testactorlora"
+OUTPUT_DIR = r"F:\github\videogen-lucy\storage\trained_loras\test_model_123_testactorlora"
 TRIGGER_WORD = "[v_test_actor]"
 LORA_RANK = 16
 LORA_ALPHA = 32
